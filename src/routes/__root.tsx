@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import refinementCss from "../refinements.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteFooter, SiteHeader, StickyMobileCTA } from "../components/site-shell";
 import { Button } from "../components/ui/button";
@@ -28,7 +29,7 @@ const getInitialAppearance = createServerFn({ method: "GET" }).handler(() => {
   const preference = appearanceValues.includes(raw as AppearancePreference)
     ? (raw as AppearancePreference)
     : "auto";
-  return { preference, hasSavedCookie: raw !== undefined };
+  return { preference, hasSavedCookie: appearanceValues.includes(raw as AppearancePreference) };
 });
 
 function NotFoundComponent() {
@@ -119,6 +120,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "stylesheet", href: refinementCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -167,7 +169,7 @@ function RootComponent() {
       <AppearanceProvider initialPreference={preference} hasSavedCookie={hasSavedCookie}>
         <div>
           <SiteHeader />
-          <main id="main-content">
+          <main id="main-content" tabIndex={-1}>
             <Outlet />
           </main>
           <SiteFooter />

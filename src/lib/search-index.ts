@@ -163,12 +163,14 @@ export function searchContent(query: string, type?: SearchResultType): RankedSea
     const summary = normalize(document.summary);
     const terms = normalize(document.terms.join(" "));
     const titleTokens = title.split(" ");
-    let score = title === phrase ? 160 : title.includes(phrase) ? 100 : 0;
+    const termTokens = terms.split(" ");
+    const summaryTokens = summary.split(" ");
+    let score = title === phrase ? 160 : ` ${title} `.includes(` ${phrase} `) ? 100 : 0;
     for (const token of queryTokens) {
       if (titleTokens.includes(token)) score += 30;
-      else if (title.includes(token)) score += 18;
-      else if (terms.includes(token)) score += 12;
-      else if (summary.includes(token)) score += 7;
+      else if (token.length >= 3 && titleTokens.some((word) => word.startsWith(token))) score += 18;
+      else if (termTokens.includes(token)) score += 12;
+      else if (summaryTokens.includes(token)) score += 7;
       else if (
         token.length >= 4 &&
         titleTokens.some((candidate) => candidate.length >= 4 && withinOneEdit(token, candidate))
@@ -177,11 +179,13 @@ export function searchContent(query: string, type?: SearchResultType): RankedSea
     }
     return score > 0 ? [{ ...document, score }] : [];
   });
-  return [
-    ...new Map(
-      ranked
-        .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
-        .map((item) => [item.route, item]),
-    ).values(),
-  ];
+  // Keep the highest-ranked copy of a route, not the last (lowest) Map assignment.
+  const seen = new Set<string>();
+  return ranked
+    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+    .filter((item) => {
+      if (seen.has(item.route)) return false;
+      seen.add(item.route);
+      return true;
+    });
 }

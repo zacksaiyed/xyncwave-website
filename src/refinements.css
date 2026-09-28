@@ -1,0 +1,263 @@
+/* Bounded visual review layer. Existing content, brand artwork and design tokens remain intact. */
+:root {
+  --text-accent: var(--primary);
+}
+.dark {
+  --text-accent: oklch(0.78 0.12 258);
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-appearance="auto"] {
+    --text-accent: oklch(0.78 0.12 258);
+  }
+}
+
+/* Keep accent text readable without changing the blue button/illustration fill. */
+.text-primary,
+.article-links a,
+.article-diagram figcaption span,
+.diagram-label {
+  color: var(--text-accent);
+}
+
+/* The previous inverse descendant rule must not recolour a nested light form/card. */
+.bg-surface-inverse :is(.bg-background, .bg-card, .bg-popover).text-foreground,
+.bg-surface-inverse :is(.bg-background, .bg-card, .bg-popover) .text-foreground {
+  color: var(--foreground);
+}
+.bg-surface-inverse :is(.bg-background, .bg-card, .bg-popover) .text-primary {
+  color: var(--text-accent);
+}
+.bg-surface-inverse .bg-primary-foreground.text-foreground {
+  color: oklch(0.1593 0.0111 267.98);
+}
+
+/* The original dark hover token is pale; preserve white-on-blue button contrast. */
+.group\/button.bg-primary.text-primary-foreground:hover {
+  background-color: color-mix(in oklab, var(--primary) 88%, black);
+}
+nav[aria-label="Breadcrumb"] {
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+  line-height: 1.7;
+}
+nav[aria-label="Breadcrumb"] > span {
+  min-width: 0;
+}
+.hero-title {
+  text-wrap: balance;
+}
+
+/* Content-led navigation: keep the full header only at widths that can accommodate it. */
+.site-header-inner {
+  min-width: 0;
+  gap: 1rem;
+}
+.site-header .logo-backing {
+  max-width: min(46vw, 10.5rem);
+}
+.site-header .logo-backing img {
+  max-width: 100%;
+}
+.site-primary-nav {
+  min-width: 0;
+  gap: 0.5rem;
+}
+.site-primary-nav > .nav-link {
+  padding-inline: 0.4rem;
+}
+.site-header .nav-link::after {
+  height: 1px;
+  bottom: 0.7rem;
+}
+.site-header .nav-link[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+.site-header .mega-panel {
+  max-height: calc(100vh - 5rem);
+  max-height: calc(100dvh - 5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.site-header .mega-panel[hidden] {
+  display: none;
+}
+.site-header .mega-panel a:focus-visible {
+  outline-offset: 1px;
+}
+
+/* The typography and the architectural assembly share the site's existing content axis. */
+.home-hero {
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(155deg, var(--background) 36%, var(--surface-hero) 100%);
+}
+.home-hero-grid {
+  padding-block: clamp(3rem, 6vw, 5.5rem);
+}
+.home-hero-copy > p:first-child {
+  font-size: 0.6875rem;
+  line-height: 1.8;
+  letter-spacing: 0.035em;
+}
+.home-hero-title {
+  max-width: 19ch;
+  font-size: clamp(2.5rem, 4.1vw, 3.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.home-hero-description {
+  max-width: 47ch;
+  line-height: 1.8;
+}
+.home-hero-actions > a {
+  max-width: 100%;
+  min-height: 3.25rem;
+}
+.home-hero-actions .hero-secondary-action {
+  padding-inline: 0;
+  box-shadow: none;
+  transform: none;
+}
+.home-hero-actions .hero-secondary-action:hover {
+  background: transparent;
+  color: var(--text-accent);
+}
+.home-hero .connected-architecture {
+  width: min(100%, 37rem);
+  aspect-ratio: 760 / 620;
+  isolation: isolate;
+}
+.home-hero .connected-architecture svg {
+  overflow: hidden;
+}
+.home-hero .architecture-connection {
+  vector-effect: none;
+}
+
+/* Four distinct entry points. Icons clarify the topic; copy and destinations are unchanged. */
+.home-problem-card {
+  position: relative;
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+.home-problem-card:hover,
+.home-problem-card:focus-visible {
+  border-color: var(--text-accent);
+  background: var(--secondary);
+}
+.capability-icon {
+  display: inline-grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid var(--border);
+  background: var(--secondary);
+  color: var(--text-accent);
+}
+.home-problem-card h3 {
+  text-wrap: balance;
+}
+.problem-card-action {
+  line-height: 1.6;
+}
+.home-choice-list .hover-row {
+  padding-block: 1.4rem;
+}
+.home-choice-list strong {
+  font-weight: 550;
+  line-height: 1.5;
+}
+.home-story-section {
+  border-block: 1px solid var(--border);
+  background: var(--background);
+}
+.home-story-section .system-map {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--border);
+  background: var(--surface-hero);
+}
+.home-case-feature,
+.home-insight-card {
+  transition: border-color 180ms ease;
+}
+.home-case-feature:hover,
+.home-insight-card:hover {
+  border-color: var(--line-strong);
+}
+.home-insight-card h3 {
+  text-wrap: balance;
+}
+.home-insight-card .digital-visual img,
+.home-case-feature .digital-visual img {
+  transition-duration: 240ms;
+}
+.mobile-conversion-bar {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+@media (min-width: 1024px) {
+  .home-hero-grid {
+    grid-template-columns: 1.08fr 0.92fr;
+    gap: 1.25rem;
+  }
+  .home-hero .connected-architecture {
+    width: 108%;
+    max-width: none;
+    margin-inline-start: -4%;
+  }
+}
+@media (max-width: 1023px) {
+  .home-hero-grid {
+    gap: 1.25rem;
+  }
+  .home-hero .connected-architecture {
+    width: min(100%, 25rem);
+    margin-top: 0;
+  }
+}
+@media (max-width: 639px) {
+  .home-hero-title {
+    font-size: clamp(2.125rem, 8.8vw, 2.875rem);
+    max-width: 20ch;
+  }
+  .home-hero-description {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .home-hero-actions {
+    align-items: stretch;
+  }
+  .home-hero-actions .hero-secondary-action {
+    justify-content: center;
+    text-align: center;
+  }
+  .home-hero .connected-architecture {
+    width: min(100%, 17rem);
+  }
+  .home-case-visual {
+    min-height: 15rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-problem-card,
+  .home-insight-card,
+  .home-case-feature {
+    transition: none;
+  }
+  .home-hero-actions > a,
+  .home-problem-card .arrow-nudge {
+    transform: none;
+  }
+}
+@media (forced-colors: active) {
+  .connected-architecture {
+    visibility: hidden;
+  }
+  .capability-icon {
+    border-color: CanvasText;
+    color: CanvasText;
+  }
+  .home-problem-card:hover,
+  .home-problem-card:focus-visible {
+    border-color: Highlight;
+  }
+}

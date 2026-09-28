@@ -121,12 +121,15 @@ export function SiteHeader() {
     setOpen(false);
     setDesktopMenu(null);
     setSection(null);
+    setSuppressedMenu(null);
   }, [pathname]);
 
   useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 1024px)");
+    const desktop = window.matchMedia("(min-width: 1280px)");
     const onBreakpoint = () => {
       if (desktop.matches) setOpen(false);
+      setDesktopMenu(null);
+      setSuppressedMenu(null);
     };
     desktop.addEventListener("change", onBreakpoint);
     return () => desktop.removeEventListener("change", onBreakpoint);
@@ -135,7 +138,9 @@ export function SiteHeader() {
   useEffect(() => {
     if (!desktopMenu) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
+      // Hover-open content is dismissible even when keyboard focus is elsewhere.
+      // Focus inside NavMenu is handled locally and never reaches this listener.
+      if (event.key !== "Escape" || event.defaultPrevented) return;
       event.preventDefault();
       setSuppressedMenu(desktopMenu);
       setDesktopMenu(null);
@@ -161,18 +166,18 @@ export function SiteHeader() {
       </a>
       <header
         ref={headerRef}
-        className="sticky top-0 z-50 border-b border-border bg-background lg:backdrop-blur-md lg:supports-[backdrop-filter]:bg-background/85"
+        className="site-header sticky top-0 z-50 border-b border-border bg-background"
       >
         <span
           aria-hidden
           className="pointer-events-none absolute inset-x-0 bottom-0 h-px blue-line opacity-40"
         />
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-5 lg:px-8">
+        <div className="site-header-inner mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-5 lg:px-8">
           <SmartLink to="/" aria-label="XWC home" className="logo-backing shrink-0 py-3">
             <ApprovedLogo asset={headerLogoAsset.url} location="header" />
           </SmartLink>
           <nav
-            className="hidden items-center gap-1 lg:flex xl:gap-3"
+            className="site-primary-nav hidden items-center gap-2 xl:flex"
             aria-label="Primary navigation"
           >
             <NavMenu
@@ -183,6 +188,10 @@ export function SiteHeader() {
               suppressed={suppressedMenu === "solutions"}
               onOpen={() => setDesktopMenu("solutions")}
               onClose={() => setDesktopMenu(null)}
+              onDismiss={() => {
+                setSuppressedMenu("solutions");
+                setDesktopMenu(null);
+              }}
               onLeave={() => {
                 setDesktopMenu(null);
                 setSuppressedMenu(null);
@@ -200,6 +209,10 @@ export function SiteHeader() {
               suppressed={suppressedMenu === "industries"}
               onOpen={() => setDesktopMenu("industries")}
               onClose={() => setDesktopMenu(null)}
+              onDismiss={() => {
+                setSuppressedMenu("industries");
+                setDesktopMenu(null);
+              }}
               onLeave={() => {
                 setDesktopMenu(null);
                 setSuppressedMenu(null);
@@ -241,93 +254,105 @@ export function SiteHeader() {
               </SmartLink>
             </Button>
           </nav>
-          <Sheet
-            open={open}
-            onOpenChange={(next) => {
-              setOpen(next);
-              if (next) setDesktopMenu(null);
-            }}
-          >
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open menu">
-                <Menu />
-              </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="right"
-              onCloseAutoFocus={(event) => {
-                if (window.matchMedia("(min-width: 1024px)").matches) event.preventDefault();
+          <div className="flex items-center gap-1 xl:hidden">
+            <Button variant="ghost" size="icon" asChild>
+              <SmartLink to="/search" aria-label="Search the site">
+                <Search aria-hidden="true" />
+              </SmartLink>
+            </Button>
+            <Sheet
+              open={open}
+              onOpenChange={(next) => {
+                setOpen(next);
+                if (next) setDesktopMenu(null);
               }}
-              className="w-full max-w-none overflow-y-auto px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] pt-16 sm:max-w-md lg:hidden"
             >
-              <SheetTitle className="sr-only">Navigation</SheetTitle>
-              <nav aria-label="Mobile navigation">
-                <MobileSection
-                  id="solutions"
-                  label="Solutions"
-                  to="/solutions"
-                  open={section === "solutions"}
-                  onToggle={() => setSection((s) => (s === "solutions" ? null : "solutions"))}
-                  items={solutionGroups.flatMap((g) => g.items)}
-                  onNavigate={() => setOpen(false)}
-                />
-                <MobileSection
-                  id="industries"
-                  label="Industries"
-                  to="/industries"
-                  open={section === "industries"}
-                  onToggle={() => setSection((s) => (s === "industries" ? null : "industries"))}
-                  items={industryItems}
-                  onNavigate={() => setOpen(false)}
-                />
-                <div className="grid">
-                  {mobileLinks.map((item) => (
-                    <SmartLink
-                      key={item.to}
-                      to={item.to}
-                      onClick={() => setOpen(false)}
-                      className="flex min-h-16 items-center border-b border-border text-xl font-medium transition-[color,padding] duration-300 hover:pl-2 hover:text-primary"
-                    >
-                      {item.label}
-                    </SmartLink>
-                  ))}
-                </div>
-                <Button variant="outline" className="mt-5 w-full" asChild>
-                  <SmartLink to="/search" onClick={() => setOpen(false)}>
-                    <Search /> Search the site
-                  </SmartLink>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="xl:hidden" aria-label="Open menu">
+                  <Menu />
                 </Button>
-                <AppearanceControl mobile />
-                <p className="mt-7 text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
-                  Quick tools
-                </p>
-                <div className="mt-3 grid gap-2">
-                  {(
-                    [
-                      ["Digitalization Assessment", "/digitalization-assessment"],
-                      ["AI Opportunity Assessment", "/ai-opportunity-assessment"],
-                      ["Engineering Capacity Assessment", "/engineering-capacity-assessment"],
-                    ] as const
-                  ).map(([label, to]) => (
-                    <SmartLink
-                      key={to}
-                      to={to}
-                      onClick={() => setOpen(false)}
-                      className="hover-card group flex min-h-13 items-center justify-between border border-border bg-secondary/60 px-4 py-3 text-sm font-medium"
-                    >
-                      {label}
-                      <ArrowRight className="arrow-nudge size-4 text-primary" />
+              </SheetTrigger>
+              <SheetContent
+                side="right"
+                aria-describedby={undefined}
+                onCloseAutoFocus={(event) => {
+                  if (!window.matchMedia("(min-width: 1280px)").matches) return;
+                  event.preventDefault();
+                  headerRef.current
+                    ?.querySelector<HTMLAnchorElement>('a[aria-label="XWC home"]')
+                    ?.focus({ preventScroll: true });
+                }}
+                className="w-full max-w-none overflow-y-auto px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] pt-16 sm:max-w-md xl:hidden"
+              >
+                <SheetTitle className="sr-only">Navigation</SheetTitle>
+                <nav aria-label="Mobile navigation">
+                  <MobileSection
+                    id="solutions"
+                    label="Solutions"
+                    to="/solutions"
+                    open={section === "solutions"}
+                    onToggle={() => setSection((s) => (s === "solutions" ? null : "solutions"))}
+                    items={solutionGroups.flatMap((g) => g.items)}
+                    onNavigate={() => setOpen(false)}
+                  />
+                  <MobileSection
+                    id="industries"
+                    label="Industries"
+                    to="/industries"
+                    open={section === "industries"}
+                    onToggle={() => setSection((s) => (s === "industries" ? null : "industries"))}
+                    items={industryItems}
+                    onNavigate={() => setOpen(false)}
+                  />
+                  <div className="grid">
+                    {mobileLinks.map((item) => (
+                      <SmartLink
+                        key={item.to}
+                        to={item.to}
+                        onClick={() => setOpen(false)}
+                        className="flex min-h-16 items-center border-b border-border text-xl font-medium transition-[color,padding] duration-300 hover:pl-2 hover:text-primary"
+                      >
+                        {item.label}
+                      </SmartLink>
+                    ))}
+                  </div>
+                  <Button variant="outline" className="mt-5 w-full" asChild>
+                    <SmartLink to="/search" onClick={() => setOpen(false)}>
+                      <Search /> Search the site
                     </SmartLink>
-                  ))}
-                </div>
-                <Button className="mt-5 w-full" asChild>
-                  <SmartLink to="/start-a-conversation" onClick={() => setOpen(false)}>
-                    Tell Us Your Challenge <ArrowRight />
-                  </SmartLink>
-                </Button>
-              </nav>
-            </SheetContent>
-          </Sheet>
+                  </Button>
+                  <AppearanceControl mobile />
+                  <p className="mt-7 text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
+                    Quick tools
+                  </p>
+                  <div className="mt-3 grid gap-2">
+                    {(
+                      [
+                        ["Digitalization Assessment", "/digitalization-assessment"],
+                        ["AI Opportunity Assessment", "/ai-opportunity-assessment"],
+                        ["Engineering Capacity Assessment", "/engineering-capacity-assessment"],
+                      ] as const
+                    ).map(([label, to]) => (
+                      <SmartLink
+                        key={to}
+                        to={to}
+                        onClick={() => setOpen(false)}
+                        className="hover-card group flex min-h-13 items-center justify-between border border-border bg-secondary/60 px-4 py-3 text-sm font-medium"
+                      >
+                        {label}
+                        <ArrowRight className="arrow-nudge size-4 text-primary" />
+                      </SmartLink>
+                    ))}
+                  </div>
+                  <Button className="mt-5 w-full" asChild>
+                    <SmartLink to="/start-a-conversation" onClick={() => setOpen(false)}>
+                      Tell Us Your Challenge <ArrowRight />
+                    </SmartLink>
+                  </Button>
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </header>
     </>
@@ -406,6 +431,7 @@ function NavMenu({
   suppressed,
   onOpen,
   onClose,
+  onDismiss,
   onLeave,
   spotlightTitle,
   spotlightBody,
@@ -419,6 +445,7 @@ function NavMenu({
   suppressed: boolean;
   onOpen: () => void;
   onClose: () => void;
+  onDismiss: () => void;
   onLeave: () => void;
   spotlightTitle: string;
   spotlightBody: string;
@@ -427,15 +454,29 @@ function NavMenu({
 }) {
   const columns = groups.length > 1 ? "sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1";
   const panelId = `desktop-${label.toLowerCase()}-menu`;
+  const toggleRef = useRef<HTMLButtonElement>(null);
   return (
     <div
-      className="static py-6"
-      onPointerEnter={() => {
-        if (!suppressed) onOpen();
+      className="static py-4"
+      onPointerEnter={(event) => {
+        if (event.pointerType === "mouse" && !suppressed) onOpen();
       }}
-      onPointerLeave={onLeave}
+      onPointerLeave={(event) => {
+        // A pointer moving away must not hide the link a keyboard user is reading.
+        if (!event.currentTarget.contains(document.activeElement)) onLeave();
+      }}
       onFocus={(event) => {
-        if (event.target instanceof HTMLAnchorElement) onOpen();
+        if (!suppressed && event.target instanceof HTMLAnchorElement) onOpen();
+      }}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) onLeave();
+      }}
+      onKeyDown={(event) => {
+        if (event.key !== "Escape" || !open) return;
+        event.preventDefault();
+        event.stopPropagation();
+        onDismiss();
+        toggleRef.current?.focus({ preventScroll: true });
       }}
     >
       <div className="flex items-center">
@@ -447,6 +488,7 @@ function NavMenu({
         </SmartLink>
         <button
           type="button"
+          ref={toggleRef}
           aria-label={`${open ? "Close" : "Open"} ${label} menu`}
           aria-expanded={open}
           aria-controls={panelId}
@@ -460,6 +502,7 @@ function NavMenu({
       </div>
       <div
         id={panelId}
+        hidden={!open}
         aria-hidden={!open}
         className={`mega-panel absolute inset-x-0 top-full z-40 ${open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1.5 opacity-0"}`}
       >
@@ -655,16 +698,19 @@ function FooterCol({
 
 export function StickyMobileCTA() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const route = pathname.replace(/\/+$/, "") || "/";
   if (
     /^\/(contact|start-a-conversation|digitalization-assessment|ai-opportunity-assessment|engineering-capacity-assessment)$/.test(
-      pathname,
+      route,
     ) ||
-    /^\/industries\/[^/]+$/.test(pathname) ||
-    /^\/insights\/[^/]+$/.test(pathname)
+    /^\/industries\/[^/]+$/.test(route) ||
+    /^\/insights\/[^/]+$/.test(route) ||
+    route === "/search" ||
+    route.startsWith("/thank-you/")
   )
     return null;
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background p-3 lg:hidden">
+    <div className="mobile-conversion-bar fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background p-3 lg:hidden">
       <Button className="w-full" asChild>
         <SmartLink to="/start-a-conversation">
           Tell Us Your Challenge <ArrowRight />

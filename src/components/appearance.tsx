@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Laptop, Moon, Sun } from "lucide-react";
 import { Button } from "./ui/button";
 import {
@@ -33,11 +33,20 @@ function resolveEffective(
 function applyAppearance(preference: AppearancePreference, media: MediaQueryList) {
   const effective = resolveEffective(preference, media);
   const root = document.documentElement;
-  root.classList.toggle("dark", preference === "dark");
+  root.classList.toggle("dark", effective === "dark");
   root.dataset["appearance"] = preference;
   root.dataset["theme"] = effective;
   root.style.colorScheme = effective;
   return effective;
+}
+
+function persistAppearanceCookie(preference: AppearancePreference) {
+  try {
+    const secure = window.location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = `${APPEARANCE_STORAGE_KEY}=${preference}; Path=/; Max-Age=31536000; SameSite=Lax${secure}`;
+  } catch {
+    // Cookie restrictions must never prevent an in-memory appearance change.
+  }
 }
 
 export function AppearanceProvider({
@@ -70,16 +79,24 @@ export function AppearanceProvider({
     preferenceRef.current = initial;
     setPreferenceState(initial);
     setEffective(applyAppearance(initial, media));
+    persistAppearanceCookie(initial);
 
     const onMediaChange = () => {
       if (preferenceRef.current === "auto") setEffective(applyAppearance("auto", media));
     };
     const onStorage = (event: StorageEvent) => {
-      if (event.key !== APPEARANCE_STORAGE_KEY) return;
+      // clear() has a null key. Ignore sessionStorage and unrelated origins/keys.
+      if (event.key !== null && event.key !== APPEARANCE_STORAGE_KEY) return;
+      try {
+        if (event.storageArea !== window.localStorage) return;
+      } catch {
+        return;
+      }
       const next = isPreference(event.newValue) ? event.newValue : "auto";
       preferenceRef.current = next;
       setPreferenceState(next);
       setEffective(applyAppearance(next, media));
+      persistAppearanceCookie(next);
     };
     media.addEventListener("change", onMediaChange);
     window.addEventListener("storage", onStorage);
@@ -89,7 +106,7 @@ export function AppearanceProvider({
     };
   }, [hasSavedCookie, initialPreference]);
 
-  function setPreference(next: AppearancePreference) {
+  const setPreference = useCallback((next: AppearancePreference) => {
     const media = window.matchMedia("(prefers-color-scheme: dark)");
     preferenceRef.current = next;
     setPreferenceState(next);
@@ -99,10 +116,10 @@ export function AppearanceProvider({
     } catch {
       // The selected mode remains active for this page when storage is blocked.
     }
-    document.cookie = `${APPEARANCE_STORAGE_KEY}=${next}; Path=/; Max-Age=31536000; SameSite=Lax`;
-  }
+    persistAppearanceCookie(next);
+  }, []);
 
-  const value = useMemo(() => ({ preference, effective, setPreference }), [preference, effective]);
+  const value = useMemo(() => ({ preference, effective, setPreference }), [preference, effective, setPreference]);
   return <AppearanceContext.Provider value={value}>{children}</AppearanceContext.Provider>;
 }
 
@@ -156,9 +173,10 @@ export function AppearanceControl({ mobile = false }: { mobile?: boolean }) {
         <Button
           variant="ghost"
           size="sm"
+          title="Appearance"
           aria-label={`Appearance: ${preference}${preference === "auto" ? `, currently ${effective}` : ""}`}
         >
-          <ActiveIcon aria-hidden="true" /> <span className="hidden xl:inline">Appearance</span>
+          <ActiveIcon aria-hidden="true" /> <span className="sr-only">Appearance</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">

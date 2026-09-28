@@ -1,15 +1,14 @@
 import {
   getInsightMedia,
-  getCaseStudyMedia,
   caseStudyMedia,
   type MediaEntry,
 } from "../lib/media-registry";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Cpu, Layers, Network, Users } from "lucide-react";
 import { SmartLink } from "../components/app-link";
 import { Button } from "../components/ui/button";
 import { CTASection, Eyebrow, SectionIntro } from "../components/page-sections";
-import { DigitalVisual, SystemMap, getInsightVisual, visuals } from "../components/digital-visuals";
+import { DigitalVisual, SystemMap } from "../components/digital-visuals";
 import { articles } from "../lib/content";
 import { pageHead } from "../lib/seo";
 import fintechInsightImage from "../assets/media/home-fintech-insight-hd.webp";
@@ -67,6 +66,8 @@ const problems = [
   },
 ] as const;
 
+const problemIcons = [Network, Layers, Users, Cpu] as const;
+
 const choices = [
   ["Our operations are too manual", "Start with the workflow", "/digitalization-assessment"],
   ["Our systems do not connect", "Map the integration gaps", "/solutions/integration"],
@@ -118,19 +119,19 @@ function HomePage() {
   return (
     <>
       <section className="home-hero relative overflow-hidden">
-        <div className="relative mx-auto grid max-w-[90rem] items-center gap-10 px-5 py-14 md:py-16 lg:min-h-[680px] lg:grid-cols-[1.06fr_.94fr] lg:gap-4 lg:px-8 lg:py-16">
-          <div className="min-w-0">
+        <div className="home-hero-grid relative mx-auto grid max-w-7xl items-center gap-10 px-5 lg:px-8">
+          <div className="home-hero-copy min-w-0">
             <Eyebrow>Digital transformation · Modern engineering</Eyebrow>
             <h1 className="hero-title home-hero-title max-w-4xl">
               What technology challenge is holding{" "}
               <span className="text-primary">your business</span> back?
             </h1>
-            <p className="mt-7 max-w-3xl text-lg leading-8 text-muted-foreground sm:text-xl">
+            <p className="home-hero-description mt-7 text-lg leading-8 text-muted-foreground">
               From fragmented operations to overloaded engineering teams, XWC helps organizations
               turn technology challenges into practical digital systems that move the business
               forward.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <div className="home-hero-actions mt-8 flex flex-col items-start gap-3">
               <Button
                 size="lg"
                 className="h-auto min-h-13 whitespace-normal py-3 text-center"
@@ -142,8 +143,8 @@ function HomePage() {
               </Button>
               <Button
                 size="lg"
-                variant="outline"
-                className="h-auto min-h-13 whitespace-normal py-3 text-center"
+                variant="ghost"
+                className="hero-secondary-action h-auto min-h-13 whitespace-normal py-3 text-left"
                 asChild
               >
                 <a href="#challenges">
@@ -159,36 +160,44 @@ function HomePage() {
         </div>
       </section>
 
-      <section id="challenges" className="py-section">
+      <section id="challenges" className="home-challenges py-section">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionIntro
             eyebrow="Problem recognition"
             title="The technology problem usually isn't the technology."
             body="It is the disconnected process, the legacy system, the delivery bottleneck, or the uncertainty about what to change next."
           />
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {problems.map((p, i) => (
-              <SmartLink
-                key={p.title}
-                to={p.to}
-                className="hover-card group overflow-hidden rounded-2xl border border-border p-7 transition-colors duration-300 hover:bg-secondary sm:p-9"
-              >
-                <span className="text-xs font-medium text-primary">0{i + 1}</span>
-                <h3 className="mt-6 text-2xl font-medium transition-colors duration-300 group-hover:text-primary">
-                  {p.title}
-                </h3>
-                <p className="mt-4 max-w-xl text-base leading-7 text-muted-foreground">{p.body}</p>
-                <span className="link-sweep mt-8 inline-flex items-center gap-2 font-medium text-primary">
-                  {p.action}
-                  <ArrowRight className="arrow-nudge size-4" />
-                </span>
-              </SmartLink>
-            ))}
+          <div className="home-problem-grid mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {problems.map((p, i) => {
+              const Icon = problemIcons[i] ?? Network;
+              return (
+                <SmartLink
+                  key={p.title}
+                  to={p.to}
+                  className="home-problem-card group flex min-w-0 flex-col border border-border bg-background p-6 transition-colors duration-200 sm:p-7"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="capability-icon" aria-hidden="true">
+                      <Icon className="size-5" strokeWidth={1.6} />
+                    </span>
+                    <span className="text-xs font-medium text-muted-foreground">0{i + 1}</span>
+                  </div>
+                  <h3 className="mt-6 text-xl font-medium leading-snug transition-colors duration-200 group-hover:text-primary">
+                    {p.title}
+                  </h3>
+                  <p className="mt-4 max-w-xl text-base leading-7 text-muted-foreground">{p.body}</p>
+                  <span className="problem-card-action mt-auto inline-flex items-start gap-2 pt-8 text-sm font-medium text-primary">
+                    {p.action}
+                    <ArrowRight className="arrow-nudge mt-0.5 size-4 shrink-0" />
+                  </span>
+                </SmartLink>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      <section className="bg-secondary py-section">
+      <section className="home-choice-section bg-secondary py-section">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[.75fr_1.25fr] lg:gap-20">
             <SectionIntro
@@ -196,7 +205,7 @@ function HomePage() {
               title="What are you trying to solve?"
               body="You do not need to know exactly what technology you need. Start by telling us where the problem is."
             />
-            <div className="border-t border-border">
+            <div className="home-choice-list border-t border-border">
               {choices.map(([title, outcome, to], i) => (
                 <SmartLink
                   key={title}
@@ -216,7 +225,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="bg-secondary py-section">
+      <section className="home-story-section py-section">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="grid gap-14 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
             <div>
@@ -244,10 +253,10 @@ function HomePage() {
             eyebrow="Transformation experience"
             title="Real operating detail. Practical connected technology."
           />
-          <div className="hover-card group mt-12 grid overflow-hidden rounded-2xl border border-border bg-background lg:grid-cols-[1.15fr_.85fr]">
+          <div className="home-case-feature group mt-12 grid overflow-hidden border border-border bg-background lg:grid-cols-[1.1fr_.9fr]">
             <DigitalVisual
               media={caseStudyMedia["track-trace"]}
-              className="min-h-[360px] rounded-none border-0 lg:min-h-[560px]"
+              className="home-case-visual min-h-[280px] rounded-none border-0 lg:min-h-[460px]"
             />
             <div className="flex flex-col justify-between p-8 sm:p-12">
               <div>
@@ -275,29 +284,29 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="bg-secondary py-section">
+      <section className="home-insights-section bg-secondary py-section">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionIntro
             eyebrow="Technology intelligence"
             title="Useful thinking for active decisions."
           />
           <div className="mt-14 grid gap-8 lg:grid-cols-2">
-            {featuredInsights.map((a, i) => (
+            {featuredInsights.map((a) => (
               <SmartLink
                 key={a.slug}
                 to={`/insights/${a.slug}`}
-                className="hover-card group block overflow-hidden border border-transparent bg-background"
+                className="home-insight-card group block overflow-hidden border border-border bg-background"
               >
                 <DigitalVisual
                   media={featuredInsightMedia[a.slug] ?? getInsightMedia(a.slug, a.category)}
-                  className="aspect-[16/10]"
+                  className="aspect-[16/9]"
                 />
                 <div className="p-7 sm:p-9">
                   <p className="text-xs font-bold uppercase text-primary">
                     {a.category} · {a.read}
                   </p>
                   <h3
-                    className={`mt-5 font-bold leading-tight ${i === 0 ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"}`}
+                    className="mt-5 text-2xl font-medium leading-snug sm:text-3xl"
                   >
                     {a.title}
                   </h3>
