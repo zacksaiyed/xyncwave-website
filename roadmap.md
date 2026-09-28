@@ -1,0 +1,55 @@
+# Xyncwave build roadmap
+- [x] Light Slate Grey hover lines applied site-wide; Manrope typography site-wide; square (straight-edged) corners everywhere
+- [x] Deepen final Insights Batches 8–10 to the brief’s 2,000–3,000-word target (nine articles now 2,000–2,100 useful words each, with coded diagrams and assessments)
+- [x] Update Fintech case study title to “Building a connected digital stock brokering platform”
+- [x] Insights Batch 7: fintech engineering scale, fintech platform modernization, fintech API & integration strategy (21/30)
+- [x] Insights Batch 6: workflow automation, Excel process replacement on the original URL, manufacturing digitalization (18/30)
+- [x] Verify three article assessments, links, imagery, mobile/dark rendering, metadata and removed-article 404 pages
+- [x] Insights Batch 4 (12/30)
+- [x] Insights Batch 5: healthcare digital transformation, healthcare data pipelines, data silos (15/30)
+- [x] Fix Insight article arrows and frozen empty contents control; add relevant named team authors to all articles
+- [x] Audit source brief and brand guide
+- [x] Enable Lovable Cloud and create secure lead storage
+- [x] Build brand system, shared content models, navigation, and footer
+- [x] Build homepage and commercial route templates
+- [x] Build progressive forms, assessments, and thank-you journeys
+- [x] Add analytics abstraction, metadata, schema, and crawl controls
+- [x] Test routes, interactions, forms, desktop, and mobile
+- [x] Apply the second master upgrade brief
+  - [x] Audit current visual and content systems
+  - [x] Establish premium digital visual library
+  - [x] Fix header and footer logo treatment
+  - [x] Rebuild homepage and conversion experience
+  - [x] Rebuild case studies and insights
+  - [x] Deepen cross-linking and commercial pages
+  - [x] Complete visual and functional QA
+- [x] Apply the attached XWC light-first visual system without changing content or flows
+  - [x] Update shared tokens, typography, controls, header, and footer
+  - [x] Restyle shared sections, forms, assessments, and editorial layouts
+  - [x] Verify unchanged content, links, desktop, mobile, and accessibility states
+- [x] Apply the supplied header and footer logos and simplify the homepage introduction background
+- [x] Standardize every internal-page introduction on the same grey, image-free treatment
+- [x] Complete Xyncwave content intelligence and authority expansion
+  - [x] Expand and differentiate all five industry pages
+  - [x] Expand and differentiate all nine solution pages
+  - [x] Strengthen homepage, About, Why Xyncwave, listings, and conversion context
+  - [x] Deepen verified case studies and supporting insights
+  - [x] Rebuild page-specific internal links, FAQs, CTAs, and metadata
+  - [x] Run duplication, evidence, responsive, and functional QA
+- [x] Convert all five industry pages into lead-generation landing pages
+  - [x] Define five unique conversion journeys and CTA progressions
+  - [x] Add interactive challenge selection and contextual short forms
+  - [x] Preserve campaign, CTA, challenge, and session attribution
+  - [x] Add industry analytics and contextual thank-you journeys
+  - [x] Verify real submission, desktop/mobile conversion flow, metadata, and build
+- [x] Align all case-study and insight thumbnails with the light editorial design
+  - [x] Replace the six dark or overproduced banners with topic-specific HD light editorial imagery
+  - [x] Apply one restrained kinetic image treatment across every placement
+  - [x] Verify case-study and insight listings on desktop and mobile
+- [x] Build Xyncwave Insights Batch 1
+- [x] Build Insights Batch 2 (logistics, integration, ERP vs custom) — long-form roadmap 6/30
+- [x] Build Insights Batch 3 (data engineering, modern data stack, warehouse modernization) — long-form roadmap 9/30
+- [x] Complete Insights Batch 4: modernization, cloud migration, and legacy-risk articles — long-form roadmap 12/30
+  - [x] Add three complete articles, diagrams, sources, assessments, and author bylines
+  - [x] Register hub cards, sitemap links, metadata, and contextual content relationships
+  - [x] Verify all routes, assessments, attribution, submissions, mobile rendering, and build

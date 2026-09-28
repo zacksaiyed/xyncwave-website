@@ -1,0 +1,2 @@
+import { createFileRoute } from "@tanstack/react-router";import { AssessmentIntro } from "../components/assessment";import { pageHead } from "../lib/seo";
+export const Route=createFileRoute("/ai-opportunity-assessment")({head:()=>pageHead("AI opportunity exploration","Highlight practical AI exploration areas based on your work, information, and desired outcome.","/ai-opportunity-assessment"),component:()=> <section className="bg-surface-hero py-18"><div className="mx-auto max-w-5xl px-5 lg:px-8"><AssessmentIntro type="ai"/></div></section>});
