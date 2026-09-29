@@ -7,7 +7,7 @@ import { track } from "../lib/analytics";
 
 export function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mb-5 flex items-center gap-3 text-xs font-medium text-foreground before:h-0.5 before:w-6 before:bg-primary">
+    <p className="type-eyebrow mb-5 flex items-center gap-3 text-foreground before:h-0.5 before:w-6 before:bg-primary">
       {children}
     </p>
   );
@@ -36,9 +36,7 @@ export function Hero({
         <div className="max-w-4xl">
           <Eyebrow>{eyebrow}</Eyebrow>
           <h1 className="hero-title">{title}</h1>
-          <p className="mt-7 max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
-            {description}
-          </p>
+          <p className="type-lead mt-7 text-muted-foreground">{description}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button
               size="lg"
@@ -61,7 +59,7 @@ export function Hero({
           </div>
         </div>
         <div className="border-t border-border pt-6 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
-          <p className="text-xs font-medium text-muted-foreground">XWC principle</p>
+          <p className="type-meta text-muted-foreground">XWC principle</p>
           <p className="mt-3 text-xl font-medium leading-7">
             Business problem first.
             <br />
@@ -85,11 +83,7 @@ export function SectionIntro({
     <div className="max-w-4xl">
       <Eyebrow>{eyebrow}</Eyebrow>
       <h2 className="editorial-title">{title}</h2>
-      {body && (
-        <p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
-          {body}
-        </p>
-      )}
+      {body && <p className="type-lead mt-5 text-muted-foreground">{body}</p>}
     </div>
   );
 }
@@ -120,11 +114,11 @@ export function CTASection({
     <section className="bg-surface-inverse px-5 py-section text-primary-foreground lg:px-8">
       <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 lg:flex-row lg:items-end">
         <div>
-          <p className="mb-5 flex items-center gap-3 text-xs font-medium text-primary-foreground/70 before:h-0.5 before:w-6 before:bg-primary">
+          <p className="type-eyebrow mb-5 flex items-center gap-3 text-primary-foreground/70 before:h-0.5 before:w-6 before:bg-primary">
             Start with the problem
           </p>
-          <h2 className="max-w-3xl text-4xl font-medium leading-tight sm:text-5xl">{title}</h2>
-          <p className="mt-5 max-w-2xl text-base leading-8 text-primary-foreground/70">{body}</p>
+          <h2 className="editorial-title max-w-3xl">{title}</h2>
+          <p className="type-lead mt-5 text-primary-foreground/70">{body}</p>
         </div>
         <div className="w-full min-w-0 sm:w-auto">
           <Button
@@ -183,7 +177,7 @@ export function TriggerSection({
         <SectionIntro eyebrow={eyebrow} title={title} {...(body ? { body } : {})} />
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {triggers.map((t) => (
-            <div className="rounded-2xl border border-border bg-background p-7" key={t}>
+            <div className="rounded-card border border-border bg-background p-7" key={t}>
               <span className="mb-7 grid size-10 place-items-center rounded-md bg-muted">
                 <Check className="size-5 text-primary" />
               </span>
@@ -237,10 +231,10 @@ export function LinkCard({
   return (
     <SmartLink
       to={to}
-      className="hover-card group block overflow-hidden rounded-2xl border border-border bg-background p-7 transition-colors duration-300 hover:bg-secondary"
+      className="hover-card group block overflow-hidden rounded-card border border-border bg-background p-7 transition-colors duration-300 hover:bg-secondary"
     >
-      <span className="text-xs font-medium text-muted-foreground">{eyebrow}</span>
-      <h3 className="mt-4 text-xl font-medium transition-colors duration-300 group-hover:text-primary">
+      <span className="type-meta text-muted-foreground">{eyebrow}</span>
+      <h3 className="type-card-title mt-4 transition-colors duration-300 group-hover:text-primary">
         {title}
       </h3>
       <p className="mt-3 text-sm leading-6 text-muted-foreground">{body}</p>

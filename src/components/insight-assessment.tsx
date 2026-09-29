@@ -59,7 +59,10 @@ export function InsightAssessment({ article }: Props) {
         topic_cluster: article.cluster,
         lead_magnet: config.title,
       });
-    const nextScore = score + points;
+    const previousChoice = config.questions[step]?.choices.find(
+      (choice) => choice.value === answers[key],
+    );
+    const nextScore = score - (previousChoice?.score ?? 0) + points;
     const next = { ...answers, [key]: value };
     setAnswers(next);
     setScore(nextScore);
@@ -75,13 +78,7 @@ export function InsightAssessment({ article }: Props) {
     }
   }
   function back() {
-    const previous = config.questions[step - 1];
-    if (!previous) return;
-    const prior = previous.choices.find((choice) => choice.value === answers[previous.key]);
-    const next = { ...answers };
-    delete next[previous.key];
-    setAnswers(next);
-    setScore(Math.max(0, score - (prior?.score ?? 0)));
+    if (step === 0) return;
     setStep(step - 1);
   }
   async function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -141,7 +138,7 @@ export function InsightAssessment({ article }: Props) {
   }
   if (showForm && result)
     return (
-      <div className="rounded-2xl border border-border bg-background p-6 sm:p-9">
+      <div className="rounded-card border border-border bg-background p-6 sm:p-9">
         <Button variant="ghost" onClick={() => setShowForm(false)} className="mb-6">
           <ArrowLeft />
           Back to result
@@ -228,7 +225,7 @@ export function InsightAssessment({ article }: Props) {
     );
   if (complete && result)
     return (
-      <div className="rounded-2xl border border-border bg-background p-6 sm:p-9">
+      <div className="rounded-card border border-border bg-background p-6 sm:p-9">
         <p className="text-xs font-medium text-primary">Your directional result</p>
         <h3 className="mt-3 text-3xl font-medium">{result.title}</h3>
         <p className="mt-5 leading-7 text-muted-foreground">{result.body}</p>
@@ -266,7 +263,7 @@ export function InsightAssessment({ article }: Props) {
   const question = config.questions[step];
   if (!question) return null;
   return (
-    <div className="rounded-2xl border border-border bg-background p-6 sm:p-9">
+    <div className="rounded-card border border-border bg-background p-6 sm:p-9">
       <div className="flex items-center justify-between gap-4 text-xs text-muted-foreground">
         <span>{config.title}</span>
         <span>
@@ -285,7 +282,12 @@ export function InsightAssessment({ article }: Props) {
           <Button
             key={choice.value}
             variant="ghost"
-            className="h-auto min-h-16 justify-between whitespace-normal rounded-xl border border-border p-5 text-left hover:border-primary hover:bg-secondary"
+            aria-pressed={answers[question.key] === choice.value}
+            className={`h-auto min-h-16 justify-between whitespace-normal rounded-control border p-5 text-left hover:border-primary hover:bg-secondary ${
+              answers[question.key] === choice.value
+                ? "border-primary bg-secondary"
+                : "border-border"
+            }`}
             onClick={() => choose(question.key, choice.value, choice.score)}
           >
             <span>{choice.label}</span>

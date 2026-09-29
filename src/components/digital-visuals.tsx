@@ -56,7 +56,9 @@ export function DigitalVisual({
   className?: string;
 }) {
   return (
-    <div className={`digital-visual relative overflow-hidden rounded-lg border border-border bg-surface-strong ${className}`}>
+    <div
+      className={`digital-visual relative overflow-hidden rounded-card border border-border bg-surface-strong ${className}`}
+    >
       <img
         src={media?.src ?? src}
         srcSet={media?.srcSet}
@@ -70,22 +72,64 @@ export function DigitalVisual({
         style={media ? { objectPosition: media.position } : undefined}
         className="h-full w-full object-cover"
       />
-      <div className="digital-visual-wash pointer-events-none absolute inset-0" aria-hidden="true" />
-      <div className="digital-visual-index pointer-events-none absolute bottom-0 left-0 h-px w-20 bg-primary" aria-hidden="true" />
+      <div
+        className="digital-visual-wash pointer-events-none absolute inset-0"
+        aria-hidden="true"
+      />
+      <div
+        className="digital-visual-index pointer-events-none absolute bottom-0 left-0 h-px w-20 bg-primary"
+        aria-hidden="true"
+      />
     </div>
   );
 }
 
 export function SystemMap() {
-  const before = ["Disconnected systems", "Manual workflows", "Fragmented data", "Delivery constraints"];
-  const after = ["Connected systems", "Clearer visibility", "Structured workflows", "Scalable delivery"];
+  const before = [
+    "Disconnected systems",
+    "Manual workflows",
+    "Fragmented data",
+    "Delivery constraints",
+  ];
+  const after = [
+    "Connected systems",
+    "Clearer visibility",
+    "Structured workflows",
+    "Scalable delivery",
+  ];
+  const stages = ["Understand", "Architect", "Engineer", "Automate", "Scale"];
   return (
-    <div className="system-map" aria-label="Transformation from fragmented operations to connected digital systems">
-      <div className="space-y-3">{before.map((item) => <div className="system-node system-node-muted" key={item}>{item}</div>)}</div>
-      <div className="system-spine">
-        <span>Understand</span><span>Architect</span><span>Engineer</span><span>Automate</span><span>Scale</span>
+    <div
+      className="system-map"
+      aria-label="Transformation from fragmented operations to connected digital systems"
+    >
+      <div className="system-process" aria-label="Transformation stages">
+        {stages.map((stage, index) => (
+          <span className="system-stage" key={stage}>
+            <span aria-hidden="true">0{index + 1}</span>
+            <strong>{stage}</strong>
+          </span>
+        ))}
       </div>
-      <div className="space-y-3">{after.map((item) => <div className="system-node" key={item}>{item}</div>)}</div>
+      <div className="system-flow">
+        {before.map((item, index) => (
+          <div className="system-flow-row" key={item}>
+            <div className="system-node system-node-muted">
+              <span className="system-node-index" aria-hidden="true">
+                0{index + 1}
+              </span>
+              <span>{item}</span>
+            </div>
+            <div className="system-connector" aria-hidden="true">
+              <span />
+            </div>
+            <div className="system-node system-node-result">
+              <span className="system-result-mark" aria-hidden="true" />
+              <span>{after[index]}</span>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

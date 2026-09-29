@@ -209,7 +209,8 @@ export function Assessment({ type }: { type: Exclude<LeadType, "general" | "part
     actions: ["Review the current process"],
   };
   function answer(score: number) {
-    const next = [...scores, score];
+    const next = [...scores];
+    next[step] = score;
     setScores(next);
     setStep(step + 1);
     track(step + 1 === config.questions.length ? "assessment_complete" : "assessment_step", {
@@ -249,8 +250,11 @@ export function Assessment({ type }: { type: Exclude<LeadType, "general" | "part
                 <Button
                   variant="ghost"
                   key={option.label}
+                  aria-pressed={scores[step] === option.score}
                   onClick={() => answer(option.score)}
-                  className="flex h-auto min-h-16 justify-between whitespace-normal rounded-xl border border-border bg-background p-5 text-left font-medium hover:border-primary hover:bg-secondary"
+                  className={`flex h-auto min-h-16 justify-between whitespace-normal rounded-control border bg-background p-5 text-left font-medium hover:border-primary hover:bg-secondary ${
+                    scores[step] === option.score ? "border-primary bg-secondary" : "border-border"
+                  }`}
                 >
                   {option.label}
                   <ArrowRight className="size-5 text-primary" />
@@ -263,7 +267,6 @@ export function Assessment({ type }: { type: Exclude<LeadType, "general" | "part
                 className="mt-6"
                 onClick={() => {
                   setStep(step - 1);
-                  setScores(scores.slice(0, -1));
                 }}
               >
                 <ArrowLeft />
@@ -272,7 +275,7 @@ export function Assessment({ type }: { type: Exclude<LeadType, "general" | "part
             )}
           </>
         ) : (
-          <div className="rounded-2xl border border-border bg-secondary p-7 sm:p-10">
+          <div className="rounded-card border border-border bg-secondary p-7 sm:p-10">
             <p className="text-xs font-medium text-primary">Your exploration area</p>
             <h2 className="mt-4 text-4xl font-medium">{result.title}</h2>
             <p className="mt-5 leading-7 text-muted-foreground">{result.body}</p>
@@ -307,9 +310,9 @@ export function AssessmentIntro({ type }: { type: Exclude<LeadType, "general" | 
   return (
     <>
       <div className="mb-12 max-w-2xl">
-        <p className="text-xs font-medium text-primary">{c.label}</p>
-        <h1 className="mt-5 text-4xl font-medium sm:text-6xl">{c.title}</h1>
-        <p className="mt-6 text-lg leading-7 text-muted-foreground">{c.description}</p>
+        <p className="type-eyebrow text-primary">{c.label}</p>
+        <h1 className="hero-title mt-5">{c.title}</h1>
+        <p className="type-lead mt-6 text-muted-foreground">{c.description}</p>
         <p className="mt-5 text-sm text-muted-foreground">
           Three questions. Your result appears before any contact details are requested.
         </p>

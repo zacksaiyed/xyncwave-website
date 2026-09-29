@@ -1,4 +1,12 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Laptop, Moon, Sun } from "lucide-react";
 import { Button } from "./ui/button";
 import {
@@ -119,7 +127,10 @@ export function AppearanceProvider({
     persistAppearanceCookie(next);
   }, []);
 
-  const value = useMemo(() => ({ preference, effective, setPreference }), [preference, effective, setPreference]);
+  const value = useMemo(
+    () => ({ preference, effective, setPreference }),
+    [preference, effective, setPreference],
+  );
   return <AppearanceContext.Provider value={value}>{children}</AppearanceContext.Provider>;
 }
 
@@ -152,7 +163,7 @@ export function AppearanceControl({ mobile = false }: { mobile?: boolean }) {
               type="button"
               aria-pressed={preference === value}
               onClick={() => setPreference(value)}
-              className="flex min-h-12 items-center justify-center gap-2 border border-border bg-background px-3 text-sm font-medium hover:border-primary aria-pressed:border-primary aria-pressed:bg-secondary"
+              className="flex min-h-12 items-center justify-center gap-2 rounded-control border border-border bg-background px-3 text-sm font-medium transition-colors hover:border-primary aria-pressed:border-primary aria-pressed:bg-secondary"
             >
               <Icon className="size-4" aria-hidden="true" />
               {label}

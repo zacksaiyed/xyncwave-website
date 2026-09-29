@@ -53,8 +53,8 @@ function SearchPage() {
     <>
       <section className="bg-surface-hero py-section">
         <div className="mx-auto max-w-5xl px-5 lg:px-8">
-          <p className="text-xs font-medium text-primary">Search</p>
-          <h1 className="mt-5 text-4xl font-medium sm:text-6xl">Find the most useful path.</h1>
+          <p className="type-eyebrow text-primary">Search</p>
+          <h1 className="hero-title mt-5">Find the most useful path.</h1>
           <form role="search" onSubmit={submit} className="mt-8 flex flex-col gap-3 sm:flex-row">
             <label htmlFor="site-search" className="sr-only">
               Search XWC
@@ -175,7 +175,7 @@ function FilterButton({
       type="button"
       aria-pressed={active}
       onClick={onClick}
-      className="min-h-11 border border-border bg-background px-4 text-sm font-medium hover:border-primary aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-foreground"
+      className="min-h-11 rounded-control border border-border bg-background px-4 text-sm font-medium transition-colors hover:border-primary aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-foreground"
     >
       {children}
     </button>

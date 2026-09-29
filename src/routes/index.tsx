@@ -1,8 +1,4 @@
-import {
-  getInsightMedia,
-  caseStudyMedia,
-  type MediaEntry,
-} from "../lib/media-registry";
+import { getInsightMedia, caseStudyMedia, type MediaEntry } from "../lib/media-registry";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Cpu, Layers, Network, Users } from "lucide-react";
 import { SmartLink } from "../components/app-link";
@@ -15,7 +11,7 @@ import fintechInsightImage from "../assets/media/home-fintech-insight-hd.webp";
 import fintechInsightImageSmall from "../assets/media/home-fintech-insight-hd-800.webp";
 import digitalizationInsightImage from "../assets/media/home-digitalization-insight-hd.webp";
 import digitalizationInsightImageSmall from "../assets/media/home-digitalization-insight-hd-800.webp";
-import { ConnectedArchitecture } from "../components/connected-architecture";
+import purposeWavesImage from "../assets/media/home-xyncwave-purpose-waves-v4.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -156,7 +152,37 @@ function HomePage() {
               No sales pitch. Start with the problem.
             </p>
           </div>
-          <ConnectedArchitecture />
+          <figure className="home-purpose-visual">
+            <p className="home-purpose-tagline">
+              LET'S CONNECT. <strong>DIGITALLY.</strong>
+            </p>
+            <img
+              src={purposeWavesImage}
+              alt=""
+              aria-hidden="true"
+              width="1448"
+              height="1086"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
+            <figcaption>
+              <ul className="home-purpose-nodes" aria-label="Xyncwave purpose">
+                <li className="home-purpose-node home-purpose-node--connect">
+                  <Network aria-hidden="true" />
+                  <span>Connect systems</span>
+                </li>
+                <li className="home-purpose-node home-purpose-node--modernize">
+                  <Layers aria-hidden="true" />
+                  <span>Modernize operations</span>
+                </li>
+                <li className="home-purpose-node home-purpose-node--build">
+                  <Cpu aria-hidden="true" />
+                  <span>Build what's next</span>
+                </li>
+              </ul>
+            </figcaption>
+          </figure>
         </div>
       </section>
 
@@ -174,7 +200,7 @@ function HomePage() {
                 <SmartLink
                   key={p.title}
                   to={p.to}
-                  className="home-problem-card group flex min-w-0 flex-col border border-border bg-background p-6 transition-colors duration-200 sm:p-7"
+                  className="home-problem-card group flex min-w-0 flex-col rounded-card border border-border bg-background p-6 transition-colors duration-200 sm:p-7"
                 >
                   <div className="flex items-center justify-between">
                     <span className="capability-icon" aria-hidden="true">
@@ -182,10 +208,12 @@ function HomePage() {
                     </span>
                     <span className="text-xs font-medium text-muted-foreground">0{i + 1}</span>
                   </div>
-                  <h3 className="mt-6 text-xl font-medium leading-snug transition-colors duration-200 group-hover:text-primary">
+                  <h3 className="type-card-title mt-6 transition-colors duration-200 group-hover:text-primary">
                     {p.title}
                   </h3>
-                  <p className="mt-4 max-w-xl text-base leading-7 text-muted-foreground">{p.body}</p>
+                  <p className="mt-4 max-w-xl text-base leading-7 text-muted-foreground">
+                    {p.body}
+                  </p>
                   <span className="problem-card-action mt-auto inline-flex items-start gap-2 pt-8 text-sm font-medium text-primary">
                     {p.action}
                     <ArrowRight className="arrow-nudge mt-0.5 size-4 shrink-0" />
@@ -227,8 +255,8 @@ function HomePage() {
 
       <section className="home-story-section py-section">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="grid gap-14 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
-            <div>
+          <div className="grid gap-14 lg:grid-cols-[.72fr_1.28fr] lg:items-center lg:gap-20">
+            <div className="home-story-copy">
               <Eyebrow>Transformation story</Eyebrow>
               <h2 className="editorial-title">From complexity to clarity.</h2>
               <p className="mt-6 max-w-xl text-lg leading-8 text-muted-foreground">
@@ -253,17 +281,15 @@ function HomePage() {
             eyebrow="Transformation experience"
             title="Real operating detail. Practical connected technology."
           />
-          <div className="home-case-feature group mt-12 grid overflow-hidden border border-border bg-background lg:grid-cols-[1.1fr_.9fr]">
+          <div className="mt-12 grid overflow-hidden rounded-card border border-border bg-background lg:grid-cols-[1.1fr_.9fr]">
             <DigitalVisual
               media={caseStudyMedia["track-trace"]}
               className="home-case-visual min-h-[280px] rounded-none border-0 lg:min-h-[460px]"
             />
             <div className="flex flex-col justify-between p-8 sm:p-12">
               <div>
-                <p className="text-xs font-medium text-primary">
-                  Case study · Logistics operations
-                </p>
-                <h3 className="mt-6 text-3xl font-medium leading-tight sm:text-4xl">
+                <p className="type-eyebrow text-primary">Case study · Logistics operations</p>
+                <h3 className="editorial-title mt-6">
                   From fragmented field work to one connected operational platform.
                 </h3>
                 <p className="mt-6 leading-8 text-muted-foreground">
@@ -295,21 +321,17 @@ function HomePage() {
               <SmartLink
                 key={a.slug}
                 to={`/insights/${a.slug}`}
-                className="home-insight-card group block overflow-hidden border border-border bg-background"
+                className="home-insight-card group block overflow-hidden rounded-card border border-border bg-background"
               >
                 <DigitalVisual
                   media={featuredInsightMedia[a.slug] ?? getInsightMedia(a.slug, a.category)}
                   className="aspect-[16/9]"
                 />
                 <div className="p-7 sm:p-9">
-                  <p className="text-xs font-bold uppercase text-primary">
+                  <p className="type-eyebrow text-primary">
                     {a.category} · {a.read}
                   </p>
-                  <h3
-                    className="mt-5 text-2xl font-medium leading-snug sm:text-3xl"
-                  >
-                    {a.title}
-                  </h3>
+                  <h3 className="type-card-title mt-5">{a.title}</h3>
                   <p className="mt-4 leading-7 text-muted-foreground">{a.excerpt}</p>
                   <span className="link-sweep mt-7 inline-flex items-center gap-2 font-semibold text-primary">
                     Read the Insight <ArrowRight className="arrow-nudge size-4" />

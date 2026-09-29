@@ -185,7 +185,7 @@ export function LeadForm({
               type="button"
               key={item.problem}
               onClick={() => choose(item.value, item.problem)}
-              className="group h-auto min-h-28 justify-between rounded-xl border border-border bg-background p-5 text-left whitespace-normal hover:border-primary hover:bg-secondary"
+              className="group h-auto min-h-28 justify-between rounded-card border border-border bg-background p-5 text-left whitespace-normal hover:border-primary hover:bg-secondary"
             >
               <span>
                 <strong className="block text-base font-medium">{item.label}</strong>

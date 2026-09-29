@@ -72,20 +72,16 @@ function Page() {
           <div className="mx-auto max-w-7xl px-5 lg:px-8">
             <SmartLink
               to={`/insights/${featured.slug}`}
-              className="hover-card group grid overflow-hidden rounded-2xl border border-border bg-secondary lg:grid-cols-[1.2fr_.8fr]"
+              className="hover-card group grid overflow-hidden rounded-card border border-border bg-secondary lg:grid-cols-[1.2fr_.8fr]"
             >
               <DigitalVisual
                 media={getInsightMedia(featured.slug, featured.category)}
                 className="min-h-[380px] rounded-none border-0 lg:min-h-[560px]"
               />
               <div className="flex flex-col justify-center p-8 sm:p-12">
-                <p className="text-xs font-medium text-primary">
-                  Featured insight · {featured.category}
-                </p>
-                <h2 className="mt-6 text-3xl font-medium leading-tight sm:text-4xl">
-                  {featured.title}
-                </h2>
-                <p className="mt-6 text-lg leading-8 text-muted-foreground">{featured.excerpt}</p>
+                <p className="type-eyebrow text-primary">Featured insight · {featured.category}</p>
+                <h2 className="editorial-title mt-6">{featured.title}</h2>
+                <p className="type-lead mt-6 text-muted-foreground">{featured.excerpt}</p>
                 <p className="mt-7 text-sm text-muted-foreground">
                   XWC editorial · {featured.read}
                 </p>
@@ -128,7 +124,7 @@ function Page() {
                 id="insight-topic"
                 value={draftTopic}
                 onChange={(event) => setDraftTopic(event.target.value)}
-                className="min-h-12 border border-input bg-background px-3.5 text-base focus-visible:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="min-h-12 rounded-control border border-input bg-background px-3.5 text-base focus-visible:border-primary"
               >
                 <option value="">All topics</option>
                 {topics.map((topic) => (
@@ -156,7 +152,7 @@ function Page() {
                 <SmartLink
                   key={a.slug}
                   to={`/insights/${a.slug}`}
-                  className={`hover-card group overflow-hidden rounded-2xl border border-border bg-background ${i === 2 ? "lg:col-span-2 lg:grid lg:grid-cols-2" : ""}`}
+                  className={`hover-card group overflow-hidden rounded-card border border-border bg-background ${i === 2 ? "lg:col-span-2 lg:grid lg:grid-cols-2" : ""}`}
                 >
                   <DigitalVisual
                     media={getInsightMedia(a.slug, a.category)}
@@ -164,7 +160,7 @@ function Page() {
                   />
                   <div className="p-7 sm:p-9">
                     <p className="text-xs font-medium text-primary">{a.category}</p>
-                    <h2 className="mt-5 text-2xl font-medium leading-tight transition-colors duration-300 group-hover:text-primary sm:text-3xl">
+                    <h2 className="type-card-title mt-5 transition-colors duration-300 group-hover:text-primary">
                       {a.title}
                     </h2>
                     <p className="mt-4 leading-7 text-muted-foreground">{a.excerpt}</p>

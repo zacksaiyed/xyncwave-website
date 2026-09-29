@@ -58,15 +58,11 @@ export function LongFormInsight({ article }: { article: BatchArticle }) {
             </nav>
             <div className="mt-12 grid items-end gap-10 lg:grid-cols-[1.08fr_.92fr]">
               <div className="min-w-0">
-                <p className="text-xs font-medium text-primary">
+                <p className="type-eyebrow text-primary">
                   {article.cluster} · {article.read}
                 </p>
-                <h1 className="mt-5 text-4xl font-medium leading-tight sm:text-6xl">
-                  {article.title}
-                </h1>
-                <p className="mt-7 max-w-3xl text-lg leading-8 text-muted-foreground">
-                  {article.excerpt}
-                </p>
+                <h1 className="hero-title mt-5">{article.title}</h1>
+                <p className="type-lead mt-7 text-muted-foreground">{article.excerpt}</p>
                 <InsightAuthor slug={article.slug} date={fmt(article.published)} />
               </div>
               <DigitalVisual
@@ -79,7 +75,7 @@ export function LongFormInsight({ article }: { article: BatchArticle }) {
         </header>
         <div className="mx-auto grid max-w-7xl gap-12 px-5 py-section lg:grid-cols-[260px_minmax(0,760px)] lg:px-8 xl:grid-cols-[280px_minmax(0,800px)]">
           <aside className="min-w-0">
-            <details className="rounded-md border border-border bg-background p-5 lg:hidden">
+            <details className="rounded-control border border-border bg-background p-5 lg:hidden">
               <summary className="cursor-pointer font-medium">Table of contents</summary>
               <nav className="mt-5 grid gap-1" aria-label="Table of contents">
                 {article.toc.map((item) => (
@@ -101,7 +97,7 @@ export function LongFormInsight({ article }: { article: BatchArticle }) {
               </nav>
             </details>
             <nav
-              className="hidden border-l border-border pl-4 lg:grid lg:gap-1"
+              className="hidden border-l border-border pl-4 lg:sticky lg:top-28 lg:grid lg:max-h-[calc(100vh-8rem)] lg:gap-1 lg:overflow-y-auto"
               aria-label="Article sections"
             >
               <p className="mb-3 text-sm font-medium">In this article</p>
@@ -126,7 +122,7 @@ export function LongFormInsight({ article }: { article: BatchArticle }) {
           <div className="min-w-0">
             <section
               aria-labelledby="direct-answer"
-              className="border-l-2 border-primary pl-6 sm:pl-8"
+              className="reading-measure border-l-2 border-primary pl-6 sm:pl-8"
             >
               <p className="text-xs font-medium text-primary">Direct answer</p>
               <h2 id="direct-answer" className="mt-3 text-2xl font-medium">
@@ -134,7 +130,7 @@ export function LongFormInsight({ article }: { article: BatchArticle }) {
               </h2>
               <p className="mt-4 text-lg leading-8">{article.directAnswer}</p>
             </section>
-            <section className="mt-12 rounded-2xl border border-border bg-secondary p-6 sm:p-8">
+            <section className="reading-measure mt-12 rounded-card border border-border bg-secondary p-6 sm:p-8">
               <p className="text-xs font-medium text-primary">Key takeaways</p>
               <ul className="mt-5 space-y-4">
                 {article.takeaways.map((item) => (
@@ -253,7 +249,7 @@ function AssessmentBlock({ article }: { article: BatchArticle }) {
   return (
     <section
       id="article-assessment"
-      className="relative mt-20 scroll-mt-28 rounded-2xl bg-secondary p-5 sm:p-8"
+      className="relative mt-20 scroll-mt-28 rounded-card bg-secondary p-5 sm:p-8"
     >
       {aliases.map((id) => (
         <span key={id} id={id} className="absolute scroll-mt-28" aria-hidden="true" />

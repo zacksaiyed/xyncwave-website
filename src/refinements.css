@@ -31,10 +31,6 @@
   color: oklch(0.1593 0.0111 267.98);
 }
 
-/* The original dark hover token is pale; preserve white-on-blue button contrast. */
-.group\/button.bg-primary.text-primary-foreground:hover {
-  background-color: color-mix(in oklab, var(--primary) 88%, black);
-}
 nav[aria-label="Breadcrumb"] {
   flex-wrap: wrap;
   row-gap: 0.5rem;
@@ -53,9 +49,10 @@ nav[aria-label="Breadcrumb"] > span {
   gap: 1rem;
 }
 .site-header .logo-backing {
-  max-width: min(46vw, 10.5rem);
+  max-width: min(50vw, 13.5rem);
 }
-.site-header .logo-backing img {
+.site-header .approved-logo,
+.site-header .approved-logo img {
   max-width: 100%;
 }
 .site-primary-nav {
@@ -100,7 +97,7 @@ nav[aria-label="Breadcrumb"] > span {
 }
 .home-hero-title {
   max-width: 19ch;
-  font-size: clamp(2.5rem, 4.1vw, 3.75rem);
+  font-size: clamp(2.75rem, 4vw, 3.75rem);
   line-height: 1.1;
   letter-spacing: -0.03em;
   text-wrap: balance;
@@ -122,22 +119,105 @@ nav[aria-label="Breadcrumb"] > span {
   background: transparent;
   color: var(--text-accent);
 }
-.home-hero .connected-architecture {
-  width: min(100%, 37rem);
-  aspect-ratio: 760 / 620;
+.home-purpose-visual {
+  position: relative;
+  width: min(100%, 39rem);
+  justify-self: center;
+  margin: 0;
+  aspect-ratio: 4 / 3;
   isolation: isolate;
 }
-.home-hero .connected-architecture svg {
-  overflow: hidden;
+.home-purpose-visual::before {
+  position: absolute;
+  z-index: -2;
+  inset: 13% 1% 7%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in oklab, var(--primary) 10%, transparent),
+    transparent 66%
+  );
+  content: "";
 }
-.home-hero .architecture-connection {
-  vector-effect: none;
+.home-purpose-visual img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(
+    0 1.5rem 1.25rem color-mix(in oklab, var(--architecture-shadow) 16%, transparent)
+  );
+}
+.home-purpose-tagline {
+  position: absolute;
+  z-index: 3;
+  top: 10%;
+  left: 4%;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+.home-purpose-tagline strong {
+  color: var(--text-accent);
+  font-weight: inherit;
+}
+.home-purpose-nodes {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.home-purpose-node {
+  position: absolute;
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid color-mix(in oklab, var(--line-strong) 62%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--background) 89%, transparent);
+  box-shadow: 0 0.9rem 2rem -1.45rem color-mix(in oklab, var(--foreground) 32%, transparent);
+  color: var(--foreground);
+  padding: 0.55rem 0.78rem;
+  backdrop-filter: blur(10px);
+  font-size: 0.71rem;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.home-purpose-node svg {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  color: var(--text-accent);
+  stroke-width: 1.6;
+}
+.home-purpose-node--connect {
+  top: 68%;
+  left: 1%;
+}
+.home-purpose-node--modernize {
+  top: 47%;
+  left: 34%;
+}
+.home-purpose-node--build {
+  top: 20%;
+  right: 0;
 }
 
 /* Four distinct entry points. Icons clarify the topic; copy and destinations are unchanged. */
 .home-problem-card {
   position: relative;
-  transition: border-color 180ms ease, background-color 180ms ease;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease;
 }
 .home-problem-card:hover,
 .home-problem-card:focus-visible {
@@ -163,31 +243,43 @@ nav[aria-label="Breadcrumb"] > span {
   padding-block: 1.4rem;
 }
 .home-choice-list strong {
-  font-weight: 550;
+  font-weight: 600;
   line-height: 1.5;
 }
 .home-story-section {
   border-block: 1px solid var(--border);
-  background: var(--background);
+  background:
+    linear-gradient(90deg, color-mix(in oklab, var(--primary) 2.5%, transparent), transparent 38%),
+    var(--background);
+}
+.home-story-copy {
+  max-width: 34rem;
 }
 .home-story-section .system-map {
-  padding: clamp(1.25rem, 3vw, 2rem);
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.25rem, 2.5vw, 2rem);
   border: 1px solid var(--border);
-  background: var(--surface-hero);
+  border-radius: var(--card-radius);
+  background:
+    radial-gradient(
+      circle at 88% 8%,
+      color-mix(in oklab, var(--primary) 9%, transparent),
+      transparent 34%
+    ),
+    var(--surface-hero);
+  box-shadow: 0 1.5rem 4rem -3.25rem color-mix(in oklab, var(--foreground) 42%, transparent);
 }
-.home-case-feature,
 .home-insight-card {
   transition: border-color 180ms ease;
 }
-.home-case-feature:hover,
 .home-insight-card:hover {
   border-color: var(--line-strong);
 }
 .home-insight-card h3 {
   text-wrap: balance;
 }
-.home-insight-card .digital-visual img,
-.home-case-feature .digital-visual img {
+.home-insight-card .digital-visual img {
   transition-duration: 240ms;
 }
 .mobile-conversion-bar {
@@ -199,24 +291,24 @@ nav[aria-label="Breadcrumb"] > span {
     grid-template-columns: 1.08fr 0.92fr;
     gap: 1.25rem;
   }
-  .home-hero .connected-architecture {
-    width: 108%;
+  .home-purpose-visual {
+    width: 112%;
     max-width: none;
-    margin-inline-start: -4%;
+    margin-inline-start: -8%;
   }
 }
 @media (max-width: 1023px) {
   .home-hero-grid {
     gap: 1.25rem;
   }
-  .home-hero .connected-architecture {
-    width: min(100%, 25rem);
-    margin-top: 0;
+  .home-purpose-visual {
+    width: min(100%, 28rem);
+    margin-top: -0.5rem;
   }
 }
 @media (max-width: 639px) {
   .home-hero-title {
-    font-size: clamp(2.125rem, 8.8vw, 2.875rem);
+    font-size: clamp(2.125rem, 8.8vw, 2.625rem);
     max-width: 20ch;
   }
   .home-hero-description {
@@ -230,8 +322,36 @@ nav[aria-label="Breadcrumb"] > span {
     justify-content: center;
     text-align: center;
   }
-  .home-hero .connected-architecture {
-    width: min(100%, 17rem);
+  .home-purpose-visual {
+    width: min(100%, 21rem);
+    margin-bottom: 0;
+  }
+  .home-purpose-tagline {
+    top: 4%;
+    left: 1%;
+    font-size: 0.58rem;
+  }
+  .home-purpose-visual figcaption {
+    margin-top: -1.25rem;
+  }
+  .home-purpose-nodes {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.4rem;
+  }
+  .home-purpose-node {
+    position: static;
+    min-width: 0;
+    min-height: 4.2rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.35rem;
+    border-radius: var(--control-radius);
+    padding: 0.5rem 0.25rem;
+    font-size: 0.61rem;
+    text-align: center;
+    white-space: normal;
   }
   .home-case-visual {
     min-height: 15rem;
@@ -239,8 +359,7 @@ nav[aria-label="Breadcrumb"] > span {
 }
 @media (prefers-reduced-motion: reduce) {
   .home-problem-card,
-  .home-insight-card,
-  .home-case-feature {
+  .home-insight-card {
     transition: none;
   }
   .home-hero-actions > a,
@@ -249,8 +368,13 @@ nav[aria-label="Breadcrumb"] > span {
   }
 }
 @media (forced-colors: active) {
-  .connected-architecture {
+  .home-purpose-visual img,
+  .home-purpose-visual::before {
     visibility: hidden;
+  }
+  .home-purpose-node {
+    border-color: CanvasText;
+    background: Canvas;
   }
   .capability-icon {
     border-color: CanvasText;

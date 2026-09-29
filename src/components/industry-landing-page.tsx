@@ -176,7 +176,7 @@ function IndustryLandingContent({
                   variant="ghost"
                   aria-pressed={active}
                   onClick={() => chooseProblem(item.title)}
-                  className={`h-auto min-h-40 justify-start whitespace-normal rounded-xl border p-6 text-left transition-colors ${active ? "border-primary bg-background" : "border-border bg-background hover:border-primary"}`}
+                  className={`h-auto min-h-40 justify-start whitespace-normal rounded-card border p-6 text-left transition-colors ${active ? "border-primary bg-background" : "border-border bg-background hover:border-primary"}`}
                 >
                   <span className="self-start">
                     <span className="flex items-center justify-between gap-4">
@@ -205,7 +205,7 @@ function IndustryLandingContent({
               title={industry.consequenceTitle}
               body={industry.consequenceBody}
             />
-            <div className="rounded-2xl border border-border bg-secondary p-8 sm:p-10">
+            <div className="rounded-card border border-border bg-secondary p-8 sm:p-10">
               <p className="text-xs font-medium text-primary">A practical next step</p>
               <p className="mt-5 text-2xl font-medium leading-tight">
                 The cost is often in repeated coordination, delayed visibility, and decisions made
@@ -303,7 +303,7 @@ function IndustryLandingContent({
             {config.useCases.map((item, i) => (
               <article
                 key={item.situation}
-                className="rounded-2xl border border-border bg-background p-7"
+                className="rounded-card border border-border bg-background p-7"
               >
                 <span className="text-xs font-medium text-primary">
                   {String(i + 1).padStart(2, "0")} · {item.capability}
@@ -394,7 +394,7 @@ function IndustryLandingContent({
       <FAQSection eyebrow="Operational questions" title={industry.faqTitle} items={industry.faq} />
 
       {showSticky && (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 p-3 shadow-lg backdrop-blur sm:left-auto sm:right-5 sm:bottom-5 sm:max-w-sm sm:rounded-xl sm:border">
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 p-3 shadow-lg backdrop-blur sm:left-auto sm:right-5 sm:bottom-5 sm:max-w-sm sm:rounded-control sm:border">
           <Button className="w-full" onClick={() => goToForm("sticky", config.stickyCta)}>
             {config.stickyCta}
             <ArrowDown />
@@ -440,7 +440,7 @@ function TriggerBlock({
         />
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {industry.triggers.slice(0, 8).map((t) => (
-            <div className="rounded-xl border border-border bg-background p-6" key={t}>
+            <div className="rounded-card border border-border bg-background p-6" key={t}>
               <Check className="size-5 text-primary" />
               <p className="mt-5 font-medium leading-7">{t}</p>
             </div>
@@ -606,7 +606,7 @@ function IndustryLeadForm({
         <form
           onSubmit={submit}
           onFocus={begin}
-          className="rounded-2xl bg-background p-6 text-foreground sm:p-9"
+          className="rounded-card bg-background p-6 text-foreground sm:p-9"
           noValidate
         >
           <div className="grid gap-5 sm:grid-cols-2">

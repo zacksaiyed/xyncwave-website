@@ -6,8 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { AppearanceControl } from "./appearance";
-import headerLogoAsset from "../assets/Header_logo_XWC.png.asset.json";
-import footerLogoAsset from "../assets/Footer_logo_XWC.png.asset.json";
+
+const approvedLogoDirectory = "/Xyncwave_Brand_Kit_Exact_Approved_v4.0/02_WEB_APP/Logos";
+const approvedLogos = {
+  headerLight: `${approvedLogoDirectory}/logo-header-light-background.png`,
+  headerDark: `${approvedLogoDirectory}/logo-header-dark-background.png`,
+  footerDark: `${approvedLogoDirectory}/logo-footer-dark-background-with-tagline.png`,
+} as const;
 
 type NavItem = { to: AppPath; label: string; note: string };
 type NavGroup = { heading: string; items: NavItem[] };
@@ -174,7 +179,11 @@ export function SiteHeader() {
         />
         <div className="site-header-inner mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-5 lg:px-8">
           <SmartLink to="/" aria-label="XWC home" className="logo-backing shrink-0 py-3">
-            <ApprovedLogo asset={headerLogoAsset.url} location="header" />
+            <ApprovedLogo
+              lightAsset={approvedLogos.headerLight}
+              darkAsset={approvedLogos.headerDark}
+              location="header"
+            />
           </SmartLink>
           <nav
             className="site-primary-nav hidden items-center gap-2 xl:flex"
@@ -583,10 +592,11 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
         <div className="grid gap-14 border-b border-primary-foreground/15 pb-14 lg:grid-cols-[1.2fr_2fr]">
           <div>
-            <ApprovedLogo asset={footerLogoAsset.url} location="footer" />
-            <p className="mt-8 max-w-sm text-3xl font-medium">
-              LET'S CONNECT. <span className="text-primary">DIGITALLY.</span>
-            </p>
+            <ApprovedLogo
+              lightAsset={approvedLogos.footerDark}
+              location="footer"
+              alt="Xyncwave Corporation LLP — Let's Connect. Digitally."
+            />
             <p className="mt-5 max-w-md text-sm leading-7 text-primary-foreground/65">
               Enterprise-grade thinking and modern technology execution for organizations solving
               complex operational and delivery problems.
@@ -642,12 +652,18 @@ export function SiteFooter() {
   );
 }
 type FooterPath = AppPath;
-function ApprovedLogo({ asset, location }: { asset: string; location: "header" | "footer" }) {
+function ApprovedLogo({
+  lightAsset,
+  darkAsset,
+  location,
+  alt = "Xyncwave Corporation LLP",
+}: {
+  lightAsset: string;
+  darkAsset?: string;
+  location: "header" | "footer";
+  alt?: string;
+}) {
   const [failed, setFailed] = useState(false);
-  const imageRef = useRef<HTMLImageElement>(null);
-  useEffect(() => {
-    if (imageRef.current?.complete && imageRef.current.naturalWidth === 0) setFailed(true);
-  }, []);
   if (failed && import.meta.env.DEV)
     return (
       <span
@@ -656,18 +672,29 @@ function ApprovedLogo({ asset, location }: { asset: string; location: "header" |
         Approved brand asset unavailable in local preview
       </span>
     );
+
+  const imageClass =
+    location === "header"
+      ? "h-9 w-auto max-w-full object-contain sm:h-10"
+      : "h-14 w-auto max-w-full object-contain sm:h-16";
+
   return (
-    <img
-      ref={imageRef}
-      src={asset}
-      alt="Xyncwave Corporation LLP"
-      onError={() => setFailed(true)}
-      className={
-        location === "header"
-          ? "h-9 w-auto max-w-[58vw] object-contain sm:h-10"
-          : "h-10 w-auto max-w-full object-contain"
-      }
-    />
+    <span className={`approved-logo approved-logo--${location}`}>
+      <img
+        src={lightAsset}
+        alt={alt}
+        onError={() => setFailed(true)}
+        className={`${imageClass} ${darkAsset ? "approved-logo__light" : ""}`}
+      />
+      {darkAsset ? (
+        <img
+          src={darkAsset}
+          alt={alt}
+          onError={() => setFailed(true)}
+          className={`${imageClass} approved-logo__dark`}
+        />
+      ) : null}
+    </span>
   );
 }
 function FooterCol({
