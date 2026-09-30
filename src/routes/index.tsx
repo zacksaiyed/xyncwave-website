@@ -1,6 +1,7 @@
 import { getInsightMedia, caseStudyMedia, type MediaEntry } from "../lib/media-registry";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Cpu, Layers, Network, Users } from "lucide-react";
+import { useEffect, useState } from "react";
 import { SmartLink } from "../components/app-link";
 import { Button } from "../components/ui/button";
 import { CTASection, Eyebrow, SectionIntro } from "../components/page-sections";
@@ -11,7 +12,10 @@ import fintechInsightImage from "../assets/media/home-fintech-insight-hd.webp";
 import fintechInsightImageSmall from "../assets/media/home-fintech-insight-hd-800.webp";
 import digitalizationInsightImage from "../assets/media/home-digitalization-insight-hd.webp";
 import digitalizationInsightImageSmall from "../assets/media/home-digitalization-insight-hd-800.webp";
-import purposeWavesImage from "../assets/media/home-xyncwave-purpose-waves-v4.png";
+
+const heroMotionVideoHd = "/xwc-hero-motion-1920.mp4";
+const heroMotionVideoMobile = "/xwc-hero-motion-1280.mp4";
+const heroMotionPoster = "/xwc-hero-motion-poster.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -111,11 +115,70 @@ const featuredInsightMedia: Record<string, MediaEntry> = {
   },
 };
 
+function usePrefersReducedMotion() {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(true);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+
+    updatePreference();
+    mediaQuery.addEventListener("change", updatePreference);
+    return () => mediaQuery.removeEventListener("change", updatePreference);
+  }, []);
+
+  return prefersReducedMotion;
+}
+
+function HeroMotionVisual() {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  return (
+    <div className="home-motion-visual">
+      <p className="home-motion-tagline">
+        LET'S CONNECT. <strong>DIGITALLY.</strong>
+      </p>
+      {prefersReducedMotion ? (
+        <img
+          className="home-motion-media"
+          src={heroMotionPoster}
+          alt=""
+          aria-hidden="true"
+          width="1920"
+          height="1080"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
+      ) : (
+        <video
+          className="home-motion-media"
+          aria-hidden="true"
+          tabIndex={-1}
+          width="1920"
+          height="1080"
+          poster={heroMotionPoster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          disablePictureInPicture
+        >
+          <source media="(min-width: 768px)" src={heroMotionVideoHd} type="video/mp4" />
+          <source src={heroMotionVideoMobile} type="video/mp4" />
+        </video>
+      )}
+    </div>
+  );
+}
+
 function HomePage() {
   return (
     <>
       <section className="home-hero relative overflow-hidden">
-        <div className="home-hero-grid relative mx-auto grid max-w-7xl items-center gap-10 px-5 lg:px-8">
+        <HeroMotionVisual />
+        <div className="home-hero-grid relative mx-auto grid max-w-7xl items-center px-5 lg:px-8">
           <div className="home-hero-copy min-w-0">
             <Eyebrow>Digital transformation · Modern engineering</Eyebrow>
             <h1 className="hero-title home-hero-title max-w-4xl">
@@ -152,37 +215,6 @@ function HomePage() {
               No sales pitch. Start with the problem.
             </p>
           </div>
-          <figure className="home-purpose-visual">
-            <p className="home-purpose-tagline">
-              LET'S CONNECT. <strong>DIGITALLY.</strong>
-            </p>
-            <img
-              src={purposeWavesImage}
-              alt=""
-              aria-hidden="true"
-              width="1448"
-              height="1086"
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-            />
-            <figcaption>
-              <ul className="home-purpose-nodes" aria-label="Xyncwave purpose">
-                <li className="home-purpose-node home-purpose-node--connect">
-                  <Network aria-hidden="true" />
-                  <span>Connect systems</span>
-                </li>
-                <li className="home-purpose-node home-purpose-node--modernize">
-                  <Layers aria-hidden="true" />
-                  <span>Modernize operations</span>
-                </li>
-                <li className="home-purpose-node home-purpose-node--build">
-                  <Cpu aria-hidden="true" />
-                  <span>Build what's next</span>
-                </li>
-              </ul>
-            </figcaption>
-          </figure>
         </div>
       </section>
 
