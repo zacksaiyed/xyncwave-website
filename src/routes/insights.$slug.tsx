@@ -2,7 +2,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { getBatchArticle } from "../lib/insights-batch";
 import { LongFormInsight } from "../components/long-form-insight";
 import { articles } from "../lib/content";
-import { pageHead } from "../lib/seo";
+import { noindexHead, pageHead } from "../lib/seo";
 import { ArrowRight, Check } from "lucide-react";
 import { SmartLink } from "../components/app-link";
 import { Button } from "../components/ui/button";
@@ -12,6 +12,8 @@ import { articleRelations } from "../lib/content-relations";
 import { getInsightVisual } from "../components/digital-visuals";
 import { getInsightAuthor } from "../lib/insight-authors";
 import { InsightAuthor } from "../components/insight-author";
+import { absoluteUrl, canonicalUrl, ORGANIZATION_ID } from "../lib/site-config";
+import { breadcrumbSchema, jsonLdScript } from "../lib/structured-data";
 
 const bodies: Record<
   string,
@@ -35,97 +37,97 @@ export const Route = createFileRoute("/insights/$slug")({
   },
   head: ({ loaderData }) => {
     if (!loaderData)
-      return pageHead(
-        "Insight unavailable",
-        "The requested insight could not be found.",
-        "/insights",
-      );
+      return noindexHead("Insight unavailable", "The requested insight could not be found.");
     if (loaderData.kind === "legacy") {
       const a = loaderData.article;
       const author = getInsightAuthor(a.slug);
       const path = `/insights/${a.slug}`;
-      const base = pageHead(a.title, a.excerpt, path, "article");
+      const canonical = canonicalUrl(path);
+      const image = absoluteUrl(getInsightVisual(a.slug));
+      const base = pageHead(a.title, a.excerpt, path, { type: "article", image });
       return {
         ...base,
         meta: [...base.meta, ...(author ? [{ name: "author", content: author.name }] : [])],
         scripts: [
-          {
-            type: "application/ld+json",
-            children: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Article",
-              headline: a.title,
-              author: author
-                ? {
-                    "@type": "Person",
-                    name: author.name,
-                    jobTitle: author.role,
-                    worksFor: { "@type": "Organization", name: "Xyncwave Corporation LLP" },
-                  }
-                : { "@type": "Organization", name: "Xyncwave Insights" },
-              publisher: { "@type": "Organization", name: "Xyncwave Corporation LLP" },
-              mainEntityOfPage: path,
-            }),
-          },
-        ],
-      };
-    }
-    const a = loaderData.batch;
-    const path = `/insights/${a.slug}`;
-    const author = getInsightAuthor(a.slug);
-    return {
-      meta: [
-        { title: a.seoTitle },
-        { name: "description", content: a.metaDescription },
-        { property: "og:title", content: a.seoTitle },
-        { property: "og:description", content: a.metaDescription },
-        { property: "og:type", content: "article" },
-        { property: "og:url", content: path },
-        { name: "twitter:card", content: "summary_large_image" },
-        ...(author ? [{ name: "author", content: author.name }] : []),
-      ],
-      links: [{ rel: "canonical", href: path }],
-      scripts: [
-        {
-          type: "application/ld+json",
-          children: JSON.stringify({
+          jsonLdScript({
             "@context": "https://schema.org",
             "@graph": [
               {
                 "@type": "Article",
+                "@id": `${canonical}#article`,
                 headline: a.title,
-                datePublished: a.published,
-                dateModified: a.modified,
+                description: a.excerpt,
+                image: [image],
                 author: author
                   ? {
                       "@type": "Person",
                       name: author.name,
                       jobTitle: author.role,
-                      worksFor: { "@type": "Organization", name: "Xyncwave Corporation LLP" },
+                      worksFor: { "@id": ORGANIZATION_ID },
                     }
-                  : { "@type": "Organization", name: "Xyncwave Insights" },
-                publisher: { "@type": "Organization", name: "Xyncwave Corporation LLP" },
-                image: getInsightVisual(a.slug),
-                mainEntityOfPage: path,
+                  : { "@id": ORGANIZATION_ID },
+                publisher: { "@id": ORGANIZATION_ID },
+                mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+                articleSection: a.category,
               },
-              {
-                "@type": "BreadcrumbList",
-                itemListElement: [
-                  { "@type": "ListItem", position: 1, name: "Insights", item: "/insights" },
-                  { "@type": "ListItem", position: 2, name: a.title, item: path },
-                ],
-              },
-              {
-                "@type": "FAQPage",
-                mainEntity: a.faq.map(([q, answer]) => ({
-                  "@type": "Question",
-                  name: q,
-                  acceptedAnswer: { "@type": "Answer", text: answer },
-                })),
-              },
+              breadcrumbSchema([
+                { name: "Home", path: "/" },
+                { name: "Insights", path: "/insights" },
+                { name: a.title, path },
+              ]),
             ],
           }),
-        },
+        ],
+      };
+    }
+    const a = loaderData.batch;
+    const path = `/insights/${a.slug}`;
+    const canonical = canonicalUrl(path);
+    const image = absoluteUrl(getInsightVisual(a.slug));
+    const author = getInsightAuthor(a.slug);
+    const base = pageHead(a.seoTitle, a.metaDescription, path, { type: "article", image });
+    return {
+      ...base,
+      meta: [...base.meta, ...(author ? [{ name: "author", content: author.name }] : [])],
+      scripts: [
+        jsonLdScript({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Article",
+              "@id": `${canonical}#article`,
+              headline: a.title,
+              description: a.metaDescription,
+              datePublished: a.published,
+              ...(a.modified ? { dateModified: a.modified } : {}),
+              author: author
+                ? {
+                    "@type": "Person",
+                    name: author.name,
+                    jobTitle: author.role,
+                    worksFor: { "@id": ORGANIZATION_ID },
+                  }
+                : { "@id": ORGANIZATION_ID },
+              publisher: { "@id": ORGANIZATION_ID },
+              image: [image],
+              mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+              articleSection: a.cluster,
+            },
+            breadcrumbSchema([
+              { name: "Home", path: "/" },
+              { name: "Insights", path: "/insights" },
+              { name: a.title, path },
+            ]),
+            {
+              "@type": "FAQPage",
+              mainEntity: a.faq.map(([q, answer]) => ({
+                "@type": "Question",
+                name: q,
+                acceptedAnswer: { "@type": "Answer", text: answer },
+              })),
+            },
+          ],
+        }),
       ],
     };
   },

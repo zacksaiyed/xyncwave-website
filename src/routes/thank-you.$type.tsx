@@ -61,18 +61,10 @@ const journeys: Record<string, Journey> = {
 };
 export const Route = createFileRoute("/thank-you/$type")({
   loader: ({ params }) => journeys[params.type] ?? generalJourney,
-  head: () => ({
-    ...pageHead("Thank you", "Your message has been sent to Xyncwave.", "/thank-you"),
-    meta: [
-      { title: "Thank you | Xyncwave" },
-      { name: "description", content: "Your message has been sent to Xyncwave." },
-      { name: "robots", content: "noindex" },
-      { property: "og:title", content: "Thank you | Xyncwave" },
-      { property: "og:description", content: "Your message has been sent to Xyncwave." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: ({ params }) =>
+    pageHead("Thank you", "Your message has been sent to Xyncwave.", `/thank-you/${params.type}`, {
+      robots: "noindex,follow",
+    }),
   component: Page,
 });
 function Page() {

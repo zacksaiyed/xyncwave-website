@@ -5,6 +5,7 @@ import { SmartLink } from "../components/app-link";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { searchContent, searchResultTypes, type SearchResultType } from "../lib/search-index";
+import { pageHead } from "../lib/seo";
 
 type SearchParams = { q: string; type?: SearchResultType };
 const isResultType = (value: unknown): value is SearchResultType =>
@@ -15,16 +16,13 @@ export const Route = createFileRoute("/search")({
     q: typeof search["q"] === "string" ? search["q"].trim().slice(0, 120) : "",
     ...(isResultType(search["type"]) ? { type: search["type"] } : {}),
   }),
-  head: () => ({
-    meta: [
-      { title: "Search | XWC" },
-      {
-        name: "description",
-        content: "Search XWC solutions, industries, case studies, insights, and company pages.",
-      },
-      { name: "robots", content: "noindex,follow" },
-    ],
-  }),
+  head: () =>
+    pageHead(
+      "Search",
+      "Search XWC solutions, industries, case studies, insights, and company pages.",
+      "/search",
+      { robots: "noindex,follow" },
+    ),
   component: SearchPage,
 });
 

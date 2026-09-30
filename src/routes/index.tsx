@@ -7,8 +7,8 @@ import { Button } from "../components/ui/button";
 import { CTASection, Eyebrow, SectionIntro } from "../components/page-sections";
 import { DigitalVisual, SystemMap } from "../components/digital-visuals";
 import { articles } from "../lib/content";
-import { companyContact } from "../lib/company-contact";
 import { pageHead } from "../lib/seo";
+import { jsonLdScript, siteIdentityGraph } from "../lib/structured-data";
 import fintechInsightImage from "../assets/media/home-fintech-insight-hd.webp";
 import fintechInsightImageSmall from "../assets/media/home-fintech-insight-hd-800.webp";
 import digitalizationInsightImage from "../assets/media/home-digitalization-insight-hd.webp";
@@ -25,27 +25,7 @@ export const Route = createFileRoute("/")({
       "Xyncwave turns fragmented operations, delivery constraints, AI uncertainty, and legacy technology into practical connected systems.",
       "/",
     ),
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          name: "Xyncwave Corporation LLP",
-          url: "/",
-          email: companyContact.email,
-          telephone: companyContact.phoneHref,
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "F-19, Sharnam Fortune, Race Course, Alkapuri",
-            addressLocality: "Vadodara",
-            addressRegion: "Gujarat",
-            postalCode: "390021",
-            addressCountry: "IN",
-          },
-        }),
-      },
-    ],
+    scripts: [jsonLdScript(siteIdentityGraph())],
   }),
   component: HomePage,
 });

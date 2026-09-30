@@ -3,50 +3,8 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { LeadForm } from "../components/lead-form";
-import { pageHead } from "../lib/seo";
-const campaigns: Record<
-  string,
-  {
-    title: string;
-    description: string;
-    type: "digitalization" | "engineering" | "ai";
-    audience: string;
-    points: string[];
-  }
-> = {
-  "connected-logistics": {
-    title: "Connect the operational systems behind every shipment.",
-    description:
-      "For logistics leaders replacing manual handoffs and fragmented tracking with clearer operational visibility.",
-    type: "digitalization",
-    audience: "Logistics operations",
-    points: [
-      "Map the current tracking workflow",
-      "Identify system and data gaps",
-      "Define a focused first intervention",
-    ],
-  },
-  "delivery-capacity": {
-    title: "You win the client. We help you deliver.",
-    description:
-      "Flexible engineering capability for technology businesses facing a deadline, backlog, or specialist gap.",
-    type: "engineering",
-    audience: "Technology and IT services",
-    points: ["Specialist engineers", "Dedicated delivery pods", "White-label project teams"],
-  },
-  "practical-ai": {
-    title: "Find the AI opportunity worth testing.",
-    description:
-      "A focused exploration for leaders who need a grounded use case, not another disconnected experiment.",
-    type: "ai",
-    audience: "Operations and technology leaders",
-    points: [
-      "Start with recurring work",
-      "Test available information",
-      "Define a bounded proof-of-concept",
-    ],
-  },
-};
+import { campaigns } from "../lib/campaigns";
+import { noindexHead, pageHead } from "../lib/seo";
 export const Route = createFileRoute("/lp/$slug")({
   loader: ({ params }) => {
     const c = campaigns[params.slug];
@@ -56,7 +14,7 @@ export const Route = createFileRoute("/lp/$slug")({
   head: ({ loaderData, params }) =>
     loaderData
       ? pageHead(loaderData.title, loaderData.description, `/lp/${params.slug}`)
-      : pageHead("Campaign unavailable", "This campaign page is not available.", "/lp"),
+      : noindexHead("Campaign unavailable", "This campaign page is not available."),
   component: Page,
 });
 function Page() {

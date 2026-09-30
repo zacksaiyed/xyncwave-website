@@ -18,10 +18,18 @@ import { AppearanceProvider } from "../components/appearance";
 import type { AppearancePreference } from "../components/appearance";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
+import {
+  absoluteUrl,
+  APPROVED_LOGO_PATH,
+  isProductionHostname,
+  SITE_NAME,
+  SITE_ORIGIN,
+} from "../lib/site-config";
 
 const appearanceValues: AppearancePreference[] = ["light", "dark", "auto"];
 const getInitialAppearance = createServerFn({ method: "GET" }).handler(() => {
-  const cookie = getRequest().headers.get("cookie") ?? "";
+  const request = getRequest();
+  const cookie = request.headers.get("cookie") ?? "";
   const raw = cookie
     .split(";")
     .map((part) => part.trim().split("="))
@@ -29,7 +37,11 @@ const getInitialAppearance = createServerFn({ method: "GET" }).handler(() => {
   const preference = appearanceValues.includes(raw as AppearancePreference)
     ? (raw as AppearancePreference)
     : "auto";
-  return { preference, hasSavedCookie: appearanceValues.includes(raw as AppearancePreference) };
+  return {
+    preference,
+    hasSavedCookie: appearanceValues.includes(raw as AppearancePreference),
+    isProductionHost: isProductionHostname(new URL(request.url).hostname),
+  };
 });
 
 function NotFoundComponent() {
@@ -95,7 +107,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   loader: () => getInitialAppearance(),
-  head: () => ({
+  head: ({ loaderData }) => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -106,6 +118,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "XWC turns operational complexity into connected digital systems through software engineering, modernization, AI, cloud, and flexible delivery capacity.",
       },
       { name: "author", content: "Xyncwave Corporation LLP" },
+      ...(!loaderData?.isProductionHost ? [{ name: "robots", content: "noindex,follow" }] : []),
       { property: "og:title", content: "XWC — Enterprise Technology Solutions" },
       {
         property: "og:description",
@@ -113,7 +126,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Business-first technology for connected operations, scalable platforms, and stronger engineering delivery.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE_ORIGIN}/` },
+      { property: "og:site_name", content: SITE_NAME },
+      { property: "og:image", content: absoluteUrl(APPROVED_LOGO_PATH) },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "XWC — Enterprise Technology Solutions" },
+      {
+        name: "twitter:description",
+        content:
+          "Business-first technology for connected operations, scalable platforms, and stronger engineering delivery.",
+      },
+      { name: "twitter:image", content: absoluteUrl(APPROVED_LOGO_PATH) },
     ],
     links: [
       {

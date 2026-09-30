@@ -10,12 +10,13 @@ import { getInsightMedia } from "../lib/media-registry";
 import { articles } from "../lib/content";
 import { pageHead } from "../lib/seo";
 
-type InsightSearch = { q: string; topic: string };
+type InsightSearch = { q?: string; topic?: string };
 export const Route = createFileRoute("/insights/")({
-  validateSearch: (search: Record<string, unknown>): InsightSearch => ({
-    q: typeof search["q"] === "string" ? search["q"].trim().slice(0, 120) : "",
-    topic: typeof search["topic"] === "string" ? search["topic"].trim().slice(0, 80) : "",
-  }),
+  validateSearch: (search: Record<string, unknown>): InsightSearch => {
+    const q = typeof search["q"] === "string" ? search["q"].trim().slice(0, 120) : "";
+    const topic = typeof search["topic"] === "string" ? search["topic"].trim().slice(0, 80) : "";
+    return { ...(q ? { q } : {}), ...(topic ? { topic } : {}) };
+  },
   head: () =>
     pageHead(
       "Technology transformation insights",
@@ -29,11 +30,11 @@ function Page() {
   const [featured, ...rest] = articles;
   const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
-  const [draft, setDraft] = useState(search.q);
-  const [draftTopic, setDraftTopic] = useState(search.topic);
+  const [draft, setDraft] = useState(search.q ?? "");
+  const [draftTopic, setDraftTopic] = useState(search.topic ?? "");
   useEffect(() => {
-    setDraft(search.q);
-    setDraftTopic(search.topic);
+    setDraft(search.q ?? "");
+    setDraftTopic(search.topic ?? "");
   }, [search.q, search.topic]);
   const topics = [
     ...new Set(
@@ -42,7 +43,7 @@ function Page() {
         .filter((topic): topic is string => Boolean(topic)),
     ),
   ].sort();
-  const query = search.q.toLocaleLowerCase();
+  const query = (search.q ?? "").toLocaleLowerCase();
   const filtered = rest.filter(
     (article) =>
       (!search.topic || article.category.split("·")[0]?.trim() === search.topic) &&
@@ -58,7 +59,7 @@ function Page() {
   function reset() {
     setDraft("");
     setDraftTopic("");
-    void navigate({ search: { q: "", topic: "" } });
+    void navigate({ search: {} });
   }
   return (
     <>

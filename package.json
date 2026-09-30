@@ -9,7 +9,9 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test:seo": "node --import tsx --test scripts/seo.test.ts",
+    "audit:seo": "node --import tsx scripts/audit-seo.ts"
   },
   "overrides": {
     "rolldown": "1.2.1"
@@ -87,6 +89,7 @@
     "nitro": "3.0.260603-beta",
     "postgres": "^3.4.9",
     "prettier": "^3.7.3",
+    "tsx": "^4.23.15",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
     "vite": "8.1.5"
