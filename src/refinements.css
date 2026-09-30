@@ -368,4 +368,8 @@ nav[aria-label="Breadcrumb"] > span {
   .home-problem-card:focus-visible {
     border-color: Highlight;
   }
+
+  .zaid-push {
+    border-color: Highlight;
+  }
 }
