@@ -1,8 +1,9 @@
 import { SmartLink, type AppPath } from "./app-link";
 import { useRouterState } from "@tanstack/react-router";
 
-import { ArrowRight, ChevronDown, Menu, Search } from "lucide-react";
+import { ArrowRight, ChevronDown, Mail, MapPin, Menu, Phone, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { companyContact, companyMapUrl } from "../lib/company-contact";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { AppearanceControl } from "./appearance";
@@ -601,6 +602,37 @@ export function SiteFooter() {
               Enterprise-grade thinking and modern technology execution for organizations solving
               complex operational and delivery problems.
             </p>
+            <address className="mt-7 grid max-w-md gap-3 not-italic">
+              <a
+                href={`mailto:${companyContact.email}`}
+                className="group/contact flex w-fit items-center gap-3 text-sm text-primary-foreground/70 transition-colors hover:text-primary-foreground"
+              >
+                <Mail className="size-4 shrink-0 text-primary" aria-hidden="true" />
+                <span className="link-sweep">{companyContact.email}</span>
+              </a>
+              <a
+                href={`tel:${companyContact.phoneHref}`}
+                className="group/contact flex w-fit items-center gap-3 text-sm text-primary-foreground/70 transition-colors hover:text-primary-foreground"
+              >
+                <Phone className="size-4 shrink-0 text-primary" aria-hidden="true" />
+                <span className="link-sweep">{companyContact.phoneDisplay}</span>
+              </a>
+              <a
+                href={companyMapUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="group/contact flex max-w-sm items-start gap-3 text-sm leading-6 text-primary-foreground/70 transition-colors hover:text-primary-foreground"
+              >
+                <MapPin className="mt-1 size-4 shrink-0 text-primary" aria-hidden="true" />
+                <span>
+                  {companyContact.addressLines.map((line) => (
+                    <span key={line} className="block">
+                      {line}
+                    </span>
+                  ))}
+                </span>
+              </a>
+            </address>
           </div>
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
             <FooterCol
