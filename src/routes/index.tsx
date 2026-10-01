@@ -278,7 +278,7 @@ function HomePage() {
 
       <section className="home-story-section py-section">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="grid gap-14 lg:grid-cols-[.72fr_1.28fr] lg:items-center lg:gap-20">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,.88fr)_minmax(0,1.12fr)] lg:items-center lg:gap-12 xl:gap-16">
             <div className="home-story-copy">
               <Eyebrow>Transformation story</Eyebrow>
               <h2 className="editorial-title">From complexity to clarity.</h2>

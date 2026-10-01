@@ -8,6 +8,7 @@ import modernizationImage from "../assets/insight-modernization.jpg";
 import fragmentationImage from "../assets/insight-fragmentation.jpg";
 import aiWorkflowImage from "../assets/insight-ai-workflow.jpg";
 import teamModelsImage from "../assets/insight-team-models.jpg";
+import transformationStoryImage from "../assets/XWC_ From Complexity to Clarity.png";
 import { getInsightMedia, type MediaEntry } from "../lib/media-registry";
 
 export const visuals = {
@@ -85,51 +86,16 @@ export function DigitalVisual({
 }
 
 export function SystemMap() {
-  const before = [
-    "Disconnected systems",
-    "Manual workflows",
-    "Fragmented data",
-    "Delivery constraints",
-  ];
-  const after = [
-    "Connected systems",
-    "Clearer visibility",
-    "Structured workflows",
-    "Scalable delivery",
-  ];
-  const stages = ["Understand", "Architect", "Engineer", "Automate", "Scale"];
   return (
-    <div
-      className="system-map"
-      aria-label="Transformation from fragmented operations to connected digital systems"
-    >
-      <div className="system-process" aria-label="Transformation stages">
-        {stages.map((stage, index) => (
-          <span className="system-stage" key={stage}>
-            <span aria-hidden="true">0{index + 1}</span>
-            <strong>{stage}</strong>
-          </span>
-        ))}
-      </div>
-      <div className="system-flow">
-        {before.map((item, index) => (
-          <div className="system-flow-row" key={item}>
-            <div className="system-node system-node-muted">
-              <span className="system-node-index" aria-hidden="true">
-                0{index + 1}
-              </span>
-              <span>{item}</span>
-            </div>
-            <div className="system-connector" aria-hidden="true">
-              <span />
-            </div>
-            <div className="system-node system-node-result">
-              <span className="system-result-mark" aria-hidden="true" />
-              <span>{after[index]}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    <figure className="system-map">
+      <img
+        src={transformationStoryImage}
+        alt="XWC transformation model: disconnected systems, manual workflows, fragmented data and delivery constraints become connected systems, clearer visibility, structured workflows and scalable delivery through Understand, Architect, Engineer, Automate and Scale."
+        width={1672}
+        height={941}
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
   );
 }

@@ -195,8 +195,58 @@ nav[aria-label="Breadcrumb"] > span {
 }
 
 /* Four distinct entry points. Icons clarify the topic; copy and destinations are unchanged. */
+.home-challenges {
+  position: relative;
+  overflow: clip;
+  isolation: isolate;
+}
+.home-problem-grid {
+  position: relative;
+  isolation: isolate;
+}
+.home-problem-grid::before,
+.home-problem-grid::after {
+  position: absolute;
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+}
+.home-problem-grid::before {
+  inset: -4.75rem -6rem -5rem 12%;
+  background:
+    radial-gradient(
+      ellipse 54% 78% at 56% 54%,
+      color-mix(in oklab, var(--primary) 16%, transparent) 0%,
+      color-mix(in oklab, var(--primary) 8%, transparent) 40%,
+      transparent 76%
+    ),
+    radial-gradient(
+      ellipse 74% 88% at 72% 48%,
+      color-mix(in oklab, var(--surface-hero) 84%, transparent) 0%,
+      color-mix(in oklab, var(--surface-strong) 34%, transparent) 52%,
+      transparent 80%
+    );
+  filter: blur(34px);
+  opacity: 0.82;
+}
+.home-problem-grid::after {
+  inset: -3rem -3rem -3.5rem 28%;
+  background: radial-gradient(
+    ellipse 72% 74% at 52% 50%,
+    color-mix(in oklab, var(--primary) 9%, transparent) 0%,
+    color-mix(in oklab, var(--primary) 4%, transparent) 50%,
+    transparent 80%
+  );
+  filter: blur(24px);
+  opacity: 0.78;
+}
 .home-problem-card {
   position: relative;
+  z-index: 1;
+  background: color-mix(in oklab, var(--background) 95%, transparent);
+  box-shadow:
+    0 20px 56px color-mix(in oklab, var(--foreground) 4%, transparent),
+    0 10px 34px color-mix(in oklab, var(--primary) 3.5%, transparent);
   transition:
     border-color 180ms ease,
     background-color 180ms ease;
@@ -221,6 +271,51 @@ nav[aria-label="Breadcrumb"] > span {
 .problem-card-action {
   line-height: 1.6;
 }
+
+.dark .home-problem-grid::before {
+  opacity: 0.58;
+}
+.dark .home-problem-grid::after {
+  opacity: 0.44;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-appearance="auto"] .home-problem-grid::before {
+    opacity: 0.58;
+  }
+  :root[data-appearance="auto"] .home-problem-grid::after {
+    opacity: 0.44;
+  }
+}
+
+@media (max-width: 767px) {
+  .home-problem-grid::before {
+    inset: -2rem -1.5rem -2.75rem 4%;
+    background:
+      radial-gradient(
+        ellipse 86% 48% at 72% 48%,
+        color-mix(in oklab, var(--primary) 13%, transparent) 0%,
+        color-mix(in oklab, var(--primary) 6%, transparent) 48%,
+        transparent 82%
+      ),
+      radial-gradient(
+        ellipse 92% 58% at 64% 54%,
+        color-mix(in oklab, var(--surface-hero) 78%, transparent) 0%,
+        transparent 76%
+      );
+    filter: blur(28px);
+  }
+  .home-problem-grid::after {
+    inset: 14% -1rem 8% 16%;
+    background: radial-gradient(
+      ellipse 88% 62% at 62% 50%,
+      color-mix(in oklab, var(--primary) 8%, transparent) 0%,
+      color-mix(in oklab, var(--primary) 3.5%, transparent) 52%,
+      transparent 82%
+    );
+    filter: blur(22px);
+    opacity: 0.72;
+  }
+}
 .home-choice-list .hover-row {
   padding-block: 1.4rem;
 }
@@ -229,6 +324,7 @@ nav[aria-label="Breadcrumb"] > span {
   line-height: 1.5;
 }
 .home-story-section {
+  overflow: clip;
   border-block: 1px solid var(--border);
   background:
     linear-gradient(90deg, color-mix(in oklab, var(--primary) 2.5%, transparent), transparent 38%),
@@ -239,18 +335,46 @@ nav[aria-label="Breadcrumb"] > span {
 }
 .home-story-section .system-map {
   position: relative;
+  isolation: isolate;
+  overflow: visible;
+}
+.home-story-section .system-map::before {
+  position: absolute;
+  z-index: 0;
+  inset: 12% -4% 7% 18%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 58% 48%,
+    color-mix(in oklab, var(--primary) 7%, transparent),
+    color-mix(in oklab, var(--surface-hero) 42%, transparent) 46%,
+    transparent 76%
+  );
+  filter: blur(36px);
+  content: "";
+  pointer-events: none;
+}
+.home-story-section .system-map img {
+  position: relative;
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+.dark .home-story-section .system-map {
   overflow: hidden;
-  padding: clamp(1.25rem, 2.5vw, 2rem);
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius);
-  background:
-    radial-gradient(
-      circle at 88% 8%,
-      color-mix(in oklab, var(--primary) 9%, transparent),
-      transparent 34%
-    ),
-    var(--surface-hero);
-  box-shadow: 0 1.5rem 4rem -3.25rem color-mix(in oklab, var(--foreground) 42%, transparent);
+  border-radius: 1.25rem;
+  background: white;
+}
+.dark .home-story-section .system-map img {
+  mix-blend-mode: normal;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-appearance="auto"] .home-story-section .system-map {
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background: white;
+  }
+  :root[data-appearance="auto"] .home-story-section .system-map img {
+    mix-blend-mode: normal;
+  }
 }
 .home-insight-card {
   transition: border-color 180ms ease;
@@ -271,6 +395,26 @@ nav[aria-label="Breadcrumb"] > span {
 @media (min-width: 1024px) {
   .home-hero-copy {
     padding-inline-end: 2rem;
+  }
+  .home-story-section .system-map img {
+    width: calc(100% + clamp(1.5rem, 3vw, 2.75rem));
+    max-width: none;
+    margin-left: clamp(-1.25rem, -1.2vw, -0.5rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .home-story-section .system-map {
+    overflow: hidden;
+    border-radius: 1rem;
+    background: white;
+  }
+  .home-story-section .system-map::before {
+    inset: 12% 2% 7% 16%;
+    filter: blur(24px);
+  }
+  .home-story-section .system-map img {
+    mix-blend-mode: normal;
   }
 }
 @media (max-width: 1023px) {
