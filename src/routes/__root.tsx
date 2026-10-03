@@ -118,6 +118,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "XWC turns operational complexity into connected digital systems through software engineering, modernization, AI, cloud, and flexible delivery capacity.",
       },
       { name: "author", content: "Xyncwave Corporation LLP" },
+      {
+        name: "google-site-verification",
+        content: "1lFYvpwPG9sBRLJG2oxKXQir1d2gp5SkiMHKvnuvClE",
+      },
       ...(!loaderData?.isProductionHost ? [{ name: "robots", content: "noindex,follow" }] : []),
       { property: "og:title", content: "XWC — Enterprise Technology Solutions" },
       {
