@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import refinementCss from "../refinements.css?url";
@@ -15,6 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteFooter, SiteHeader, StickyMobileCTA } from "../components/site-shell";
 import { Button } from "../components/ui/button";
 import { AppearanceProvider } from "../components/appearance";
+import { IntelligenceSeam } from "../components/ask-xwc/intelligence-seam";
 import type { AppearancePreference } from "../components/appearance";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
@@ -27,6 +28,9 @@ import {
 } from "../lib/site-config";
 
 const appearanceValues: AppearancePreference[] = ["light", "dark", "auto"];
+const AskXwcExperience = lazy(async () => ({
+  default: (await import("../components/ask-xwc/ask-xwc-experience")).AskXwcExperience,
+}));
 const getInitialAppearance = createServerFn({ method: "GET" }).handler(() => {
   const request = getRequest();
   const cookie = request.headers.get("cookie") ?? "";
@@ -196,11 +200,18 @@ function RootComponent() {
   const loaderData = Route.useLoaderData();
   const preference = loaderData?.preference ?? "auto";
   const hasSavedCookie = loaderData?.hasSavedCookie ?? false;
+  const [intelligenceOpen, setIntelligenceOpen] = useState(false);
+  const [hasOpenedIntelligence, setHasOpenedIntelligence] = useState(false);
+
+  const openIntelligence = () => {
+    setHasOpenedIntelligence(true);
+    setIntelligenceOpen(true);
+  };
 
   return (
     <QueryClientProvider client={queryClient}>
       <AppearanceProvider initialPreference={preference} hasSavedCookie={hasSavedCookie}>
-        <div>
+        <div className="xwc-site-frame" data-intelligence-open={intelligenceOpen}>
           <SiteHeader />
           <main id="main-content" tabIndex={-1}>
             <Outlet />
@@ -208,6 +219,13 @@ function RootComponent() {
           <SiteFooter />
           <StickyMobileCTA />
         </div>
+        {hasOpenedIntelligence ? (
+          <Suspense fallback={<IntelligenceSeam loading onOpen={() => undefined} />}>
+            <AskXwcExperience open={intelligenceOpen} onOpenChange={setIntelligenceOpen} />
+          </Suspense>
+        ) : (
+          <IntelligenceSeam onOpen={openIntelligence} />
+        )}
       </AppearanceProvider>
     </QueryClientProvider>
   );

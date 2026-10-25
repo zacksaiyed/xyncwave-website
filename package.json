@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test:seo": "node --import tsx --test scripts/seo.test.ts",
+    "test:ask-xwc": "node --import tsx --test scripts/ask-xwc.test.ts",
     "audit:seo": "node --import tsx scripts/audit-seo.ts"
   },
   "overrides": {

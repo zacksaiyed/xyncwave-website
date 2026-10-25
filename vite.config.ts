@@ -9,7 +9,18 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 export default defineConfig({
   vite: {
     // Allows the local SEO audit to exercise production-host indexing behavior.
-    server: { allowedHosts: ["xyncwave.com"] },
+    server: {
+      allowedHosts: ["xyncwave.com"],
+      // Development-only same-origin bridge. Production continues to call the
+      // deployed endpoint directly under its existing xyncwave.com CORS policy.
+      proxy: {
+        "/api/ask-xwc": {
+          target: "https://36ujwub6ja.execute-api.ap-south-1.amazonaws.com",
+          changeOrigin: true,
+          rewrite: () => "/dev/",
+        },
+      },
+    },
   },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).

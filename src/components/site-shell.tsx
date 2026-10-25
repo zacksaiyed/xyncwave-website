@@ -264,7 +264,7 @@ export function SiteHeader() {
               </SmartLink>
             </Button>
           </nav>
-          <div className="flex items-center gap-1 xl:hidden">
+          <div className="site-compact-nav flex items-center gap-1 xl:hidden">
             <Button variant="ghost" size="icon" asChild>
               <SmartLink to="/search" aria-label="Search the site">
                 <Search aria-hidden="true" />
@@ -278,7 +278,12 @@ export function SiteHeader() {
               }}
             >
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="xl:hidden" aria-label="Open menu">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="site-menu-trigger xl:hidden"
+                  aria-label="Open menu"
+                >
                   <Menu />
                 </Button>
               </SheetTrigger>
@@ -292,7 +297,7 @@ export function SiteHeader() {
                     ?.querySelector<HTMLAnchorElement>('a[aria-label="XWC home"]')
                     ?.focus({ preventScroll: true });
                 }}
-                className="w-full max-w-none overflow-y-auto px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] pt-16 sm:max-w-md xl:hidden"
+                className="z-[80] w-full max-w-none overflow-y-auto px-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] pt-16 sm:max-w-md"
               >
                 <SheetTitle className="sr-only">Navigation</SheetTitle>
                 <nav aria-label="Mobile navigation">
