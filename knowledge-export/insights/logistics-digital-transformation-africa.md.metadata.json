@@ -1,0 +1,67 @@
+{
+  "metadataAttributes": {
+    "title": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "Logistics Digital Transformation in Africa: Where Should You Start?"
+      },
+      "includeForEmbedding": false
+    },
+    "content_type": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "insight"
+      },
+      "includeForEmbedding": false
+    },
+    "category": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "Digital Transformation · Logistics"
+      },
+      "includeForEmbedding": false
+    },
+    "slug": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "logistics-digital-transformation-africa"
+      },
+      "includeForEmbedding": false
+    },
+    "published": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "2026-09-25"
+      },
+      "includeForEmbedding": false
+    },
+    "modified": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "2026-09-25"
+      },
+      "includeForEmbedding": false
+    },
+    "canonical_url": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "https://xyncwave.com/insights/logistics-digital-transformation-africa"
+      },
+      "includeForEmbedding": false
+    },
+    "source": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "xyncwave.com"
+      },
+      "includeForEmbedding": false
+    },
+    "approved": {
+      "value": {
+        "type": "BOOLEAN",
+        "booleanValue": true
+      },
+      "includeForEmbedding": false
+    }
+  }
+}

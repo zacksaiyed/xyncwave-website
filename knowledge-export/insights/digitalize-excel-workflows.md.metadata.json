@@ -1,0 +1,67 @@
+{
+  "metadataAttributes": {
+    "title": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "How to Replace Excel-Based Business Processes Without Disrupting Operations"
+      },
+      "includeForEmbedding": false
+    },
+    "content_type": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "insight"
+      },
+      "includeForEmbedding": false
+    },
+    "category": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "Digital Transformation · Operations"
+      },
+      "includeForEmbedding": false
+    },
+    "slug": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "digitalize-excel-workflows"
+      },
+      "includeForEmbedding": false
+    },
+    "published": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "2026-09-26"
+      },
+      "includeForEmbedding": false
+    },
+    "modified": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "2026-09-26"
+      },
+      "includeForEmbedding": false
+    },
+    "canonical_url": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "https://xyncwave.com/insights/digitalize-excel-workflows"
+      },
+      "includeForEmbedding": false
+    },
+    "source": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "xyncwave.com"
+      },
+      "includeForEmbedding": false
+    },
+    "approved": {
+      "value": {
+        "type": "BOOLEAN",
+        "booleanValue": true
+      },
+      "includeForEmbedding": false
+    }
+  }
+}

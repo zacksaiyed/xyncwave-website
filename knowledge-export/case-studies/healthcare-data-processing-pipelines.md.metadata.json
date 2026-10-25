@@ -1,0 +1,53 @@
+{
+  "metadataAttributes": {
+    "title": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "Making complex healthcare data consistent before it reaches downstream workflows."
+      },
+      "includeForEmbedding": false
+    },
+    "content_type": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "case_study"
+      },
+      "includeForEmbedding": false
+    },
+    "category": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "Healthcare · Data engineering"
+      },
+      "includeForEmbedding": false
+    },
+    "slug": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "healthcare-data-processing-pipelines"
+      },
+      "includeForEmbedding": false
+    },
+    "canonical_url": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "https://xyncwave.com/case-studies/healthcare-data-processing-pipelines"
+      },
+      "includeForEmbedding": false
+    },
+    "source": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "xyncwave.com"
+      },
+      "includeForEmbedding": false
+    },
+    "approved": {
+      "value": {
+        "type": "BOOLEAN",
+        "booleanValue": true
+      },
+      "includeForEmbedding": false
+    }
+  }
+}

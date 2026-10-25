@@ -1,0 +1,67 @@
+{
+  "metadataAttributes": {
+    "title": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "Staff augmentation vs dedicated development team vs software outsourcing: which model should you choose in 2026?"
+      },
+      "includeForEmbedding": false
+    },
+    "content_type": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "insight"
+      },
+      "includeForEmbedding": false
+    },
+    "category": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "Engineering Capacity"
+      },
+      "includeForEmbedding": false
+    },
+    "slug": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "staff-augmentation-vs-dedicated-team-vs-outsourcing"
+      },
+      "includeForEmbedding": false
+    },
+    "published": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "2026-09-21"
+      },
+      "includeForEmbedding": false
+    },
+    "modified": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "2026-09-21"
+      },
+      "includeForEmbedding": false
+    },
+    "canonical_url": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "https://xyncwave.com/insights/staff-augmentation-vs-dedicated-team-vs-outsourcing"
+      },
+      "includeForEmbedding": false
+    },
+    "source": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "xyncwave.com"
+      },
+      "includeForEmbedding": false
+    },
+    "approved": {
+      "value": {
+        "type": "BOOLEAN",
+        "booleanValue": true
+      },
+      "includeForEmbedding": false
+    }
+  }
+}

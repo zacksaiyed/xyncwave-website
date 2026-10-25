@@ -1,0 +1,67 @@
+{
+  "metadataAttributes": {
+    "title": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "Fintech API & Integration Strategy: Connecting Identity, Payments, Market Data, Trading and Reporting"
+      },
+      "includeForEmbedding": false
+    },
+    "content_type": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "insight"
+      },
+      "includeForEmbedding": false
+    },
+    "category": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "Fintech · API & Integration"
+      },
+      "includeForEmbedding": false
+    },
+    "slug": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "fintech-api-integration-strategy"
+      },
+      "includeForEmbedding": false
+    },
+    "published": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "2026-09-26"
+      },
+      "includeForEmbedding": false
+    },
+    "modified": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "2026-09-26"
+      },
+      "includeForEmbedding": false
+    },
+    "canonical_url": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "https://xyncwave.com/insights/fintech-api-integration-strategy"
+      },
+      "includeForEmbedding": false
+    },
+    "source": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "xyncwave.com"
+      },
+      "includeForEmbedding": false
+    },
+    "approved": {
+      "value": {
+        "type": "BOOLEAN",
+        "booleanValue": true
+      },
+      "includeForEmbedding": false
+    }
+  }
+}

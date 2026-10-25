@@ -1,0 +1,67 @@
+{
+  "metadataAttributes": {
+    "title": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "Your Fintech Just Raised Funding: How Should You Scale Engineering Without Overhiring?"
+      },
+      "includeForEmbedding": false
+    },
+    "content_type": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "insight"
+      },
+      "includeForEmbedding": false
+    },
+    "category": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "Fintech · Engineering Capacity"
+      },
+      "includeForEmbedding": false
+    },
+    "slug": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "fintech-scale-engineering-after-funding"
+      },
+      "includeForEmbedding": false
+    },
+    "published": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "2026-09-26"
+      },
+      "includeForEmbedding": false
+    },
+    "modified": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "2026-09-26"
+      },
+      "includeForEmbedding": false
+    },
+    "canonical_url": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "https://xyncwave.com/insights/fintech-scale-engineering-after-funding"
+      },
+      "includeForEmbedding": false
+    },
+    "source": {
+      "value": {
+        "type": "STRING",
+        "stringValue": "xyncwave.com"
+      },
+      "includeForEmbedding": false
+    },
+    "approved": {
+      "value": {
+        "type": "BOOLEAN",
+        "booleanValue": true
+      },
+      "includeForEmbedding": false
+    }
+  }
+}
