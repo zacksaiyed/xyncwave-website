@@ -9,7 +9,7 @@ import { batchArticles } from "../src/lib/insights-batch";
 /**
  * XWC AI Knowledge Export
  *
- * Converts public website content into:
+ * Converts public XWC website content into Bedrock-ready documents:
  *
  * knowledge-export/
  *   solutions/
@@ -18,11 +18,12 @@ import { batchArticles } from "../src/lib/insights-batch";
  *   insights/
  *   about/
  *
- * Every Markdown document gets a matching:
+ * Every Markdown document receives a matching:
  *
  * <filename>.md.metadata.json
  *
- * for Amazon Bedrock Knowledge Bases.
+ * The metadata is deliberately kept compact because the Knowledge Base
+ * uses Amazon S3 Vectors, which has strict metadata-size limits.
  */
 
 const exportRoot = "knowledge-export";
@@ -58,45 +59,28 @@ for (const directory of [
 
 type MetadataInput = Record<string, string | boolean | number | undefined>;
 
+/**
+ * Keep metadata deliberately compact.
+ *
+ * Example output:
+ *
+ * {
+ *   "metadataAttributes": {
+ *     "title": "Digital Transformation",
+ *     "content_type": "solution",
+ *     "canonical_url": "...",
+ *     "source": "xyncwave.com",
+ *     "approved": true
+ *   }
+ * }
+ */
 function buildMetadata(attributes: MetadataInput) {
-  const metadataAttributes: Record<string, unknown> = {};
+  const metadataAttributes: Record<string, string | boolean | number> = {};
 
   for (const [key, value] of Object.entries(attributes)) {
-    if (value === undefined) {
-      continue;
+    if (value !== undefined) {
+      metadataAttributes[key] = value;
     }
-
-    if (typeof value === "boolean") {
-      metadataAttributes[key] = {
-        value: {
-          type: "BOOLEAN",
-          booleanValue: value,
-        },
-        includeForEmbedding: false,
-      };
-
-      continue;
-    }
-
-    if (typeof value === "number") {
-      metadataAttributes[key] = {
-        value: {
-          type: "NUMBER",
-          numberValue: value,
-        },
-        includeForEmbedding: false,
-      };
-
-      continue;
-    }
-
-    metadataAttributes[key] = {
-      value: {
-        type: "STRING",
-        stringValue: value,
-      },
-      includeForEmbedding: false,
-    };
   }
 
   return {
@@ -119,17 +103,20 @@ function writeKnowledgeDocument({
 
   writeFileSync(filePath, `${markdown.trim()}\n`);
 
-  writeFileSync(
-    `${filePath}.metadata.json`,
-    `${JSON.stringify(buildMetadata(metadata), null, 2)}\n`,
-  );
+  /**
+   * Do not pretty-print metadata.
+   *
+   * Compact JSON helps keep every metadata sidecar well below
+   * the S3 Vectors / Bedrock metadata limits.
+   */
+  writeFileSync(`${filePath}.metadata.json`, JSON.stringify(buildMetadata(metadata)));
 }
 
 /**
  * --------------------------------------------------------------------------
- * Shared commercial-content renderer
+ * Shared Commercial Content Renderer
  *
- * Used for Solutions and Industries because they share the same structure.
+ * Solutions and Industries share the same CommercialContent structure.
  * --------------------------------------------------------------------------
  */
 
@@ -310,7 +297,15 @@ for (const study of caseStudies) {
     ? `
 ## ${study.journey.title}
 
-${study.journey.steps.map(([title, body]) => `### ${title}\n\n${body}`).join("\n\n")}
+${study.journey.steps
+  .map(([title, body]) =>
+    `
+### ${title}
+
+${body}
+`.trim(),
+  )
+  .join("\n\n")}
 `
     : "";
 
@@ -332,9 +327,12 @@ ${study.deepDives
 
     const split = deepDive.split?.length
       ? `\n\n${deepDive.split
-          .map(
-            (section) =>
-              `### ${section.title}\n\n${section.steps.map((step) => `- ${step}`).join("\n")}`,
+          .map((section) =>
+            `
+### ${section.title}
+
+${section.steps.map((step) => `- ${step}`).join("\n")}
+`.trim(),
           )
           .join("\n\n")}`
       : "";
@@ -355,7 +353,15 @@ ${body}${list}${flow}${split}
     ? `
 ## Outcome Detail
 
-${study.outcomeCards.map(([title, body]) => `### ${title}\n\n${body}`).join("\n\n")}
+${study.outcomeCards
+  .map(([title, body]) =>
+    `
+### ${title}
+
+${body}
+`.trim(),
+  )
+  .join("\n\n")}
 `
     : "";
 
@@ -471,8 +477,8 @@ ${study.ctaBody}
  * --------------------------------------------------------------------------
  * Insights
  *
- * batchArticles contains the full published Insight content rather than only
- * the summary cards exposed from content.ts.
+ * batchArticles contains the complete published Insight content.
+ * We intentionally do not use the lightweight article cards from content.ts.
  * --------------------------------------------------------------------------
  */
 
@@ -613,15 +619,18 @@ ${article.finalBody}
  * --------------------------------------------------------------------------
  * About
  *
- * about-content.ts imports image assets. Importing it directly from a Node
- * script would make the exporter depend on Vite's asset loader.
+ * about-content.ts imports JPG files.
  *
- * Instead we parse the TypeScript source and extract literal public data.
- * Image imports are ignored.
+ * Importing the module directly from this Node/tsx script would make the
+ * exporter depend on Vite's asset handling.
+ *
+ * Instead, we parse the TypeScript source and extract its public literal data.
+ * Image references are intentionally ignored.
  * --------------------------------------------------------------------------
  */
 
 const aboutSourcePath = "src/lib/about-content.ts";
+
 const aboutSourceText = readFileSync(aboutSourcePath, "utf8");
 
 const aboutSourceFile = ts.createSourceFile(
@@ -675,8 +684,10 @@ function evaluateLiteral(node: ts.Node): unknown {
 
       const value = evaluateLiteral(property.initializer);
 
-      // Imported assets such as founderImg / bhavyaImg resolve to undefined
-      // and are intentionally excluded from the knowledge corpus.
+      /**
+       * Imported image references resolve to undefined here
+       * and are intentionally excluded.
+       */
       if (value !== undefined) {
         result[key] = value;
       }
@@ -816,12 +827,20 @@ const totalDocuments =
 console.log("");
 console.log("XWC AI knowledge export complete.");
 console.log("");
+
 console.log(`Solutions:    ${solutions.length}`);
+
 console.log(`Industries:   ${industries.length}`);
+
 console.log(`Case Studies: ${caseStudies.length}`);
+
 console.log(`Insights:     ${batchArticles.length}`);
+
 console.log("About:        1");
+
 console.log("----------------");
+
 console.log(`Total:        ${totalDocuments}`);
+
 console.log("");
 console.log(`Output: ${exportRoot}/`);
