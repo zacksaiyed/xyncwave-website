@@ -26,6 +26,7 @@ import {
   SITE_ORIGIN,
 } from "../lib/site-config";
 
+const GA4_MEASUREMENT_ID = "G-HPVJCS6BYR";
 const appearanceValues: AppearancePreference[] = ["light", "dark", "auto"];
 const getInitialAppearance = createServerFn({ method: "GET" }).handler(() => {
   const request = getRequest();
@@ -172,6 +173,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootShell({ children }: { children: ReactNode }) {
   const loaderData = Route.useLoaderData();
   const preference = loaderData?.preference ?? "auto";
+  const isProductionHost = loaderData?.isProductionHost ?? false;
   return (
     <html
       lang="en"
@@ -181,6 +183,22 @@ function RootShell({ children }: { children: ReactNode }) {
       style={preference === "auto" ? undefined : { colorScheme: preference }}
     >
       <head>
+        {isProductionHost && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA4_MEASUREMENT_ID}');`,
+              }}
+            />
+          </>
+        )}
         <HeadContent />
       </head>
       <body>
