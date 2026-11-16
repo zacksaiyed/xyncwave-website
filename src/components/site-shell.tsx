@@ -5,10 +5,12 @@ import { useRouterState } from "@tanstack/react-router";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
-import headerLogoAsset from "../assets/Header_logo_XWC.png.asset.json";
-import footerLogoAsset from "../assets/Footer_logo_XWC.png.asset.json";
 import { caseStudyMedia, insightMedia, type MediaEntry } from "@/lib/media-registry";
 import { products } from "@/lib/products";
+
+// Logo paths from public directory
+const headerLogoUrl = "/Xyncwave_Brand_Kit_Exact_Approved_v4.0/02_WEB_APP/Logos/logo-header-light-background.png";
+const footerLogoUrl = "/Xyncwave_Brand_Kit_Exact_Approved_v4.0/02_WEB_APP/Logos/logo-footer-dark-background-with-tagline.png";
 
 type NavItem = { to: AppPath; label: string; note: string; children?: NavItem[] };
 type NavGroup = { heading: string; items: NavItem[] };
@@ -79,7 +81,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border bg-background lg:backdrop-blur-md lg:supports-[backdrop-filter]:bg-background/85">
       <span aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px blue-line opacity-40" />
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-8 px-5 lg:px-8">
-        <SmartLink to="/" aria-label="Xyncwave home" className="shrink-0 py-3"><img src={headerLogoAsset.url} alt="Xyncwave Corporation LLP" className="h-9 w-auto max-w-[58vw] object-contain sm:h-10" /></SmartLink>
+        <SmartLink to="/" aria-label="Xyncwave home" className="shrink-0 py-3"><img src={headerLogoUrl} alt="Xyncwave Corporation LLP" className="h-9 w-auto max-w-[58vw] object-contain sm:h-10" /></SmartLink>
         <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary navigation">
           <NavMenu label="Solutions" href="/solutions" groups={solutionGroups} spotlightTitle="Not sure which capability you need?" spotlightBody="Run a short directional assessment and get a view of where to start." spotlightTo="/digitalization-assessment" spotlightCta="Start the assessment" spotlightMedia={insightMedia["digital-transformation-fragmented-systems"]} />
           <NavMenu label="Industries" href="/industries" groups={[{ heading: "Sectors we work in", items: industryItems }]} spotlightTitle="Explore our delivery work" spotlightBody="See how Xyncwave approaches operational systems, engineering, data, modernization and platform delivery." spotlightTo="/case-studies" spotlightCta="View Case Studies" spotlightMedia={caseStudyMedia["snowflake-data-warehouse-modernization"] ?? caseStudyMedia["track-trace"]} />
@@ -173,7 +175,7 @@ export function SiteFooter() {
   return <footer className="bg-surface-inverse text-primary-foreground">
     <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
       <div className="grid gap-14 border-b border-primary-foreground/15 pb-14 lg:grid-cols-[1.2fr_2fr]">
-        <div><img src={footerLogoAsset.url} alt="Xyncwave Corporation LLP" className="h-10 w-auto max-w-full object-contain" /><p className="mt-8 max-w-sm text-3xl font-medium">LET'S CONNECT. <span className="text-primary">DIGITALLY.</span></p><p className="mt-5 max-w-md text-sm leading-7 text-primary-foreground/65">Enterprise-grade thinking and modern technology execution for organizations solving complex operational and delivery problems.</p></div>
+        <div><img src={footerLogoUrl} alt="Xyncwave Corporation LLP" className="h-10 w-auto max-w-full object-contain" /><p className="mt-8 max-w-sm text-3xl font-medium">LET'S CONNECT. <span className="text-primary">DIGITALLY.</span></p><p className="mt-5 max-w-md text-sm leading-7 text-primary-foreground/65">Enterprise-grade thinking and modern technology execution for organizations solving complex operational and delivery problems.</p></div>
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4"><FooterCol title="Solutions" links={[["Digital Transformation","/solutions/digital-transformation"],["Engineering Capacity","/solutions/engineering-capacity"],["AI & Automation","/solutions/ai-automation"],["Modernization","/solutions/application-modernization"]]} /><FooterCol title="Industries" links={[["Logistics","/industries/logistics"],["Manufacturing","/industries/manufacturing"],["Healthcare","/industries/healthcare"],["Fintech","/industries/fintech"]]} /><FooterCol title="Resources" links={[["Products","/products"],["TripOps","/products/tripops"],["Case Studies","/case-studies"],["Insights","/insights"],["Research","/research"],["Assessments","/digitalization-assessment"]]} /><FooterCol title="Company" links={[["About","/about"],["Why Xyncwave","/why-xyncwave"],["Contact","/contact"],["Privacy","/privacy"]]} /></div>
       </div>
       <div className="flex flex-col gap-3 pt-7 text-xs text-primary-foreground/55 sm:flex-row sm:justify-between"><p>© {new Date().getFullYear()} Xyncwave Corporation LLP.</p><div className="flex gap-5"><SmartLink to="/privacy">Privacy</SmartLink><SmartLink to="/terms">Terms</SmartLink></div></div>
