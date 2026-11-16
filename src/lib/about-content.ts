@@ -8,7 +8,7 @@ import t5 from "@/assets/about/portraits/omkar-sawant.jpg";
 import t6 from "@/assets/about/portraits/aadil-gugarman.jpg";
 import t7 from "@/assets/about/portraits/ghufran-khan.jpg";
 import t8 from "@/assets/about/portraits/furqan-khan.jpg";
-import t9 from "@/assets/about/portraits/umar-uddin.jpg;
+import t9 from "@/assets/about/portraits/umar-uddin.jpg";
 import n1 from "@/assets/about/news-1.jpg";
 import n2 from "@/assets/about/news-2.jpg";
 import n3 from "@/assets/about/news-3.jpg";
