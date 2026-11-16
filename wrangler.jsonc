@@ -1,0 +1,5 @@
+{
+  // Keep variables and secrets set in the Cloudflare dashboard (e.g. RESEND_API_KEY)
+  // when a deploy runs, instead of replacing them with this file's (empty) set.
+  "keep_vars": true
+}
