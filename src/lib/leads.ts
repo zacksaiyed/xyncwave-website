@@ -1,7 +1,6 @@
 import type { Json } from "../integrations/supabase/types";
 import { supabase } from "../integrations/supabase/client";
 import { z } from "zod";
-import { sendLeadEmail } from "./lead-email.functions";
 
 export type LeadType = "general" | "digitalization" | "engineering" | "ai" | "partnership";
 
@@ -63,7 +62,6 @@ export async function submitLead(payload: LeadPayload) {
   if (!parsed.success) throw new Error(parsed.error.issues[0]?.message ?? "Please check the form and try again.");
   const valid = parsed.data;
   const qualification = valid.problem === "not-sure" ? "early_intent" : valid.message ? "high_intent" : "medium_intent";
-  const attributionData = { ...attribution(), ...(valid.attributionContext ?? {}) };
   const { error } = await supabase.from("lead_submissions").insert({
     name: valid.name,
     work_email: valid.workEmail.toLowerCase(),
@@ -73,27 +71,10 @@ export async function submitLead(payload: LeadPayload) {
     problem: valid.problem,
     message: valid.message || null,
     details: (valid.details ?? {}) as Json,
-    attribution: attributionData as Json,
+    attribution: { ...attribution(), ...(valid.attributionContext ?? {}) } as Json,
     qualification,
   });
   if (error) throw new Error("We couldn't send your message. Please try again.");
-
-  // Notify the team by email. The lead is already stored, so a mail failure must not fail the form.
-  try {
-    await sendLeadEmail({
-      data: {
-        name: valid.name,
-        workEmail: valid.workEmail.toLowerCase(),
-        company: valid.company,
-        role: valid.role,
-        leadType: valid.leadType,
-        problem: valid.problem,
-        message: valid.message,
-        details: valid.details,
-        attribution: attributionData,
-      },
-    });
-  } catch { /* notification is best-effort */ }
 }
 
 export interface CrmAdapter {

@@ -5,6 +5,9 @@ import { batchFiveArticles } from "./insights-batch-5";
 import { batchSixArticles } from "./insights-batch-6";
 import { batchSevenArticles } from "./insights-batch-7";
 import { finalInsightArticles } from "./insights-batch-final";
+import { batchEightArticles } from "./insights-batch-8";
+import { batchEightBArticles } from "./insights-batch-8b";
+import { batchEightCArticles } from "./insights-batch-8c";
 export type ArticleLink={label:string;to:string};
 export type ArticleSource={name:string;year:string;title:string;url:string;note?:string};
 export type ArticleTable={headers:string[];rows:string[][]};
@@ -93,5 +96,5 @@ const capacity:BatchArticle={
 fragmentation.sections.push({id:"related-thinking",title:"Related thinking",paragraphs:["Once fragmentation is visible, the next decisions are usually industry-specific sequencing, how systems should connect, and whether a workflow belongs in ERP or a purpose-built application."],links:[{label:"Logistics digital transformation in Africa",to:"/insights/logistics-digital-transformation-africa"},{label:"System integration strategy",to:"/insights/system-integration-strategy"},{label:"ERP vs custom software",to:"/insights/erp-vs-custom-software"}]});
 fragmentation.toc.splice(Math.max(fragmentation.toc.findIndex(t=>t.id==="faq"),0),0,{id:"related-thinking",label:"Related thinking"});
 
-export const batchArticles:BatchArticle[]=[fragmentation,aiAutomation,capacity,...batchTwoArticles,...batchThreeArticles,...batchFourArticles,...batchFiveArticles,...batchSixArticles,...batchSevenArticles,...finalInsightArticles];
+export const batchArticles:BatchArticle[]=[fragmentation,aiAutomation,capacity,...batchTwoArticles,...batchThreeArticles,...batchFourArticles,...batchFiveArticles,...batchSixArticles,...batchSevenArticles,...finalInsightArticles,...batchEightArticles,...batchEightBArticles,...batchEightCArticles];
 export function getBatchArticle(slug:string){return batchArticles.find(article=>article.slug===slug);}

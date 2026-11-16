@@ -19,6 +19,7 @@ import { Route as EngineeringCapacityAssessmentRouteImport } from './routes/engi
 import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ResearchDownloadRouteImport } from './routes/research-download'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -27,18 +28,32 @@ import { Route as StartAConversationRouteImport } from './routes/start-a-convers
 import { Route as TechnologyPartnershipRouteImport } from './routes/technology-partnership'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WhyXyncwaveRouteImport } from './routes/why-xyncwave'
+import { Route as ArErpnextImplementationRouteImport } from './routes/ar.erpnext-implementation'
 import { Route as CaseStudiesIndexRouteImport } from './routes/case-studies.index'
 import { Route as CaseStudiesSlugRouteImport } from './routes/case-studies.$slug'
 import { Route as CaseStudiesEngineeringCapacityRouteImport } from './routes/case-studies.engineering-capacity'
 import { Route as CaseStudiesTrackTraceRouteImport } from './routes/case-studies.track-trace'
+import { Route as DeErpnextImplementierungRouteImport } from './routes/de.erpnext-implementierung'
+import { Route as GccErpnextImplementationRouteImport } from './routes/gcc.erpnext-implementation'
 import { Route as IndustriesIndexRouteImport } from './routes/industries.index'
 import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
 import { Route as InsightsIndexRouteImport } from './routes/insights.index'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
+import { Route as InsightsErpnextFrappeUpgradeSafeCustomizationRouteImport } from './routes/insights.erpnext-frappe-upgrade-safe-customization'
+import { Route as InsightsErpnextImplementationCostTcoGuideRouteImport } from './routes/insights.erpnext-implementation-cost-tco-guide'
+import { Route as InsightsErpnextZatcaPhase2IntegrationReadinessRouteImport } from './routes/insights.erpnext-zatca-phase-2-integration-readiness'
+import { Route as InsightsTallyToErpnextMigrationUaeRouteImport } from './routes/insights.tally-to-erpnext-migration-uae'
 import { Route as LpSlugRouteImport } from './routes/lp.$slug'
+import { Route as ProductsIndexRouteImport } from './routes/products.index'
+import { Route as ProductsTripopsRouteImport } from './routes/products.tripops'
+import { Route as ResearchIndexRouteImport } from './routes/research.index'
+import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as SolutionsIndexRouteImport } from './routes/solutions.index'
 import { Route as SolutionsSlugRouteImport } from './routes/solutions.$slug'
+import { Route as SolutionsErpnextImplementationRouteImport } from './routes/solutions.erpnext-implementation'
 import { Route as ThankYouTypeRouteImport } from './routes/thank-you.$type'
+import { Route as DeInsightsErpnextDatevSchnittstelleDatenexportRouteImport } from './routes/de.insights.erpnext-datev-schnittstelle-datenexport'
+import { Route as DeInsightsErpnextERechnungXrechnungZugferdRouteImport } from './routes/de.insights.erpnext-e-rechnung-xrechnung-zugferd'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -92,6 +107,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResearchDownloadRoute = ResearchDownloadRouteImport.update({
+  id: '/research-download',
+  path: '/research-download',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
   path: '/robots.txt',
@@ -132,6 +152,11 @@ const WhyXyncwaveRoute = WhyXyncwaveRouteImport.update({
   path: '/why-xyncwave',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArErpnextImplementationRoute = ArErpnextImplementationRouteImport.update({
+  id: '/ar/erpnext-implementation',
+  path: '/ar/erpnext-implementation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CaseStudiesIndexRoute = CaseStudiesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -153,6 +178,18 @@ const CaseStudiesTrackTraceRoute = CaseStudiesTrackTraceRouteImport.update({
   path: '/track-trace',
   getParentRoute: () => CaseStudiesRoute,
 } as any)
+const DeErpnextImplementierungRoute =
+  DeErpnextImplementierungRouteImport.update({
+    id: '/de/erpnext-implementierung',
+    path: '/de/erpnext-implementierung',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const GccErpnextImplementationRoute =
+  GccErpnextImplementationRouteImport.update({
+    id: '/gcc/erpnext-implementation',
+    path: '/gcc/erpnext-implementation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const IndustriesIndexRoute = IndustriesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -173,9 +210,53 @@ const InsightsSlugRoute = InsightsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => InsightsRoute,
 } as any)
+const InsightsErpnextFrappeUpgradeSafeCustomizationRoute =
+  InsightsErpnextFrappeUpgradeSafeCustomizationRouteImport.update({
+    id: '/erpnext-frappe-upgrade-safe-customization',
+    path: '/erpnext-frappe-upgrade-safe-customization',
+    getParentRoute: () => InsightsRoute,
+  } as any)
+const InsightsErpnextImplementationCostTcoGuideRoute =
+  InsightsErpnextImplementationCostTcoGuideRouteImport.update({
+    id: '/erpnext-implementation-cost-tco-guide',
+    path: '/erpnext-implementation-cost-tco-guide',
+    getParentRoute: () => InsightsRoute,
+  } as any)
+const InsightsErpnextZatcaPhase2IntegrationReadinessRoute =
+  InsightsErpnextZatcaPhase2IntegrationReadinessRouteImport.update({
+    id: '/erpnext-zatca-phase-2-integration-readiness',
+    path: '/erpnext-zatca-phase-2-integration-readiness',
+    getParentRoute: () => InsightsRoute,
+  } as any)
+const InsightsTallyToErpnextMigrationUaeRoute =
+  InsightsTallyToErpnextMigrationUaeRouteImport.update({
+    id: '/tally-to-erpnext-migration-uae',
+    path: '/tally-to-erpnext-migration-uae',
+    getParentRoute: () => InsightsRoute,
+  } as any)
 const LpSlugRoute = LpSlugRouteImport.update({
   id: '/lp/$slug',
   path: '/lp/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsIndexRoute = ProductsIndexRouteImport.update({
+  id: '/products/',
+  path: '/products/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsTripopsRoute = ProductsTripopsRouteImport.update({
+  id: '/products/tripops',
+  path: '/products/tripops',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResearchIndexRoute = ResearchIndexRouteImport.update({
+  id: '/research/',
+  path: '/research/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResearchSlugRoute = ResearchSlugRouteImport.update({
+  id: '/research/$slug',
+  path: '/research/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SolutionsIndexRoute = SolutionsIndexRouteImport.update({
@@ -188,11 +269,29 @@ const SolutionsSlugRoute = SolutionsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => SolutionsRoute,
 } as any)
+const SolutionsErpnextImplementationRoute =
+  SolutionsErpnextImplementationRouteImport.update({
+    id: '/erpnext-implementation',
+    path: '/erpnext-implementation',
+    getParentRoute: () => SolutionsRoute,
+  } as any)
 const ThankYouTypeRoute = ThankYouTypeRouteImport.update({
   id: '/thank-you/$type',
   path: '/thank-you/$type',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DeInsightsErpnextDatevSchnittstelleDatenexportRoute =
+  DeInsightsErpnextDatevSchnittstelleDatenexportRouteImport.update({
+    id: '/de/insights/erpnext-datev-schnittstelle-datenexport',
+    path: '/de/insights/erpnext-datev-schnittstelle-datenexport',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DeInsightsErpnextERechnungXrechnungZugferdRoute =
+  DeInsightsErpnextERechnungXrechnungZugferdRouteImport.update({
+    id: '/de/insights/erpnext-e-rechnung-xrechnung-zugferd',
+    path: '/de/insights/erpnext-e-rechnung-xrechnung-zugferd',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -205,6 +304,7 @@ export interface FileRoutesByFullPath {
   '/industries': typeof IndustriesRouteWithChildren
   '/insights': typeof InsightsRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/research-download': typeof ResearchDownloadRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -213,18 +313,32 @@ export interface FileRoutesByFullPath {
   '/technology-partnership': typeof TechnologyPartnershipRoute
   '/terms': typeof TermsRoute
   '/why-xyncwave': typeof WhyXyncwaveRoute
+  '/ar/erpnext-implementation': typeof ArErpnextImplementationRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
   '/case-studies/engineering-capacity': typeof CaseStudiesEngineeringCapacityRoute
   '/case-studies/track-trace': typeof CaseStudiesTrackTraceRoute
+  '/de/erpnext-implementierung': typeof DeErpnextImplementierungRoute
+  '/gcc/erpnext-implementation': typeof GccErpnextImplementationRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
+  '/insights/erpnext-frappe-upgrade-safe-customization': typeof InsightsErpnextFrappeUpgradeSafeCustomizationRoute
+  '/insights/erpnext-implementation-cost-tco-guide': typeof InsightsErpnextImplementationCostTcoGuideRoute
+  '/insights/erpnext-zatca-phase-2-integration-readiness': typeof InsightsErpnextZatcaPhase2IntegrationReadinessRoute
+  '/insights/tally-to-erpnext-migration-uae': typeof InsightsTallyToErpnextMigrationUaeRoute
   '/lp/$slug': typeof LpSlugRoute
+  '/products/tripops': typeof ProductsTripopsRoute
+  '/research/$slug': typeof ResearchSlugRoute
   '/solutions/$slug': typeof SolutionsSlugRoute
+  '/solutions/erpnext-implementation': typeof SolutionsErpnextImplementationRoute
   '/thank-you/$type': typeof ThankYouTypeRoute
   '/case-studies/': typeof CaseStudiesIndexRoute
   '/industries/': typeof IndustriesIndexRoute
   '/insights/': typeof InsightsIndexRoute
+  '/products/': typeof ProductsIndexRoute
+  '/research/': typeof ResearchIndexRoute
   '/solutions/': typeof SolutionsIndexRoute
+  '/de/insights/erpnext-datev-schnittstelle-datenexport': typeof DeInsightsErpnextDatevSchnittstelleDatenexportRoute
+  '/de/insights/erpnext-e-rechnung-xrechnung-zugferd': typeof DeInsightsErpnextERechnungXrechnungZugferdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -234,6 +348,7 @@ export interface FileRoutesByTo {
   '/digitalization-assessment': typeof DigitalizationAssessmentRoute
   '/engineering-capacity-assessment': typeof EngineeringCapacityAssessmentRoute
   '/privacy': typeof PrivacyRoute
+  '/research-download': typeof ResearchDownloadRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -241,18 +356,32 @@ export interface FileRoutesByTo {
   '/technology-partnership': typeof TechnologyPartnershipRoute
   '/terms': typeof TermsRoute
   '/why-xyncwave': typeof WhyXyncwaveRoute
+  '/ar/erpnext-implementation': typeof ArErpnextImplementationRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
   '/case-studies/engineering-capacity': typeof CaseStudiesEngineeringCapacityRoute
   '/case-studies/track-trace': typeof CaseStudiesTrackTraceRoute
+  '/de/erpnext-implementierung': typeof DeErpnextImplementierungRoute
+  '/gcc/erpnext-implementation': typeof GccErpnextImplementationRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
+  '/insights/erpnext-frappe-upgrade-safe-customization': typeof InsightsErpnextFrappeUpgradeSafeCustomizationRoute
+  '/insights/erpnext-implementation-cost-tco-guide': typeof InsightsErpnextImplementationCostTcoGuideRoute
+  '/insights/erpnext-zatca-phase-2-integration-readiness': typeof InsightsErpnextZatcaPhase2IntegrationReadinessRoute
+  '/insights/tally-to-erpnext-migration-uae': typeof InsightsTallyToErpnextMigrationUaeRoute
   '/lp/$slug': typeof LpSlugRoute
+  '/products/tripops': typeof ProductsTripopsRoute
+  '/research/$slug': typeof ResearchSlugRoute
   '/solutions/$slug': typeof SolutionsSlugRoute
+  '/solutions/erpnext-implementation': typeof SolutionsErpnextImplementationRoute
   '/thank-you/$type': typeof ThankYouTypeRoute
   '/case-studies': typeof CaseStudiesIndexRoute
   '/industries': typeof IndustriesIndexRoute
   '/insights': typeof InsightsIndexRoute
+  '/products': typeof ProductsIndexRoute
+  '/research': typeof ResearchIndexRoute
   '/solutions': typeof SolutionsIndexRoute
+  '/de/insights/erpnext-datev-schnittstelle-datenexport': typeof DeInsightsErpnextDatevSchnittstelleDatenexportRoute
+  '/de/insights/erpnext-e-rechnung-xrechnung-zugferd': typeof DeInsightsErpnextERechnungXrechnungZugferdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -266,6 +395,7 @@ export interface FileRoutesById {
   '/industries': typeof IndustriesRouteWithChildren
   '/insights': typeof InsightsRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/research-download': typeof ResearchDownloadRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -274,18 +404,32 @@ export interface FileRoutesById {
   '/technology-partnership': typeof TechnologyPartnershipRoute
   '/terms': typeof TermsRoute
   '/why-xyncwave': typeof WhyXyncwaveRoute
+  '/ar/erpnext-implementation': typeof ArErpnextImplementationRoute
   '/case-studies/$slug': typeof CaseStudiesSlugRoute
   '/case-studies/engineering-capacity': typeof CaseStudiesEngineeringCapacityRoute
   '/case-studies/track-trace': typeof CaseStudiesTrackTraceRoute
+  '/de/erpnext-implementierung': typeof DeErpnextImplementierungRoute
+  '/gcc/erpnext-implementation': typeof GccErpnextImplementationRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/insights/$slug': typeof InsightsSlugRoute
+  '/insights/erpnext-frappe-upgrade-safe-customization': typeof InsightsErpnextFrappeUpgradeSafeCustomizationRoute
+  '/insights/erpnext-implementation-cost-tco-guide': typeof InsightsErpnextImplementationCostTcoGuideRoute
+  '/insights/erpnext-zatca-phase-2-integration-readiness': typeof InsightsErpnextZatcaPhase2IntegrationReadinessRoute
+  '/insights/tally-to-erpnext-migration-uae': typeof InsightsTallyToErpnextMigrationUaeRoute
   '/lp/$slug': typeof LpSlugRoute
+  '/products/tripops': typeof ProductsTripopsRoute
+  '/research/$slug': typeof ResearchSlugRoute
   '/solutions/$slug': typeof SolutionsSlugRoute
+  '/solutions/erpnext-implementation': typeof SolutionsErpnextImplementationRoute
   '/thank-you/$type': typeof ThankYouTypeRoute
   '/case-studies/': typeof CaseStudiesIndexRoute
   '/industries/': typeof IndustriesIndexRoute
   '/insights/': typeof InsightsIndexRoute
+  '/products/': typeof ProductsIndexRoute
+  '/research/': typeof ResearchIndexRoute
   '/solutions/': typeof SolutionsIndexRoute
+  '/de/insights/erpnext-datev-schnittstelle-datenexport': typeof DeInsightsErpnextDatevSchnittstelleDatenexportRoute
+  '/de/insights/erpnext-e-rechnung-xrechnung-zugferd': typeof DeInsightsErpnextERechnungXrechnungZugferdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -300,6 +444,7 @@ export interface FileRouteTypes {
     | '/industries'
     | '/insights'
     | '/privacy'
+    | '/research-download'
     | '/robots.txt'
     | '/search'
     | '/sitemap.xml'
@@ -308,18 +453,32 @@ export interface FileRouteTypes {
     | '/technology-partnership'
     | '/terms'
     | '/why-xyncwave'
+    | '/ar/erpnext-implementation'
     | '/case-studies/$slug'
     | '/case-studies/engineering-capacity'
     | '/case-studies/track-trace'
+    | '/de/erpnext-implementierung'
+    | '/gcc/erpnext-implementation'
     | '/industries/$slug'
     | '/insights/$slug'
+    | '/insights/erpnext-frappe-upgrade-safe-customization'
+    | '/insights/erpnext-implementation-cost-tco-guide'
+    | '/insights/erpnext-zatca-phase-2-integration-readiness'
+    | '/insights/tally-to-erpnext-migration-uae'
     | '/lp/$slug'
+    | '/products/tripops'
+    | '/research/$slug'
     | '/solutions/$slug'
+    | '/solutions/erpnext-implementation'
     | '/thank-you/$type'
     | '/case-studies/'
     | '/industries/'
     | '/insights/'
+    | '/products/'
+    | '/research/'
     | '/solutions/'
+    | '/de/insights/erpnext-datev-schnittstelle-datenexport'
+    | '/de/insights/erpnext-e-rechnung-xrechnung-zugferd'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -329,6 +488,7 @@ export interface FileRouteTypes {
     | '/digitalization-assessment'
     | '/engineering-capacity-assessment'
     | '/privacy'
+    | '/research-download'
     | '/robots.txt'
     | '/search'
     | '/sitemap.xml'
@@ -336,18 +496,32 @@ export interface FileRouteTypes {
     | '/technology-partnership'
     | '/terms'
     | '/why-xyncwave'
+    | '/ar/erpnext-implementation'
     | '/case-studies/$slug'
     | '/case-studies/engineering-capacity'
     | '/case-studies/track-trace'
+    | '/de/erpnext-implementierung'
+    | '/gcc/erpnext-implementation'
     | '/industries/$slug'
     | '/insights/$slug'
+    | '/insights/erpnext-frappe-upgrade-safe-customization'
+    | '/insights/erpnext-implementation-cost-tco-guide'
+    | '/insights/erpnext-zatca-phase-2-integration-readiness'
+    | '/insights/tally-to-erpnext-migration-uae'
     | '/lp/$slug'
+    | '/products/tripops'
+    | '/research/$slug'
     | '/solutions/$slug'
+    | '/solutions/erpnext-implementation'
     | '/thank-you/$type'
     | '/case-studies'
     | '/industries'
     | '/insights'
+    | '/products'
+    | '/research'
     | '/solutions'
+    | '/de/insights/erpnext-datev-schnittstelle-datenexport'
+    | '/de/insights/erpnext-e-rechnung-xrechnung-zugferd'
   id:
     | '__root__'
     | '/'
@@ -360,6 +534,7 @@ export interface FileRouteTypes {
     | '/industries'
     | '/insights'
     | '/privacy'
+    | '/research-download'
     | '/robots.txt'
     | '/search'
     | '/sitemap.xml'
@@ -368,18 +543,32 @@ export interface FileRouteTypes {
     | '/technology-partnership'
     | '/terms'
     | '/why-xyncwave'
+    | '/ar/erpnext-implementation'
     | '/case-studies/$slug'
     | '/case-studies/engineering-capacity'
     | '/case-studies/track-trace'
+    | '/de/erpnext-implementierung'
+    | '/gcc/erpnext-implementation'
     | '/industries/$slug'
     | '/insights/$slug'
+    | '/insights/erpnext-frappe-upgrade-safe-customization'
+    | '/insights/erpnext-implementation-cost-tco-guide'
+    | '/insights/erpnext-zatca-phase-2-integration-readiness'
+    | '/insights/tally-to-erpnext-migration-uae'
     | '/lp/$slug'
+    | '/products/tripops'
+    | '/research/$slug'
     | '/solutions/$slug'
+    | '/solutions/erpnext-implementation'
     | '/thank-you/$type'
     | '/case-studies/'
     | '/industries/'
     | '/insights/'
+    | '/products/'
+    | '/research/'
     | '/solutions/'
+    | '/de/insights/erpnext-datev-schnittstelle-datenexport'
+    | '/de/insights/erpnext-e-rechnung-xrechnung-zugferd'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -393,6 +582,7 @@ export interface RootRouteChildren {
   IndustriesRoute: typeof IndustriesRouteWithChildren
   InsightsRoute: typeof InsightsRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
+  ResearchDownloadRoute: typeof ResearchDownloadRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SearchRoute: typeof SearchRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -401,8 +591,17 @@ export interface RootRouteChildren {
   TechnologyPartnershipRoute: typeof TechnologyPartnershipRoute
   TermsRoute: typeof TermsRoute
   WhyXyncwaveRoute: typeof WhyXyncwaveRoute
+  ArErpnextImplementationRoute: typeof ArErpnextImplementationRoute
+  DeErpnextImplementierungRoute: typeof DeErpnextImplementierungRoute
+  GccErpnextImplementationRoute: typeof GccErpnextImplementationRoute
   LpSlugRoute: typeof LpSlugRoute
+  ProductsTripopsRoute: typeof ProductsTripopsRoute
+  ResearchSlugRoute: typeof ResearchSlugRoute
   ThankYouTypeRoute: typeof ThankYouTypeRoute
+  ProductsIndexRoute: typeof ProductsIndexRoute
+  ResearchIndexRoute: typeof ResearchIndexRoute
+  DeInsightsErpnextDatevSchnittstelleDatenexportRoute: typeof DeInsightsErpnextDatevSchnittstelleDatenexportRoute
+  DeInsightsErpnextERechnungXrechnungZugferdRoute: typeof DeInsightsErpnextERechnungXrechnungZugferdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -477,6 +676,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/research-download': {
+      id: '/research-download'
+      path: '/research-download'
+      fullPath: '/research-download'
+      preLoaderRoute: typeof ResearchDownloadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/robots.txt': {
       id: '/robots.txt'
       path: '/robots.txt'
@@ -533,6 +739,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WhyXyncwaveRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ar/erpnext-implementation': {
+      id: '/ar/erpnext-implementation'
+      path: '/ar/erpnext-implementation'
+      fullPath: '/ar/erpnext-implementation'
+      preLoaderRoute: typeof ArErpnextImplementationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/case-studies/': {
       id: '/case-studies/'
       path: '/'
@@ -560,6 +773,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/case-studies/track-trace'
       preLoaderRoute: typeof CaseStudiesTrackTraceRouteImport
       parentRoute: typeof CaseStudiesRoute
+    }
+    '/de/erpnext-implementierung': {
+      id: '/de/erpnext-implementierung'
+      path: '/de/erpnext-implementierung'
+      fullPath: '/de/erpnext-implementierung'
+      preLoaderRoute: typeof DeErpnextImplementierungRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gcc/erpnext-implementation': {
+      id: '/gcc/erpnext-implementation'
+      path: '/gcc/erpnext-implementation'
+      fullPath: '/gcc/erpnext-implementation'
+      preLoaderRoute: typeof GccErpnextImplementationRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/industries/': {
       id: '/industries/'
@@ -589,11 +816,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InsightsSlugRouteImport
       parentRoute: typeof InsightsRoute
     }
+    '/insights/erpnext-frappe-upgrade-safe-customization': {
+      id: '/insights/erpnext-frappe-upgrade-safe-customization'
+      path: '/erpnext-frappe-upgrade-safe-customization'
+      fullPath: '/insights/erpnext-frappe-upgrade-safe-customization'
+      preLoaderRoute: typeof InsightsErpnextFrappeUpgradeSafeCustomizationRouteImport
+      parentRoute: typeof InsightsRoute
+    }
+    '/insights/erpnext-implementation-cost-tco-guide': {
+      id: '/insights/erpnext-implementation-cost-tco-guide'
+      path: '/erpnext-implementation-cost-tco-guide'
+      fullPath: '/insights/erpnext-implementation-cost-tco-guide'
+      preLoaderRoute: typeof InsightsErpnextImplementationCostTcoGuideRouteImport
+      parentRoute: typeof InsightsRoute
+    }
+    '/insights/erpnext-zatca-phase-2-integration-readiness': {
+      id: '/insights/erpnext-zatca-phase-2-integration-readiness'
+      path: '/erpnext-zatca-phase-2-integration-readiness'
+      fullPath: '/insights/erpnext-zatca-phase-2-integration-readiness'
+      preLoaderRoute: typeof InsightsErpnextZatcaPhase2IntegrationReadinessRouteImport
+      parentRoute: typeof InsightsRoute
+    }
+    '/insights/tally-to-erpnext-migration-uae': {
+      id: '/insights/tally-to-erpnext-migration-uae'
+      path: '/tally-to-erpnext-migration-uae'
+      fullPath: '/insights/tally-to-erpnext-migration-uae'
+      preLoaderRoute: typeof InsightsTallyToErpnextMigrationUaeRouteImport
+      parentRoute: typeof InsightsRoute
+    }
     '/lp/$slug': {
       id: '/lp/$slug'
       path: '/lp/$slug'
       fullPath: '/lp/$slug'
       preLoaderRoute: typeof LpSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products/': {
+      id: '/products/'
+      path: '/products'
+      fullPath: '/products/'
+      preLoaderRoute: typeof ProductsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products/tripops': {
+      id: '/products/tripops'
+      path: '/products/tripops'
+      fullPath: '/products/tripops'
+      preLoaderRoute: typeof ProductsTripopsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/research/': {
+      id: '/research/'
+      path: '/research'
+      fullPath: '/research/'
+      preLoaderRoute: typeof ResearchIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/research/$slug': {
+      id: '/research/$slug'
+      path: '/research/$slug'
+      fullPath: '/research/$slug'
+      preLoaderRoute: typeof ResearchSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/solutions/': {
@@ -610,11 +893,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SolutionsSlugRouteImport
       parentRoute: typeof SolutionsRoute
     }
+    '/solutions/erpnext-implementation': {
+      id: '/solutions/erpnext-implementation'
+      path: '/erpnext-implementation'
+      fullPath: '/solutions/erpnext-implementation'
+      preLoaderRoute: typeof SolutionsErpnextImplementationRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
     '/thank-you/$type': {
       id: '/thank-you/$type'
       path: '/thank-you/$type'
       fullPath: '/thank-you/$type'
       preLoaderRoute: typeof ThankYouTypeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/de/insights/erpnext-datev-schnittstelle-datenexport': {
+      id: '/de/insights/erpnext-datev-schnittstelle-datenexport'
+      path: '/de/insights/erpnext-datev-schnittstelle-datenexport'
+      fullPath: '/de/insights/erpnext-datev-schnittstelle-datenexport'
+      preLoaderRoute: typeof DeInsightsErpnextDatevSchnittstelleDatenexportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/de/insights/erpnext-e-rechnung-xrechnung-zugferd': {
+      id: '/de/insights/erpnext-e-rechnung-xrechnung-zugferd'
+      path: '/de/insights/erpnext-e-rechnung-xrechnung-zugferd'
+      fullPath: '/de/insights/erpnext-e-rechnung-xrechnung-zugferd'
+      preLoaderRoute: typeof DeInsightsErpnextERechnungXrechnungZugferdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -654,11 +958,23 @@ const IndustriesRouteWithChildren = IndustriesRoute._addFileChildren(
 
 interface InsightsRouteChildren {
   InsightsSlugRoute: typeof InsightsSlugRoute
+  InsightsErpnextFrappeUpgradeSafeCustomizationRoute: typeof InsightsErpnextFrappeUpgradeSafeCustomizationRoute
+  InsightsErpnextImplementationCostTcoGuideRoute: typeof InsightsErpnextImplementationCostTcoGuideRoute
+  InsightsErpnextZatcaPhase2IntegrationReadinessRoute: typeof InsightsErpnextZatcaPhase2IntegrationReadinessRoute
+  InsightsTallyToErpnextMigrationUaeRoute: typeof InsightsTallyToErpnextMigrationUaeRoute
   InsightsIndexRoute: typeof InsightsIndexRoute
 }
 
 const InsightsRouteChildren: InsightsRouteChildren = {
   InsightsSlugRoute: InsightsSlugRoute,
+  InsightsErpnextFrappeUpgradeSafeCustomizationRoute:
+    InsightsErpnextFrappeUpgradeSafeCustomizationRoute,
+  InsightsErpnextImplementationCostTcoGuideRoute:
+    InsightsErpnextImplementationCostTcoGuideRoute,
+  InsightsErpnextZatcaPhase2IntegrationReadinessRoute:
+    InsightsErpnextZatcaPhase2IntegrationReadinessRoute,
+  InsightsTallyToErpnextMigrationUaeRoute:
+    InsightsTallyToErpnextMigrationUaeRoute,
   InsightsIndexRoute: InsightsIndexRoute,
 }
 
@@ -668,11 +984,13 @@ const InsightsRouteWithChildren = InsightsRoute._addFileChildren(
 
 interface SolutionsRouteChildren {
   SolutionsSlugRoute: typeof SolutionsSlugRoute
+  SolutionsErpnextImplementationRoute: typeof SolutionsErpnextImplementationRoute
   SolutionsIndexRoute: typeof SolutionsIndexRoute
 }
 
 const SolutionsRouteChildren: SolutionsRouteChildren = {
   SolutionsSlugRoute: SolutionsSlugRoute,
+  SolutionsErpnextImplementationRoute: SolutionsErpnextImplementationRoute,
   SolutionsIndexRoute: SolutionsIndexRoute,
 }
 
@@ -691,6 +1009,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndustriesRoute: IndustriesRouteWithChildren,
   InsightsRoute: InsightsRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
+  ResearchDownloadRoute: ResearchDownloadRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SearchRoute: SearchRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
@@ -699,8 +1018,19 @@ const rootRouteChildren: RootRouteChildren = {
   TechnologyPartnershipRoute: TechnologyPartnershipRoute,
   TermsRoute: TermsRoute,
   WhyXyncwaveRoute: WhyXyncwaveRoute,
+  ArErpnextImplementationRoute: ArErpnextImplementationRoute,
+  DeErpnextImplementierungRoute: DeErpnextImplementierungRoute,
+  GccErpnextImplementationRoute: GccErpnextImplementationRoute,
   LpSlugRoute: LpSlugRoute,
+  ProductsTripopsRoute: ProductsTripopsRoute,
+  ResearchSlugRoute: ResearchSlugRoute,
   ThankYouTypeRoute: ThankYouTypeRoute,
+  ProductsIndexRoute: ProductsIndexRoute,
+  ResearchIndexRoute: ResearchIndexRoute,
+  DeInsightsErpnextDatevSchnittstelleDatenexportRoute:
+    DeInsightsErpnextDatevSchnittstelleDatenexportRoute,
+  DeInsightsErpnextERechnungXrechnungZugferdRoute:
+    DeInsightsErpnextERechnungXrechnungZugferdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -8,7 +8,6 @@ import modernizationImage from "../assets/insight-modernization.jpg";
 import fragmentationImage from "../assets/insight-fragmentation.jpg";
 import aiWorkflowImage from "../assets/insight-ai-workflow.jpg";
 import teamModelsImage from "../assets/insight-team-models.jpg";
-import transformationStoryImage from "../assets/XWC_ From Complexity to Clarity.png";
 import { getInsightMedia, type MediaEntry } from "../lib/media-registry";
 
 export const visuals = {
@@ -48,22 +47,22 @@ export function DigitalVisual({
   alt,
   media,
   eager = false,
+  detail = false,
   className = "",
 }: {
   src?: string;
   alt?: string;
   media?: MediaEntry | undefined;
   eager?: boolean;
+  detail?: boolean;
   className?: string;
 }) {
   return (
-    <div
-      className={`digital-visual relative overflow-hidden rounded-card border border-border bg-surface-strong ${className}`}
-    >
+    <figure className={`digital-visual relative overflow-hidden rounded-lg border border-border bg-surface-strong ${media?.concept ? "digital-visual-concept" : ""} ${className}`} style={media?.bg ? { background: `linear-gradient(to bottom, ${media.bg[0]} 50%, ${media.bg[1]} 50%)` } : undefined}>
       <img
         src={media?.src ?? src}
         srcSet={media?.srcSet}
-        sizes={media ? "(min-width: 1024px) 50vw, 100vw" : undefined}
+        sizes={media ? detail ? "(min-width: 1280px) 1216px, calc(100vw - 40px)" : "(min-width: 1024px) 50vw, 100vw" : undefined}
         alt={media?.alt ?? alt ?? ""}
         width={1600}
         height={1000}
@@ -73,29 +72,22 @@ export function DigitalVisual({
         style={media ? { objectPosition: media.position } : undefined}
         className="h-full w-full object-cover"
       />
-      <div
-        className="digital-visual-wash pointer-events-none absolute inset-0"
-        aria-hidden="true"
-      />
-      <div
-        className="digital-visual-index pointer-events-none absolute bottom-0 left-0 h-px w-20 bg-primary"
-        aria-hidden="true"
-      />
-    </div>
+      {!media?.concept && <><div className="digital-visual-wash pointer-events-none absolute inset-0" aria-hidden="true" /><div className="digital-visual-index pointer-events-none absolute bottom-0 left-0 h-px w-20 bg-primary" aria-hidden="true" /></>}
+      {media?.concept && detail && <figcaption className="concept-caption">Representative interface · Demo data</figcaption>}
+    </figure>
   );
 }
 
 export function SystemMap() {
+  const before = ["Disconnected systems", "Manual workflows", "Fragmented data", "Delivery constraints"];
+  const after = ["Connected systems", "Clearer visibility", "Structured workflows", "Scalable delivery"];
   return (
-    <figure className="system-map">
-      <img
-        src={transformationStoryImage}
-        alt="XWC transformation model: disconnected systems, manual workflows, fragmented data and delivery constraints become connected systems, clearer visibility, structured workflows and scalable delivery through Understand, Architect, Engineer, Automate and Scale."
-        width={1672}
-        height={941}
-        loading="lazy"
-        decoding="async"
-      />
-    </figure>
+    <div className="system-map" aria-label="Transformation from fragmented operations to connected digital systems">
+      <div className="space-y-3">{before.map((item) => <div className="system-node system-node-muted" key={item}>{item}</div>)}</div>
+      <div className="system-spine">
+        <span>Understand</span><span>Architect</span><span>Engineer</span><span>Automate</span><span>Scale</span>
+      </div>
+      <div className="space-y-3">{after.map((item) => <div className="system-node" key={item}>{item}</div>)}</div>
+    </div>
   );
 }

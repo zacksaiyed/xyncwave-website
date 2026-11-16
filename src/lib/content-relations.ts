@@ -1,4 +1,5 @@
 import type { ExploreItem } from "../components/continue-exploring";
+import { solutionJourneys, industryJourneys } from "./journey-map";
 
 const trackTrace: ExploreItem = { type: "Case study", title: "A connected field-service platform", body: "See how technician work, stock, communication, and operational status were brought into one system.", to: "/case-studies/track-trace" };
 const engineering: ExploreItem = { type: "Case study", title: "Extending engineering delivery", body: "Explore a flexible model for adding capability around real delivery demand.", to: "/case-studies/engineering-capacity" };
@@ -27,8 +28,8 @@ const industryItems: Record<string, ExploreItem[]> = {
   healthcare: [{ type: "Solution", title: "API & System Integration", body: "Connect supporting applications with explicit information responsibility.", to: "/solutions/integration" }, modernization, { type: "Assessment", title: "Digitalization readiness", body: "Examine one administrative workflow before defining a programme.", to: "/digitalization-assessment" }],
 };
 
-export function relatedForSolution(slug: string) { return solutionItems[slug] ?? []; }
-export function relatedForIndustry(slug: string) { return industryItems[slug] ?? []; }
+export function relatedForSolution(slug: string) { return solutionJourneys[slug]?.items ?? solutionItems[slug] ?? []; }
+export function relatedForIndustry(slug: string) { return industryJourneys[slug]?.items ?? industryItems[slug] ?? []; }
 
 export const articleRelations: Record<string, ExploreItem[]> = {
   "application-modernization-refactor-replatform-rebuild-replace": [{ type: "Insight", title: "12 signs your legacy application is becoming a business risk", body: "Diagnose whether the application is constraining the business before choosing an intervention.", to: "/insights/legacy-application-business-risk" }, { type: "Insight", title: "Cloud migration vs cloud modernization", body: "Separate hosting from application and data change.", to: "/insights/cloud-migration-vs-cloud-modernization" }],

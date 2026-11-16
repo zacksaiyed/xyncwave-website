@@ -1,0 +1,211 @@
+import type { BatchArticle } from "./insights-batch";
+
+const consultingMargin: BatchArticle = {
+  slug: "it-consulting-delivery-margin-capacity-scope-handoffs",
+  cluster: "Engineering Capacity",
+  title: "Why IT Consulting Projects Lose Delivery Margin—and How to Fix Capacity, Scope and Handoffs",
+  seoTitle: "Why IT Consulting Projects Lose Delivery Margin | Xyncwave",
+  metaDescription: "A delivery-economics guide for IT consulting and software services firms: where project margin actually leaks across scoping, staffing, handoffs and change control—and how to close the gaps.",
+  excerpt: "Delivery margin rarely leaks in the hourly rate. It leaks in the handoffs between what was sold, what was scoped, who was staffed and what was accepted.",
+  read: "20 min",
+  published: "2026-11-06",
+  modified: "2026-11-06",
+  directQuestion: "Where does delivery margin actually leak in IT consulting projects?",
+  directAnswer: "Delivery margin usually leaks in the handoffs, not the hourly rate: between what sales promised and what engineering estimated, between the estimate and the people actually available, between delivery teams at each handoff, and between work performed and work formally accepted as a change. Each gap is small. Compounded across a project portfolio, they are the difference between the margin that was sold and the margin that was delivered.",
+  takeaways: [
+    "Margin erosion is usually a workflow problem across sales, scoping, staffing, delivery and acceptance—not a rate problem.",
+    "Sold scope, estimated scope, committed scope and accepted changes are four different things; confusing them is the root of most leakage.",
+    "One hundred percent utilization is not optimal throughput; it is the removal of the slack that absorbs estimation error.",
+    "External delivery capacity protects margin only when governance—scope boundaries, acceptance criteria, escalation—is designed before the work starts.",
+    "A firm can measure its own leakage with data it already has; no industry benchmark is required.",
+  ],
+  toc: [
+    { id: "scenario", label: "The project that was profitable on paper" },
+    { id: "economics", label: "The arithmetic of delivery margin" },
+    { id: "four-scopes", label: "Sold, estimated, committed, accepted" },
+    { id: "leakage-map", label: "The XWC Delivery Margin Leakage Map" },
+    { id: "capacity", label: "Utilization is not throughput" },
+    { id: "partner-model", label: "Structuring external capacity without losing the client" },
+    { id: "checklist", label: "The pre-engagement checklist" },
+    { id: "decision-table", label: "A capacity-and-margin decision table" },
+    { id: "when-not", label: "When not to use an external partner" },
+    { id: "faq", label: "Frequently asked questions" },
+    { id: "sources", label: "Research & Sources" },
+  ],
+  sections: [
+    {
+      id: "scenario",
+      title: "The project that was profitable on paper",
+      paragraphs: [
+        "A fifteen-person software consultancy wins a fixed-scope build for a new client. The proposal assumed a senior engineer, two mid-level engineers and twelve weeks. The margin looked comfortable at the rate card. Then reality arrived: the senior engineer was still finishing another project, so a contractor filled the gap at a higher cost. The client's “existing API documentation” turned out to describe a system two versions old. Three change requests were agreed in email and never re-estimated. The final acceptance review surfaced expectations from the original sales call that nobody had written into the statement of work.",
+        "The project delivered. The client was satisfied. And the firm's actual gross margin on the engagement was a fraction of what the proposal modelled—not because anyone worked slowly, but because the margin leaked at every handoff between promise, estimate, staffing, delivery and acceptance.",
+        "This pattern is common enough across small and mid-sized IT services firms that it deserves to be treated as an operational system problem rather than a series of unlucky projects. The leaks are repeatable, which means they are measurable, which means they are fixable.",
+      ],
+      links: [
+        { label: "Technology & IT Services industry page", to: "/industries/technology-it-services" },
+        { label: "Engineering Capacity", to: "/solutions/engineering-capacity" },
+      ],
+    },
+    {
+      id: "economics",
+      title: "The arithmetic of delivery margin, stated plainly",
+      answer: "Project gross margin is revenue minus the true cost of delivery. The true cost includes every hour actually worked at its real cost, plus rework, plus the coordination overhead the proposal forgot. Margin leaks when any of those grow after the price was set.",
+      paragraphs: [
+        "A purely illustrative example, with invented round numbers: a firm sells a project for 100 units, planning 600 hours of delivery at a blended internal cost of 0.1 per hour—a planned delivery cost of 60 and a planned margin of 40. The project actually takes 720 hours because of underestimated integration work, 80 of those hours are rework from a misunderstood requirement, and a contractor covering a staffing gap costs 0.14 per hour for 150 hours. True delivery cost is roughly 76.5. Real margin is 23.5—about forty percent below plan, with no single dramatic failure to point at.",
+        "The example is hypothetical, but the mechanics are not. Revenue is fixed at signature for fixed-price work, and effectively capped by the client's patience for time-and-materials work. Everything that happens after signature—who is actually available, what the estimate missed, how changes are handled—moves only the cost side. That is why margin protection is a delivery-discipline problem, not a pricing problem.",
+        "The useful diagnostic requires no benchmark data. For each closed project, compare planned hours against actual hours, planned staffing against actual staffing, and scope at signature against scope at acceptance. The gaps, averaged across a portfolio, locate the firm's specific leaks far more accurately than any industry average.",
+      ],
+    },
+    {
+      id: "four-scopes",
+      title: "Four scopes that are constantly confused",
+      variant: "framework",
+      subsections: [
+        { title: "Sold scope", paragraphs: ["What the client believes they bought, shaped by the sales conversation, the proposal's summary language and every verbal assurance along the way. Sold scope lives in the client's head as much as in the document."] },
+        { title: "Estimated scope", paragraphs: ["What engineering believes the work involves, based on the information available at estimation time. Where sales and engineering never reconcile their versions, the estimate is anchored to a different project than the one that was sold."] },
+        { title: "Committed scope", paragraphs: ["What the statement of work actually commits to: deliverables, acceptance criteria, assumptions, exclusions. This is the only scope with contractual standing, and the only one that should anchor delivery planning."] },
+        { title: "Accepted change", paragraphs: ["Scope that entered after signature and was formally accepted—with revised price, timeline or trade-offs. Work that entered without this step is not a change request; it is uncompensated scope growth, however reasonable it felt at the time."] },
+      ],
+      paragraphs: [
+        "Most margin leakage is the distance between these four definitions. The correction is procedural: a scoping review where engineering reads what sales actually promised, a statement of work that names assumptions and exclusions explicitly, and a change-control habit where “yes, we can do that” is always followed by “and here is what it changes.”",
+      ],
+    },
+    {
+      id: "leakage-map",
+      title: "The XWC Delivery Margin Leakage Map",
+      variant: "framework",
+      answer: "Margin leaks at predictable handoffs. Mapping them turns a vague profitability concern into a list of specific, ownable gaps.",
+      table: {
+        headers: ["Handoff", "Typical leak", "Early signal"],
+        rows: [
+          ["Sales → scoping", "Promises and assumptions never reach the estimate", "Estimate reviews proposal summaries, not sales notes"],
+          ["Scoping → staffing", "Estimate assumed people who are not available", "Planned seniority differs from actual seniority"],
+          ["Staffing → delivery", "Context transfer is informal; discovery repeats", "First weeks spent re-learning what sales knew"],
+          ["Delivery → delivery (internal handoffs)", "Work crosses people without state or acceptance", "“I thought you had it” appears in stand-ups"],
+          ["Delivery → rework", "Requirements misunderstood; defects return", "Rework hours untracked or labelled as new work"],
+          ["Change control", "Changes agreed informally, never re-estimated", "Scope grows; price and timeline do not"],
+          ["Acceptance", "Client expectations exceed committed scope", "Final review surfaces “obvious” missing items"],
+          ["Handover", "Knowledge leaves with the team; support is unpriced", "Post-launch questions consume unbudgeted hours"],
+        ],
+      },
+      paragraphs: [
+        "Each row is ownable. A firm that assigns an owner and a measurement to each handoff—planned versus actual hours at minimum—converts margin anxiety into a management system. None of the rows require new software; they require the discipline to record what was expected before comparing it with what happened.",
+      ],
+    },
+    {
+      id: "capacity",
+      title: "Utilization is not throughput",
+      paragraphs: [
+        "The instinctive response to margin pressure is to push utilization higher: keep every billable person fully loaded. The logic feels sound and is mostly wrong. A team at one hundred percent utilization has no slack to absorb estimation error, no capacity to respond when a project slips, and no senior hours available for the scoping reviews that prevent the next leak. Queuing theory is unfashionable in staffing conversations, but its core insight applies directly: as utilization approaches capacity, delay grows non-linearly.",
+        "The more useful distinction is between utilization, availability and specialty bottlenecks. Utilization measures how busy people are. Availability measures whether the right people can start when a project needs them. Specialty bottlenecks—the one engineer who understands the integration stack, the only person clients trust in workshops—constrain the whole portfolio regardless of how busy everyone else is.",
+        "Margin protection therefore has two capacity levers, not one: keeping planned utilization below the level where slip becomes contagious, and relieving specialty bottlenecks before they gate revenue. The second lever is where external capacity earns its place—not as cheaper hours, but as a way to keep a scarce senior generalist from becoming the constraint on three projects at once.",
+      ],
+    },
+    {
+      id: "partner-model",
+      title: "Structuring external capacity without surrendering the client",
+      answer: "External delivery capacity protects margin when the engagement is structured around bounded workstreams, explicit acceptance criteria and the consulting firm's continued ownership of the client relationship.",
+      subsections: [
+        { title: "Bounded workstreams over open-ended augmentation", paragraphs: ["A workstream with a defined scope, interfaces and acceptance criteria can be estimated, reviewed and priced. Open-ended “an extra developer” arrangements inherit all the firm's internal ambiguity and add a coordination layer on top."] },
+        { title: "Fixed-scope packages where the boundary is real", paragraphs: ["Where a component can be specified—an integration, a migration, a test suite—a fixed-scope package converts capacity risk into a deliverable. Where the boundary is not real, fixed scope becomes a change-control battle; choose the workstream model instead."] },
+        { title: "Pods for continuing work", paragraphs: ["A small dedicated pod with continuity suits ongoing delivery for a steady client, where ramp-up cost is amortised and the pod accumulates context that would otherwise walk away between contractors."] },
+        { title: "Behind-the-scenes delivery, client relationship intact", paragraphs: ["Where agreed, white-label or behind-the-scenes delivery keeps the consulting firm as the single commercial and relational face to its client. The partner's engineers work inside the firm's communication, tooling and quality bar; the firm retains account ownership, pricing and all client commitments."] },
+      ],
+      paragraphs: [
+        "The operating model matters more than the label. Confidentiality and IP assignment should be explicit. Client-facing communication rules—who speaks to the client, in which channels, with what visibility—should be written down. Access should follow least privilege. QA and code review ownership should be unambiguous: the firm accepts deliverables against criteria it defined, and escalation paths exist for the day something slips. Continuity provisions—notice periods, handover obligations, documentation standards—protect the firm if the arrangement ends. This is operational guidance, not legal advice; the contract itself belongs with counsel.",
+        "Xyncwave works with IT services and consulting firms in exactly this shape: bounded workstreams, specialist pods and, where agreed, behind-the-scenes delivery, while the partner retains the client relationship. The Engineering Capacity case study describes one such engagement within its approved, anonymised boundaries.",
+      ],
+      links: [
+        { label: "White-label software development, governed", to: "/insights/white-label-software-development" },
+        { label: "Engineering Capacity case study", to: "/case-studies/engineering-capacity" },
+        { label: "Reducing an engineering backlog", to: "/insights/reduce-engineering-backlog" },
+      ],
+    },
+    {
+      id: "checklist",
+      title: "Ten questions before the next engagement starts",
+      variant: "framework",
+      checklist: [
+        { label: "Scope reconciliation", question: "Has engineering read what sales actually promised, including the call notes?" },
+        { label: "Assumptions", question: "Does the statement of work name its assumptions and exclusions explicitly?" },
+        { label: "Staffing reality", question: "Are the people the estimate assumed actually available when the project starts?" },
+        { label: "Bottlenecks", question: "Which scarce specialists does this project need, and what else are they committed to?" },
+        { label: "Change control", question: "Is there a named person who can say “that is a change” and a habit of pricing it?" },
+        { label: "Acceptance criteria", question: "Does the client agree, in writing, what done means for each deliverable?" },
+        { label: "Handoff state", question: "When work crosses people or teams, what artefacts carry its context?" },
+        { label: "Rework tracking", question: "Are rework hours recorded as rework, so the leak is visible?" },
+        { label: "External capacity", question: "If a partner is involved, are scope boundaries, review gates and escalation written down?" },
+        { label: "Handover pricing", question: "Is post-delivery support and knowledge transfer scoped and priced, or assumed free?" },
+      ],
+    },
+    {
+      id: "decision-table",
+      title: "An illustrative capacity-and-margin decision table",
+      paragraphs: [
+        "The table below is a decision aid, not a benchmark. The right model depends on scope clarity, duration, the client's expectations and the firm's management capacity.",
+      ],
+      table: {
+        headers: ["Situation", "Fitting model", "Margin risk if misapplied"],
+        rows: [
+          ["One scarce skill needed for six weeks", "Bounded specialist workstream", "Hiring delay gates the whole project"],
+          ["A well-specified component with clear interfaces", "Fixed-scope package", "Ambiguous scope becomes a change-control fight"],
+          ["A steady client with continuing delivery", "Dedicated pod", "Repeated contractor ramp-up consumes margin"],
+          ["A strategic, client-facing roadmap", "Internal team, partner in support", "Relationship and context drift away from the firm"],
+          ["Uncertain scope, active discovery", "Time-bounded workstream with review gates", "Fixed price locks in the unknowns"],
+        ],
+      },
+    },
+    {
+      id: "when-not",
+      title: "When not to use an external delivery partner",
+      paragraphs: [
+        "External capacity is a tool, not a default. It is usually the wrong answer when the work is the firm's core differentiating IP and cannot be bounded; when the client relationship is so early that trust is still forming through direct delivery; when the firm's own scoping and acceptance discipline is too weak to govern a partner—because a partner inherits that weakness rather than fixing it; and when the real problem is that the firm sells work its delivery organisation cannot repeat, which is a strategy problem no staffing model solves.",
+        "The honest test is governance readiness. A firm that can state scope boundaries, acceptance criteria, review cadence and escalation paths will get margin protection from a partner. A firm that cannot will simply add a coordination tax to its existing leaks.",
+      ],
+    },
+  ],
+  assessment: {
+    title: "Delivery Margin Leakage Check",
+    intro: "Six questions about how projects move from sale to acceptance in your firm. Your result appears before any contact details are requested.",
+    leadType: "engineering",
+    cta: "Discuss a Delivery Capacity Gap",
+    disclaimer: "This is a directional planning aid, not a financial analysis of your business.",
+    questions: [
+      { key: "scoping", prompt: "Does engineering review what sales promised before estimating?", choices: [{ label: "Always", value: "always", score: 2 }, { label: "Sometimes", value: "sometimes", score: 1 }, { label: "Rarely", value: "rarely", score: 0 }] },
+      { key: "staffing", prompt: "How often does actual staffing match the estimate's assumptions?", choices: [{ label: "Usually", value: "usually", score: 2 }, { label: "About half the time", value: "half", score: 1 }, { label: "Rarely", value: "rarely", score: 0 }] },
+      { key: "changes", prompt: "Are scope changes formally re-estimated and accepted?", choices: [{ label: "Consistently", value: "consistent", score: 2 }, { label: "For big changes only", value: "big", score: 1 }, { label: "Informally", value: "informal", score: 0 }] },
+      { key: "rework", prompt: "Are rework hours tracked separately from new work?", choices: [{ label: "Yes", value: "yes", score: 2 }, { label: "Approximately", value: "approx", score: 1 }, { label: "No", value: "no", score: 0 }] },
+      { key: "utilization", prompt: "How full is the delivery team's schedule?", choices: [{ label: "Deliberate slack exists", value: "slack", score: 2 }, { label: "Fully loaded", value: "full", score: 1 }, { label: "Overloaded", value: "over", score: 0 }] },
+      { key: "acceptance", prompt: "Do final reviews surface expectations that were never in the statement of work?", choices: [{ label: "Rarely", value: "rarely", score: 2 }, { label: "Occasionally", value: "occasionally", score: 1 }, { label: "Frequently", value: "frequently", score: 0 }] },
+    ],
+    results: [
+      { min: 0, title: "Systemic leakage", body: "Margin is likely leaking at several handoffs at once. Start with scope reconciliation between sales and engineering—it is usually the highest-leverage single fix.", actions: ["Reconcile sold vs estimated scope", "Introduce change control", "Track rework hours"] },
+      { min: 5, title: "Localised leakage", body: "Some handoffs are controlled and others are not. The leakage map will help locate which two or three gaps account for most of the erosion.", actions: ["Map leaks per handoff", "Name an owner per gap", "Review utilization policy"] },
+      { min: 9, title: "Controlled delivery", body: "The operating discipline is largely present. The remaining opportunity is capacity structure: relieving specialty bottlenecks before they gate the portfolio.", actions: ["Review bottleneck specialists", "Consider bounded workstreams", "Protect scoping slack"] },
+    ],
+  },
+  faq: [
+    ["What is delivery margin leakage in IT consulting?", "The gap between the margin a project was sold at and the margin it actually delivered, caused by compounding small losses across scoping, staffing, handoffs, rework, change control and acceptance."],
+    ["How do you measure project margin leakage?", "Compare planned versus actual hours, planned versus actual staffing, and scope at signature versus scope at acceptance for each closed project, then average the gaps across the portfolio."],
+    ["Is high utilization good for a consulting firm?", "Up to a point. Sustained full utilization removes the slack that absorbs estimation error and blocks senior hours for scoping, so slips in one project propagate to others."],
+    ["When should a consultancy use a white-label delivery partner?", "When a bounded workstream or continuing pod can be governed with clear scope, acceptance criteria and escalation—and the firm wants to keep full ownership of the client relationship."],
+    ["How do you stop scope creep without damaging the client relationship?", "By treating changes as normal and pricing them promptly and transparently, rather than absorbing them silently. Clients accept change control when it is consistent and explained."],
+    ["What is the difference between staff augmentation and a bounded workstream?", "Augmentation adds a person to your team under your management. A bounded workstream hands a defined scope with acceptance criteria to a partner, who manages delivery within that boundary."],
+  ],
+  sources: [
+    { name: "Project Management Institute", year: "2024", title: "A Guide to the Project Management Body of Knowledge (PMBOK Guide), 7th ed.", url: "https://www.pmi.org/pmbok-guide-standards/foundational/pmbok", note: "Reference for scope, change control and acceptance practices." },
+    { name: "Project Management Institute", year: "2025", title: "Pulse of the Profession", url: "https://www.pmi.org/learning/thought-leadership/pulse", note: "Annual survey on project performance; figures vary by year and sample—consult the current edition." },
+    { name: "Kim, G. et al.", year: "2021", title: "The Phoenix Project, 2nd ed. (IT Revolution)", url: "https://itrevolution.com/product/the-phoenix-project/", note: "Queuing and utilization effects on delivery throughput; a narrative treatment, not a benchmark study." },
+    { name: "Forsgren, N. et al.", year: "2021", title: "Accelerate, 2nd ed. (IT Revolution)", url: "https://itrevolution.com/product/accelerate/", note: "Research on software delivery performance and the practices that predict it." },
+  ],
+  finalHeadline: "Margin is protected in the handoffs, not the rate card.",
+  finalCta: "Discuss a Delivery Capacity Gap",
+  finalBody: "Bring one project where the delivered margin fell short of the sold margin. Xyncwave will help you locate which handoffs leaked—and whether bounded capacity would have closed them.",
+  related: [
+    { label: "White-label software development", to: "/insights/white-label-software-development" },
+    { label: "Engineering Capacity", to: "/solutions/engineering-capacity" },
+    { label: "Engineering Capacity case study", to: "/case-studies/engineering-capacity" },
+  ],
+};
+
+export const batchEightBArticles: BatchArticle[] = [consultingMargin];

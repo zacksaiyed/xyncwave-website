@@ -1,55 +1,72 @@
-# Xyncwave build roadmap
-- [x] Light Slate Grey hover lines applied site-wide; Manrope typography site-wide; square (straight-edged) corners everywhere
-- [x] Deepen final Insights Batches 8–10 to the brief’s 2,000–3,000-word target (nine articles now 2,000–2,100 useful words each, with coded diagrams and assessments)
-- [x] Update Fintech case study title to “Building a connected digital stock brokering platform”
-- [x] Insights Batch 7: fintech engineering scale, fintech platform modernization, fintech API & integration strategy (21/30)
-- [x] Insights Batch 6: workflow automation, Excel process replacement on the original URL, manufacturing digitalization (18/30)
-- [x] Verify three article assessments, links, imagery, mobile/dark rendering, metadata and removed-article 404 pages
-- [x] Insights Batch 4 (12/30)
-- [x] Insights Batch 5: healthcare digital transformation, healthcare data pipelines, data silos (15/30)
-- [x] Fix Insight article arrows and frozen empty contents control; add relevant named team authors to all articles
-- [x] Audit source brief and brand guide
-- [x] Enable Lovable Cloud and create secure lead storage
-- [x] Build brand system, shared content models, navigation, and footer
-- [x] Build homepage and commercial route templates
-- [x] Build progressive forms, assessments, and thank-you journeys
-- [x] Add analytics abstraction, metadata, schema, and crawl controls
-- [x] Test routes, interactions, forms, desktop, and mobile
-- [x] Apply the second master upgrade brief
-  - [x] Audit current visual and content systems
-  - [x] Establish premium digital visual library
-  - [x] Fix header and footer logo treatment
-  - [x] Rebuild homepage and conversion experience
-  - [x] Rebuild case studies and insights
-  - [x] Deepen cross-linking and commercial pages
-  - [x] Complete visual and functional QA
-- [x] Apply the attached XWC light-first visual system without changing content or flows
-  - [x] Update shared tokens, typography, controls, header, and footer
-  - [x] Restyle shared sections, forms, assessments, and editorial layouts
-  - [x] Verify unchanged content, links, desktop, mobile, and accessibility states
-- [x] Apply the supplied header and footer logos and simplify the homepage introduction background
-- [x] Standardize every internal-page introduction on the same grey, image-free treatment
-- [x] Complete Xyncwave content intelligence and authority expansion
-  - [x] Expand and differentiate all five industry pages
-  - [x] Expand and differentiate all nine solution pages
-  - [x] Strengthen homepage, About, Why Xyncwave, listings, and conversion context
-  - [x] Deepen verified case studies and supporting insights
-  - [x] Rebuild page-specific internal links, FAQs, CTAs, and metadata
-  - [x] Run duplication, evidence, responsive, and functional QA
-- [x] Convert all five industry pages into lead-generation landing pages
-  - [x] Define five unique conversion journeys and CTA progressions
-  - [x] Add interactive challenge selection and contextual short forms
-  - [x] Preserve campaign, CTA, challenge, and session attribution
-  - [x] Add industry analytics and contextual thank-you journeys
-  - [x] Verify real submission, desktop/mobile conversion flow, metadata, and build
-- [x] Align all case-study and insight thumbnails with the light editorial design
-  - [x] Replace the six dark or overproduced banners with topic-specific HD light editorial imagery
-  - [x] Apply one restrained kinetic image treatment across every placement
-  - [x] Verify case-study and insight listings on desktop and mobile
-- [x] Build Xyncwave Insights Batch 1
-- [x] Build Insights Batch 2 (logistics, integration, ERP vs custom) — long-form roadmap 6/30
-- [x] Build Insights Batch 3 (data engineering, modern data stack, warehouse modernization) — long-form roadmap 9/30
-- [x] Complete Insights Batch 4: modernization, cloud migration, and legacy-risk articles — long-form roadmap 12/30
-  - [x] Add three complete articles, diagrams, sources, assessments, and author bylines
-  - [x] Register hub cards, sitemap links, metadata, and contextual content relationships
-  - [x] Verify all routes, assessments, attribution, submissions, mobile rendering, and build
+# Roadmap — ERPNext controlled expansion
+
+## Engineering resource rate card — 15 November 2026
+- [x] Extend the shared inline rate-card form to the four additional owner-selected consulting, partner-evaluation and fintech articles; all four verified at 1068px and mobile, with 13 rule tests passing.
+- [x] Add three desktop exit-intent placements and three contextual Insight CTAs using one accessible form in unpublished preview.
+- [x] Verify all six placements in the browser; desktop/tablet/mobile forms, validation, focus return, and no overflow; 12 rule/regression tests pass. Delivery remains disabled.
+- [ ] Enable private v2 PDF entitlement, persisted requests and visitor/owner emails — blocked by missing approved v2 PDF and configured email domain; do not accept requests or claim delivery until ready.
+- [ ] Verify real delivery to visitor, Aasiya and Arbaz, retries and unchanged white-paper workflow after dependencies are supplied.
+- [ ] Production deployment — waiting for explicit owner approval.
+
+## Premium case-study hardware presentations — 13 November 2026
+- [x] Audit the existing 11 stories and prepare the device/background/placement inventory.
+- [x] Establish Track & Trace, Brokerage and Hospital presentations, then extend to all 11 cases.
+- [x] Replace shared card and detail artwork; remove visible concept labels while retaining one discreet demo-data note.
+- [x] Verify homepage, listing and every detail on desktop/mobile; deliver artwork comparisons and resolution limitations (native masters 1920 × 1200; old rendered screenshots lost during pause).
+- [ ] Production release — waiting for explicit owner approval; do not publish.
+
+## Case-study interface artwork — 12 November 2026
+- [x] Audit all 11 source stories and existing placements; narratives and unrelated imagery preserved.
+- [x] Create and inspect 11 distinct white-first concepts; 1600/800 WebP pairs and staging inventory saved.
+- [x] Integrate shared imagery and one labelled glimpse per detail page in preview only.
+- [x] Verify desktop/mobile homepage, listing and every detail; no page errors, broken concepts, repeated detail images or overflow.
+- [ ] Native 2400 × 1500 masters — blocked by image tool's 1920-pixel maximum; retained true 1920 × 1200 masters without upscaling.
+- [ ] Production release — waiting for owner review and explicit approval; no publishing performed.
+
+Source: owner ERPNext briefs, 12 November 2026. Preview only; production requires explicit approval.
+
+- [x] Batch 0: inventory routes, content, canonical defects and dependencies (latest project inspected; ZIP and four Gemini research files not attached).
+- [x] First review gate: integrate the complete supplied global pillar, contextual enquiry and ERP navigation/linking; desktop/mobile, SSR and real lead persistence verified.
+- [x] Batch 1 continuation: German, GCC English and Arabic pages built in preview (native German/Arabic review still required before release).
+- [x] Batch 2: C1–C6 Insights built in preview (shorter than 2,200-word target; deepen after owner review). Not yet listed on the Insights index page.
+- [ ] Batch 3: C7–C13 market Insights — waiting for earlier batch review and native Arabic QA.
+- [ ] Batch 4: full release QA — waiting for remaining content, native review and owner production signoff.
+
+## Previous delivery roadmap (historical; reconciliation pending)
+
+# 5 Content Assets (3 Insights + 2 White Papers)
+
+Source: XWC_Lovable_Master_5_Assets brief (2026-11-06). Staging only; production held for approval.
+
+## Phase A — Audit
+- [ ] Inventory insights registry, routes, email/storage stack, privacy policy, GA4
+- [ ] Check email domain status (sender verification)
+- [ ] Confirm no topic cannibalization vs existing 30 Insights
+
+## Phase B — Content
+- [ ] Article 1: Fintech Partner Integration Launch Readiness (~2,400–3,200 words)
+- [ ] Article 2: IT Consulting Delivery Margin (~2,400–3,200 words)
+- [ ] Article 3: Multi-Site Manufacturing ERP Rollout Readiness Africa (~2,400–3,200 words)
+- [ ] White Paper 1: Southern Africa Logistics Technology Outlook 2027 (~4,500 words)
+- [ ] White Paper 2: US Fintech Engineering & Delivery Readiness Outlook 2027 (~4,500 words)
+
+## Phase C — Pages & PDFs
+- [ ] 3 article routes in Insights registry (existing renderer)
+- [ ] 2 research landing pages + /research hub
+- [ ] Generate 2 branded PDFs, QA visually, verify word counts
+
+## Phase D — Gated delivery
+- [ ] Private storage for PDFs (not public)
+- [ ] Server-validated form: Full Name*, Business Email* (reject free-mail), Phone optional
+- [ ] Lead capture table + RLS
+- [ ] Transactional email with secure download link (attachments unsupported by platform — documented fallback per brief 6.1)
+- [ ] Token-gated PDF download endpoint
+
+## Phase E — Analytics, links, QA
+- [ ] GA4 events via track() (no PII)
+- [ ] Contextual internal links from related existing pages
+- [ ] Sitemap, metadata, schema, breadcrumbs
+- [ ] End-to-end test: form → email → download; free-email rejection; wrong-asset check
+
+## Phase F — Report
+- [ ] Final report: URLs, word counts, link map, lead-system proof, QA evidence, open blockers

@@ -8,6 +8,20 @@
       "when": 1789370905071,
       "tag": "0000_create_lead_submissions",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793985944158,
+      "tag": "0001_create_whitepaper_requests",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794465083676,
+      "tag": "0002_whitepaper_lead_notifications",
+      "breakpoints": true
     }
   ]
 }

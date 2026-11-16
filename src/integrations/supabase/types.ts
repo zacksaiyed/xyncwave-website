@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5"
+    PostgrestVersion: "14.17"
   }
   public: {
     Tables: {
@@ -59,6 +59,92 @@ export type Database = {
           role?: string | null
           status?: string
           work_email?: string
+        }
+        Relationships: []
+      }
+      whitepaper_lead_notifications: {
+        Row: {
+          attempts: number
+          created_at: string
+          id: string
+          last_error: string | null
+          recipient: string
+          request_id: string
+          sent_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          recipient: string
+          request_id: string
+          sent_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          recipient?: string
+          request_id?: string
+          sent_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whitepaper_lead_notifications_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "whitepaper_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whitepaper_requests: {
+        Row: {
+          asset_id: string
+          attribution: Json
+          business_email: string
+          created_at: string
+          download_token: string
+          full_name: string
+          id: string
+          marketing_consent: boolean
+          phone: string | null
+          status: string
+          token_expires_at: string
+        }
+        Insert: {
+          asset_id: string
+          attribution?: Json
+          business_email: string
+          created_at?: string
+          download_token?: string
+          full_name: string
+          id?: string
+          marketing_consent?: boolean
+          phone?: string | null
+          status?: string
+          token_expires_at?: string
+        }
+        Update: {
+          asset_id?: string
+          attribution?: Json
+          business_email?: string
+          created_at?: string
+          download_token?: string
+          full_name?: string
+          id?: string
+          marketing_consent?: boolean
+          phone?: string | null
+          status?: string
+          token_expires_at?: string
         }
         Relationships: []
       }

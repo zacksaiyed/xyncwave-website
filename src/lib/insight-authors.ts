@@ -32,6 +32,9 @@ const authorBySlug: Record<string, string> = {
   "data-engineering-growing-businesses": "Aman Siddiqui",
   "modern-data-stack": "Ghufran Khan",
   "data-warehouse-modernization": "Furqan Kahn",
+  "fintech-partner-integration-launch-readiness": "Haziq Hasan",
+  "it-consulting-delivery-margin-capacity-scope-handoffs": "Mizba Siddiqui",
+  "multi-site-manufacturing-erp-rollout-readiness-africa": "Umar Uddin",
 };
 
 export function getInsightAuthor(slug: string) {

@@ -10,49 +10,20 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import refinementCss from "../refinements.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { initAnalytics } from "../lib/analytics";
 import { SiteFooter, SiteHeader, StickyMobileCTA } from "../components/site-shell";
 import { Button } from "../components/ui/button";
-import { AppearanceProvider } from "../components/appearance";
-import type { AppearancePreference } from "../components/appearance";
-import { createServerFn } from "@tanstack/react-start";
-import { getRequest } from "@tanstack/react-start/server";
-import {
-  absoluteUrl,
-  APPROVED_LOGO_PATH,
-  isProductionHostname,
-  SITE_NAME,
-  SITE_ORIGIN,
-} from "../lib/site-config";
-
-const GA4_MEASUREMENT_ID = "G-HPVJCS6BYR";
-const appearanceValues: AppearancePreference[] = ["light", "dark", "auto"];
-const getInitialAppearance = createServerFn({ method: "GET" }).handler(() => {
-  const request = getRequest();
-  const cookie = request.headers.get("cookie") ?? "";
-  const raw = cookie
-    .split(";")
-    .map((part) => part.trim().split("="))
-    .find(([key]) => key === "xwc-appearance")?.[1];
-  const preference = appearanceValues.includes(raw as AppearancePreference)
-    ? (raw as AppearancePreference)
-    : "auto";
-  return {
-    preference,
-    hasSavedCookie: appearanceValues.includes(raw as AppearancePreference),
-    isProductionHost: isProductionHostname(new URL(request.url).hostname),
-  };
-});
+import { RateCardCaptureProvider } from "../components/rate-card-capture";
+import { currentHostIndexable } from "../lib/indexing.server";
+import { STAGING_ROBOTS } from "../lib/indexing";
 
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <p className="text-sm font-bold text-primary">404</p>
-        <h1 className="mt-4 text-4xl font-bold text-foreground">
-          Looks like this digital path doesn't exist.
-        </h1>
+        <h1 className="mt-4 text-4xl font-bold text-foreground">Looks like this digital path doesn't exist.</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           The page may have moved, or the address may be incomplete.
         </p>
@@ -69,7 +40,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: { error: unknown; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -107,61 +78,29 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  loader: () => getInitialAppearance(),
-  head: ({ loaderData }) => ({
+  head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "XWC — Enterprise Technology Solutions" },
-      {
-        name: "description",
-        content:
-          "XWC turns operational complexity into connected digital systems through software engineering, modernization, AI, cloud, and flexible delivery capacity.",
-      },
+      { title: "Xyncwave — Enterprise Technology Solutions" },
+      { name: "description", content: "Xyncwave turns operational complexity into connected digital systems through software engineering, modernization, AI, cloud, and flexible delivery capacity." },
       { name: "author", content: "Xyncwave Corporation LLP" },
-      {
-        name: "google-site-verification",
-        content: "1lFYvpwPG9sBRLJG2oxKXQir1d2gp5SkiMHKvnuvClE",
-      },
-      ...(!loaderData?.isProductionHost ? [{ name: "robots", content: "noindex,follow" }] : []),
-      { property: "og:title", content: "XWC — Enterprise Technology Solutions" },
-      {
-        property: "og:description",
-        content:
-          "Business-first technology for connected operations, scalable platforms, and stronger engineering delivery.",
-      },
+      { property: "og:title", content: "Xyncwave — Enterprise Technology Solutions" },
+      { property: "og:description", content: "Business-first technology for connected operations, scalable platforms, and stronger engineering delivery." },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: `${SITE_ORIGIN}/` },
-      { property: "og:site_name", content: SITE_NAME },
-      { property: "og:image", content: absoluteUrl(APPROVED_LOGO_PATH) },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "XWC — Enterprise Technology Solutions" },
-      {
-        name: "twitter:description",
-        content:
-          "Business-first technology for connected operations, scalable platforms, and stronger engineering delivery.",
-      },
-      { name: "twitter:image", content: absoluteUrl(APPROVED_LOGO_PATH) },
+      ...(currentHostIndexable() ? [] : [{ name: "robots", content: STAGING_ROBOTS }]),
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "stylesheet", href: refinementCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap",
-      },
-      { rel: "icon", href: "/favicon.ico", sizes: "any" },
-      { rel: "icon", href: "/favicon.png", type: "image/png", sizes: "256x256" },
-      {
-        rel: "apple-touch-icon",
-        href: "/Xyncwave_Brand_Kit_Exact_Approved_v4.0/02_WEB_APP/App_Icons/apple-touch-icon-180x180.png",
-        sizes: "180x180",
-      },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
   }),
   shellComponent: RootShell,
@@ -171,34 +110,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
-  const loaderData = Route.useLoaderData();
-  const preference = loaderData?.preference ?? "auto";
-  const isProductionHost = loaderData?.isProductionHost ?? false;
   return (
-    <html
-      lang="en"
-      className={preference === "dark" ? "dark" : undefined}
-      data-appearance={preference}
-      data-theme={preference === "auto" ? undefined : preference}
-      style={preference === "auto" ? undefined : { colorScheme: preference }}
-    >
+    <html lang="en">
       <head>
-        {isProductionHost && (
-          <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`}
-            />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${GA4_MEASUREMENT_ID}');`,
-              }}
-            />
-          </>
-        )}
         <HeadContent />
       </head>
       <body>
@@ -211,22 +125,16 @@ gtag('config', '${GA4_MEASUREMENT_ID}');`,
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const loaderData = Route.useLoaderData();
-  const preference = loaderData?.preference ?? "auto";
-  const hasSavedCookie = loaderData?.hasSavedCookie ?? false;
+  useEffect(() => { initAnalytics(); }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AppearanceProvider initialPreference={preference} hasSavedCookie={hasSavedCookie}>
-        <div>
-          <SiteHeader />
-          <main id="main-content" tabIndex={-1}>
-            <Outlet />
-          </main>
-          <SiteFooter />
-          <StickyMobileCTA />
-        </div>
-      </AppearanceProvider>
+      <RateCardCaptureProvider><div>
+        <SiteHeader />
+        <main id="main-content"><Outlet /></main>
+        <SiteFooter />
+        <StickyMobileCTA />
+      </div></RateCardCaptureProvider>
     </QueryClientProvider>
   );
 }

@@ -1,90 +1,37 @@
-import { useId } from "react";
-
-/** Decorative, deterministic geometry. All business meaning stays in the adjacent HTML. */
+// Homepage hero illustration: precise shapes, subtle depth, one blue connection.
 export function ConnectedArchitecture() {
-  const id = useId().replace(/:/g, "");
-  const face = `${id}-face`;
-  const top = `${id}-top`;
-  const side = `${id}-side`;
-  const shadow = `${id}-shadow`;
-
-  return (
-    <figure className="connected-architecture" aria-hidden="true">
-      <svg viewBox="0 0 760 620" role="presentation" focusable="false">
-        <defs>
-          <linearGradient id={face} x1="0" y1="0" x2="1" y2="0.85">
-            <stop offset="0" stopColor="var(--architecture-face-high)" />
-            <stop offset="1" stopColor="var(--architecture-face)" />
-          </linearGradient>
-          <linearGradient id={top} x1="0" y1="0" x2="0.75" y2="1">
-            <stop offset="0" stopColor="var(--architecture-face-high)" />
-            <stop offset="1" stopColor="var(--architecture-side-high)" />
-          </linearGradient>
-          <linearGradient id={side} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="var(--architecture-side-high)" />
-            <stop offset="1" stopColor="var(--architecture-side)" />
-          </linearGradient>
-          <filter id={shadow} x="-25%" y="-55%" width="150%" height="210%">
-            <feGaussianBlur stdDeviation="10" />
-          </filter>
-        </defs>
-
-        {/* Grounding, not glow. The shadow bounds are fully contained in the viewBox. */}
-        <g fill="var(--architecture-shadow)" opacity="0.12" filter={`url(#${shadow})`}>
-          <path d="m124 375 128-74 108 62-128 74z" />
-          <path d="m356 308 114-66 109 63-114 66z" />
-          <path d="m531 409 123-71 63 36-123 71z" />
-          <path d="m291 502 173-100 172 99-173 100z" />
-        </g>
-
-        {/* Rear plane: the common axis from which the assembly is organised. */}
-        <g stroke="var(--architecture-edge)" strokeWidth="0.7" strokeLinejoin="round">
-          <path d="m356 99 27-16 132 76-27 16z" fill={`url(#${top})`} />
-          <path d="m356 99 132 76v220l-132-76z" fill={`url(#${face})`} />
-          <path d="m488 175 27-16v220l-27 16z" fill={`url(#${side})`} />
-        </g>
-
-        {/* One continuous blue connection, weaving through the neutral assembly. */}
-        <path
-          className="architecture-connection"
-          d="M155 370 255 428 342 378 342 319 441 262 590 348 590 447 462 521 365 465"
-          fill="none"
-          stroke="var(--primary)"
-          strokeWidth="5"
-          strokeLinejoin="round"
-          strokeLinecap="butt"
-        />
-
-        {/* Independent system volume. */}
-        <g stroke="var(--architecture-edge)" strokeWidth="0.7" strokeLinejoin="round">
-          <path d="m113 261 114-66 106 61-114 66z" fill={`url(#${top})`} />
-          <path d="m113 261 106 61v123l-106-61z" fill={`url(#${face})`} />
-          <path d="m219 322 114-66v123l-114 66z" fill={`url(#${side})`} />
-        </g>
-
-        {/* An open architectural frame, not another labelled glass card. */}
-        <g stroke="var(--architecture-edge)" strokeWidth="0.7" strokeLinejoin="round">
-          <path d="m531 235 24-14 135 78-24 14z" fill={`url(#${top})`} />
-          <path d="m666 313 24-14v183l-24 14z" fill={`url(#${side})`} />
-          <path
-            d="M531 235 666 313 666 496 531 418Z M552 277 552 405 645 459 645 331Z"
-            fill={`url(#${face})`}
-            fillRule="evenodd"
-          />
-          <path d="m552 277 15 9v110l-15 9z" fill={`url(#${side})`} />
-          <path d="m552 405 15-9 78 45v18z" fill={`url(#${top})`} />
-        </g>
-
-        {/* Two lower planes give depth without competing with the upright frame. */}
-        <g stroke="var(--architecture-edge)" strokeWidth="0.7" strokeLinejoin="round">
-          <path d="m350 476 138-80 129 75-138 80z" fill={`url(#${top})`} />
-          <path d="m350 476 129 75v30l-129-75z" fill={`url(#${face})`} />
-          <path d="m479 551 138-80v30l-138 80z" fill={`url(#${side})`} />
-          <path d="m267 443 64-37 81 47-64 37z" fill={`url(#${top})`} />
-          <path d="m267 443 81 47v23l-81-47z" fill={`url(#${face})`} />
-          <path d="m348 490 64-37v23l-64 37z" fill={`url(#${side})`} />
-        </g>
-      </svg>
-    </figure>
-  );
+  const block = (x: number, y: number, w: number, h: number, d = 18) => <g>
+    <path d={`M${x} ${y} l${d} ${-d} h${w} l${-d} ${d} z`} className="fill-background stroke-border" />
+    <path d={`M${x + w} ${y} l${d} ${-d} v${h} l${-d} ${d} z`} className="fill-secondary stroke-border" />
+    <rect x={x} y={y} width={w} height={h} className="fill-background stroke-border" />
+  </g>;
+  return <figure aria-hidden="true" className="relative mx-auto w-full max-w-[560px]">
+    <svg viewBox="0 0 520 440" className="h-auto w-full text-foreground" fill="none" strokeWidth="1">
+      <g className="stroke-border" strokeDasharray="2 6">
+        <path d="M20 400 H500" /><path d="M20 340 H500" /><path d="M120 40 V420" /><path d="M400 40 V420" />
+      </g>
+      {block(60, 120, 120, 80)}
+      {block(300, 70, 140, 64)}
+      {block(250, 260, 150, 90)}
+      {block(70, 290, 90, 60)}
+      <g className="fill-muted-foreground/40">
+        {[0, 1, 2].map((i) => <rect key={`a${i}`} x={76} y={140 + i * 16} width={70 - i * 14} height={4} />)}
+        {[0, 1].map((i) => <rect key={`b${i}`} x={316} y={88 + i * 16} width={90 - i * 26} height={4} />)}
+        {[0, 1, 2, 3].map((i) => <rect key={`c${i}`} x={268} y={280 + i * 14} width={110 - i * 18} height={4} />)}
+      </g>
+      <g className="stroke-muted-foreground/50">
+        <path d="M180 160 H240 V102 H300" />
+        <path d="M115 290 V200" />
+      </g>
+      <path d="M180 180 H220 V305 H250" className="stroke-primary" strokeWidth="2" />
+      <circle cx="180" cy="180" r="4" className="fill-primary" />
+      <circle cx="250" cy="305" r="4" className="fill-primary" />
+      <g className="fill-background stroke-muted-foreground/60">
+        <circle cx="240" cy="102" r="3" /><circle cx="115" cy="245" r="3" />
+      </g>
+      <text x="300" y="58" className="fill-muted-foreground" fontSize="9" letterSpacing="2">SYSTEM / 02</text>
+      <text x="60" y="94" className="fill-muted-foreground" fontSize="9" letterSpacing="2">OPERATIONS / 01</text>
+      <text x="250" y="372" className="fill-muted-foreground" fontSize="9" letterSpacing="2">DATA / 03</text>
+    </svg>
+  </figure>;
 }

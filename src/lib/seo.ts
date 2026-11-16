@@ -1,47 +1,17 @@
-import { absoluteUrl, APPROVED_LOGO_PATH, canonicalUrl, SITE_NAME } from "./site-config";
+import { SITE_ORIGIN as SITE } from "./site-origin";
+const abs = (p: string) => (p.startsWith("http") ? p : `${SITE}${p === "/" ? "/" : p}`);
 
-type PageHeadOptions = {
-  type?: "website" | "article";
-  image?: string;
-  robots?: string;
-  canonical?: boolean;
-};
-
-export function pageHead(
-  title: string,
-  description: string,
-  path: string,
-  typeOrOptions: PageHeadOptions["type"] | PageHeadOptions = {},
-) {
-  const options = typeof typeOrOptions === "string" ? { type: typeOrOptions } : typeOrOptions;
-  const type = options.type ?? "website";
-  const documentTitle = /\|\s*(?:XWC|Xyncwave)$/i.test(title) ? title : `${title} | XWC`;
-  const canonical = canonicalUrl(path);
-  const image = absoluteUrl(options.image ?? APPROVED_LOGO_PATH);
-
+export function pageHead(title: string, description: string, path: string, type = "website") {
   return {
     meta: [
-      { title: documentTitle },
+      { title: `${title} | Xyncwave` },
       { name: "description", content: description },
-      ...(options.robots ? [{ name: "robots", content: options.robots }] : []),
-      { property: "og:title", content: documentTitle },
+      { property: "og:title", content: `${title} | Xyncwave` },
       { property: "og:description", content: description },
       { property: "og:type", content: type },
-      { property: "og:url", content: canonical },
-      { property: "og:site_name", content: SITE_NAME },
-      { property: "og:image", content: image },
+      { property: "og:url", content: abs(path) },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: documentTitle },
-      { name: "twitter:description", content: description },
-      { name: "twitter:image", content: image },
     ],
-    links: options.canonical === false ? [] : [{ rel: "canonical", href: canonical }],
+    links: [{ rel: "canonical", href: abs(path) }],
   };
-}
-
-export function noindexHead(title: string, description: string, path?: string) {
-  return pageHead(title, description, path ?? "/", {
-    robots: "noindex,follow",
-    canonical: Boolean(path),
-  });
 }
