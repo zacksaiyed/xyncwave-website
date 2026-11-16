@@ -16,12 +16,6 @@ import { DigitalVisual } from "../components/digital-visuals";
 import { articles } from "../lib/content";
 import { pageHead } from "../lib/seo";
 import { SITE_ORIGIN } from "../lib/site-origin";
-import fintechInsightImage from "../assets/media/bp-fintech.webp";
-import fintechInsightImageSmall from "../assets/media/bp-fintech-800.webp";
-import digitalizationInsightImage from "../assets/media/bp-digitalization.webp";
-import digitalizationInsightImageSmall from "../assets/media/bp-digitalization-800.webp";
-import aiInsightImage from "../assets/media/bp-ai.webp";
-import aiInsightImageSmall from "../assets/media/bp-ai-800.webp";
 
 export const Route = createFileRoute("/")({
   head: () => ({ ...pageHead("Digital transformation for complex operations", "Xyncwave turns fragmented operations, delivery constraints, AI uncertainty, and legacy technology into practical connected systems.", "/"), scripts: [{ type: "application/ld+json", children: JSON.stringify({ "@context":"https://schema.org", "@type":"Organization", name:"Xyncwave Corporation LLP", url:SITE_ORIGIN }) }] }),
@@ -50,27 +44,6 @@ const featuredInsights = featuredSlugs
   .map((slug) => articles.find((article) => article.slug === slug))
   .filter((article): article is (typeof articles)[number] => Boolean(article));
 
-const featuredInsightMedia: Record<string, MediaEntry> = {
-  "fintech-what-to-outsource": {
-    src: fintechInsightImage,
-    srcSet: `${fintechInsightImageSmall} 800w, ${fintechInsightImage} 1600w`,
-    alt: "Blueprint diagram separating a secured proprietary platform core from modular external services joined through a gateway.",
-    position: "center center",
-  },
-  "business-case-process-digitalization": {
-    src: digitalizationInsightImage,
-    srcSet: `${digitalizationInsightImageSmall} 800w, ${digitalizationInsightImage} 1600w`,
-    alt: "Blueprint pipeline where scattered documents pass through validation and reconciliation into one database.",
-    position: "center center",
-  },
-  "ai-workflow-automation": {
-    src: aiInsightImage,
-    srcSet: `${aiInsightImageSmall} 800w, ${aiInsightImage} 1600w`,
-    alt: "Blueprint diagram where a rule-based path and a network of model nodes converge into one audited execution block.",
-    position: "center center",
-  },
-};
-
 function HomePage() { return <div className="home-live">
   <section className="relative overflow-hidden bg-surface-hero">
     <div className="architectural-grid absolute inset-0 opacity-25"/>
@@ -93,7 +66,7 @@ function HomePage() { return <div className="home-live">
 
   <section className="py-section"><div className="mx-auto max-w-7xl px-5 lg:px-8"><SectionIntro eyebrow="Transformation experience" title="Real operating detail. Practical connected technology."/><div className="hover-card group mt-12 grid overflow-hidden rounded-2xl border border-border bg-background lg:grid-cols-[1.35fr_.65fr]"><DigitalVisual media={caseStudyMedia["track-trace"]} className="min-h-[360px] rounded-none border-0 lg:min-h-[560px]"/><div className="relative flex flex-col justify-between p-8 sm:p-12"><span className="proof-link" aria-hidden="true"/><div><p className="text-xs font-medium text-primary">Case study · Logistics operations</p><h3 className="mt-6 text-3xl font-medium leading-tight sm:text-4xl">From fragmented field work to one connected operational platform.</h3><p className="mt-6 leading-8 text-muted-foreground">ERPNext/Frappe web workflows, a Flutter technician application, stock traceability, job status, communication, evidence, and an AWS serverless application layer.</p></div><div className="mt-12"><Button asChild><SmartLink to="/case-studies/track-trace">See How the System Works <ArrowRight/></SmartLink></Button></div></div></div></div></section>
 
-  <section className="bg-secondary py-section"><div className="mx-auto max-w-7xl px-5 lg:px-8"><SectionIntro eyebrow="Technology intelligence" title="Useful thinking for active decisions."/><div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3 lg:items-start">{featuredInsights.map((a)=><SmartLink key={a.slug} to={`/insights/${a.slug}`} className="hover-card group block overflow-hidden border border-transparent bg-background"><DigitalVisual media={featuredInsightMedia[a.slug] ?? getInsightMedia(a.slug,a.category)} className="aspect-[16/10]"/><div className="p-7 sm:p-8"><p className="text-xs font-bold uppercase text-primary">{a.category} · {a.read}</p><h3 className="mt-5 text-2xl font-bold leading-tight">{a.title}</h3><p className="mt-4 leading-7 text-muted-foreground">{a.excerpt}</p><span className="link-sweep mt-7 inline-flex items-center gap-2 font-semibold text-primary">Read the Insight <ArrowRight className="arrow-nudge size-4"/></span></div></SmartLink>)}</div></div></section>
+  <section className="bg-secondary py-section"><div className="mx-auto max-w-7xl px-5 lg:px-8"><SectionIntro eyebrow="Technology intelligence" title="Useful thinking for active decisions."/><div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3 lg:items-start">{featuredInsights.map((a)=><SmartLink key={a.slug} to={`/insights/${a.slug}`} className="hover-card group block overflow-hidden border border-transparent bg-background"><DigitalVisual media={getInsightMedia(a.slug,a.category)} className="aspect-[16/10]"/><div className="p-7 sm:p-8"><p className="text-xs font-bold uppercase text-primary">{a.category} · {a.read}</p><h3 className="mt-5 text-2xl font-bold leading-tight">{a.title}</h3><p className="mt-4 leading-7 text-muted-foreground">{a.excerpt}</p><span className="link-sweep mt-7 inline-flex items-center gap-2 font-semibold text-primary">Read the Insight <ArrowRight className="arrow-nudge size-4"/></span></div></SmartLink>)}</div></div></section>
   <section className="border-y border-border py-12"><div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 md:flex-row md:items-center md:justify-between lg:px-8"><div><p className="text-xs font-medium text-primary">Xyncwave product</p><p className="mt-3 text-2xl font-medium">TripOps — trip records, expenses, budgets and reconciliation in one workflow.</p></div><Button variant="outline" asChild><SmartLink to="/products/tripops">Explore TripOps <ArrowRight/></SmartLink></Button></div></section>
   <CTASection/>
 </div>; }
