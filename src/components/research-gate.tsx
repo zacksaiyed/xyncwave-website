@@ -33,6 +33,7 @@ export function ResearchGate({ paper, open, onOpenChange }: { paper: ResearchPap
   const [state, setState] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [error, setError] = useState("");
   const [downloadUrl, setDownloadUrl] = useState("");
+  const [emailed, setEmailed] = useState(false);
 
   const markStart = () => {
     if (!started) {
@@ -60,6 +61,7 @@ export function ResearchGate({ paper, open, onOpenChange }: { paper: ResearchPap
       });
       if (result.ok) {
         setDownloadUrl(result.downloadUrl ?? "");
+        setEmailed(result.emailed === true);
         setState("success");
         track("whitepaper_request_success", { asset_id: paper.assetId });
       } else {
@@ -83,7 +85,7 @@ export function ResearchGate({ paper, open, onOpenChange }: { paper: ResearchPap
             <DialogHeader className="mt-5">
               <DialogTitle className="text-2xl">{downloadUrl ? "Your report is ready." : "Your report has been sent."}</DialogTitle>
               <DialogDescription className="pt-2 text-base leading-7">
-                {downloadUrl ? "Thank you. Download the full research PDF below — the link stays active for 72 hours." : "We've sent the research to the business email you provided. Please check your inbox and spam folder."}
+                {downloadUrl ? `Thank you. Download the full research PDF below${emailed ? ", and we've also emailed you the same secure link" : ""} — the link stays active for 72 hours.` : "We've sent the research to the business email you provided. Please check your inbox and spam folder."}
               </DialogDescription>
             </DialogHeader>
             {downloadUrl && <Button className="mt-7 w-full" asChild><a href={downloadUrl} onClick={() => track("lead_magnet_download", { asset_id: paper.assetId })}>Download the PDF<ArrowDown /></a></Button>}
