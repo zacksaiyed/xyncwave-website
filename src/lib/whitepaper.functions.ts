@@ -20,7 +20,7 @@ const requestSchema = z.object({
 });
 
 export type WhitepaperRequestResult =
-  | { ok: true; downloadUrl?: string; emailed?: boolean }
+  | { ok: true; downloadUrl?: string }
   | { ok: false; error: string };
 
 // Best-effort per-instance limiter (3 requests per email+report per hour). A database, when configured, adds a stronger limit.
@@ -142,6 +142,6 @@ export const requestWhitepaper = createServerFn({ method: "POST" })
       } catch { /* record keeping is best-effort */ }
     }
 
-    // The visitor gets the report both ways: the same time-limited link is shown for an instant download and is emailed.
-    return { ok: true, downloadUrl, emailed: sent };
+    // If the email could not be sent, hand the visitor the same time-limited link directly.
+    return sent ? { ok: true } : { ok: true, downloadUrl };
   });
