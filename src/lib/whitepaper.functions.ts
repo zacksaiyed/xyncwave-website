@@ -23,6 +23,29 @@ export type WhitepaperRequestResult =
   | { ok: true; downloadUrl?: string }
   | { ok: false; error: string };
 
+// Best-effort per-instance limiter (3 requests per email+report per hour). A database, when configured, adds a stronger limit.
+const recent = new Map<string, number[]>();
+function limited(key: string) {
+  const now = Date.now();
+  const hits = (recent.get(key) ?? []).filter((t) => now - t < 60 * 60 * 1000);
+  if (hits.length >= 3) return true;
+  hits.push(now);
+  recent.set(key, hits);
+  if (recent.size > 5000) recent.clear();
+  return false;
+}
+
+/** Optional Supabase admin client (service-role). Returns null when it is not configured, so the flow never depends on it. */
+async function getAdmin() {
+  if (!process.env["SUPABASE_URL"] || !process.env["SUPABASE_SERVICE_ROLE_KEY"]) return null;
+  try {
+    return (await import("@/integrations/supabase/client.server")).supabaseAdmin;
+  } catch (error) {
+    console.error("supabase admin unavailable", error instanceof Error ? error.message : error);
+    return null;
+  }
+}
+
 export const requestWhitepaper = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => requestSchema.parse(input))
   .handler(async ({ data }): Promise<WhitepaperRequestResult> => {
@@ -37,9 +60,11 @@ export const requestWhitepaper = createServerFn({ method: "POST" })
     if (FREE_MAIL_DOMAINS.has(domain)) {
       return { ok: false, error: "Please use your business email address." };
     }
+    if (limited(`${email}|${paper.assetId}`)) {
+      return { ok: false, error: "This report was already requested recently. Please check your inbox, or try again later." };
+    }
 
-    // Team notification (Resend). Sent first and independently of the database, so no white-paper lead is lost.
-    // Best-effort: never blocks or fails the visitor's request.
+    // 1. Team notification (Resend). First and independent of everything else, so no white-paper lead is ever lost.
     try {
       const { sendTeamNotification, detailsTable, wrapHtml } = await import("./team-notify.server");
       await sendTeamNotification({
@@ -60,80 +85,63 @@ export const requestWhitepaper = createServerFn({ method: "POST" })
       console.error("whitepaper team notification error", error instanceof Error ? error.message : error);
     }
 
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-
-    // Rate limit: max 3 requests for the same email+asset per hour, 8 per email per day.
-    const hourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-    const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-    const { count: recentSame } = await supabaseAdmin
-      .from("whitepaper_requests")
-      .select("id", { count: "exact", head: true })
-      .eq("business_email", email)
-      .eq("asset_id", paper.assetId)
-      .gte("created_at", hourAgo);
-    if ((recentSame ?? 0) >= 3) {
-      return { ok: false, error: "This report was already requested recently. Please check your inbox, or try again later." };
-    }
-    const { count: recentAny } = await supabaseAdmin
-      .from("whitepaper_requests")
-      .select("id", { count: "exact", head: true })
-      .eq("business_email", email)
-      .gte("created_at", dayAgo);
-    if ((recentAny ?? 0) >= 8) {
-      return { ok: false, error: "We couldn't send your report right now. Please try again later." };
-    }
-
-    const attribution = { ...(data.attribution ?? {}) };
-    delete attribution["email"];
-    delete attribution["name"];
-    delete attribution["phone"];
-
-    const { data: row, error: insertError } = await supabaseAdmin
-      .from("whitepaper_requests")
-      .insert({
-        asset_id: paper.assetId,
-        full_name: data.fullName,
-        business_email: email,
-        phone: data.phone || null,
-        marketing_consent: data.marketingConsent === true,
-        attribution,
-        status: "validated",
-      })
-      .select("id, download_token, full_name, business_email, phone, marketing_consent, attribution, created_at")
-      .single();
-    if (insertError || !row) {
-      console.error("whitepaper_requests insert failed", insertError?.message);
-      return { ok: false, error: "We couldn't send your report right now. Please try again." };
+    // 2. Optional record in Supabase (only when the service-role key is configured). Never blocks the visitor.
+    let recordId: string | null = null;
+    try {
+      const admin = await getAdmin();
+      if (admin) {
+        const attribution = { ...(data.attribution ?? {}) };
+        delete attribution["email"];
+        delete attribution["name"];
+        delete attribution["phone"];
+        const { data: row } = await admin
+          .from("whitepaper_requests")
+          .insert({
+            asset_id: paper.assetId,
+            full_name: data.fullName,
+            business_email: email,
+            phone: data.phone || null,
+            marketing_consent: data.marketingConsent === true,
+            attribution,
+            status: "validated",
+          })
+          .select("id")
+          .single();
+        recordId = row?.id ?? null;
+      }
+    } catch (error) {
+      console.error("whitepaper_requests record failed", error instanceof Error ? error.message : error);
     }
 
-    // Internal lead notification now goes through Resend above (the Lovable email provider is not available on this host).
+    // 3. Deliver the report: signed 72-hour link, emailed to the visitor.
+    const origin = new URL(getRequest().url).origin;
+    const { pdfIsAvailable, signDownloadToken } = await import("./download-token.server");
+    if (!(await pdfIsAvailable(origin, paper.pdfFilename))) {
+      console.error("whitepaper PDF is not deployed at /downloads/", paper.pdfFilename);
+      return { ok: false, error: "This report is being finalised. We've noted your request and our team will email it to you shortly." };
+    }
+    const token = await signDownloadToken("paper", paper.assetId);
+    if (!token) return { ok: false, error: "We couldn't prepare your report right now. Please try again later." };
+    const downloadUrl = `${origin}/research-download?token=${token}`;
 
-    const requestUrl = new URL(getRequest().url);
-    const origin = requestUrl.origin;
-    const downloadUrl = `${origin}/research-download?token=${row.download_token}`;
-    const enquiryUrl = `${origin}${paper.afterCtaTo}`;
-    const firstName = data.fullName.trim().split(/\s+/)[0] ?? "";
-
-    const { sendWhitepaperEmail } = await import("./email-templates/send-whitepaper.server");
-    const result = await sendWhitepaperEmail({
+    const { sendWhitepaperEmail } = await import("./visitor-mail.server");
+    const sent = await sendWhitepaperEmail({
       to: email,
-      firstName,
+      firstName: data.fullName.trim().split(/\s+/)[0] ?? "",
       paperTitle: paper.title,
       paperDescription: paper.emailDescription,
       downloadUrl,
-      enquiryUrl,
-      idempotencyKey: `whitepaper-${paper.assetId}-${row.id}`,
+      enquiryUrl: `${origin}${paper.afterCtaTo}`,
+      idempotencyKey: `whitepaper-${paper.assetId}-${recordId ?? `${email}-${Math.floor(Date.now() / 3_600_000)}`}`,
     });
 
-    await supabaseAdmin
-      .from("whitepaper_requests")
-      .update({ status: result.sent ? "provider_accepted" : "direct_download" })
-      .eq("id", row.id);
-
-    if (!result.sent) {
-      // Email delivery unavailable (e.g. sender domain not verified): give the requester a direct, time-limited link instead.
-      console.warn("whitepaper email not sent, using direct download", result.reason);
-      return { ok: true, downloadUrl };
+    if (recordId) {
+      try {
+        const admin = await getAdmin();
+        await admin?.from("whitepaper_requests").update({ status: sent ? "provider_accepted" : "direct_download" }).eq("id", recordId);
+      } catch { /* record keeping is best-effort */ }
     }
-    return { ok: true };
+
+    // If the email could not be sent, hand the visitor the same time-limited link directly.
+    return sent ? { ok: true } : { ok: true, downloadUrl };
   });

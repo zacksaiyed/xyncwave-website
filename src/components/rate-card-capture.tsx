@@ -87,7 +87,7 @@ export function RateCardCaptureProvider({ children }: { children: ReactNode }) {
 function RateCardLeadForm({ placement }: { placement: Placement }) {
   const submit = useServerFn(requestRateCard);
   const [email, setEmail] = useState(""); const [phone, setPhone] = useState(""); const [website, setWebsite] = useState("");
-  const [busy, setBusy] = useState(false); const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false); const [error, setError] = useState(""); const [done, setDone] = useState(false);
   const submitting = useRef(false); const id = useRef<string | null>(null);
   const send = async (event: FormEvent) => {
     event.preventDefault(); if (submitting.current) return;
@@ -99,10 +99,12 @@ function RateCardLeadForm({ placement }: { placement: Placement }) {
     track("rate_card_submit", properties(placement));
     try {
       const result = await submit({ data: { businessEmail: email, phone: phone || undefined, sourcePage: cleanSource(), placement, requestId: id.current, website, attribution } });
-      setError(result.error);
+      if (result.ok) { setDone(true); saveTime("xwc-rate-card-requested"); track("rate_card_request_success", properties(placement)); }
+      else setError(result.error);
     } catch { setError("We couldn't accept your request right now. Please try again later."); }
     finally { submitting.current = false; setBusy(false); }
   };
+  if (done) return <div role="status" className="mt-2 space-y-3"><p className="text-base font-medium">Your rate card is on its way.</p><p className="text-sm leading-6 text-muted-foreground">We've emailed the PDF to {email}. Please check your inbox and spam folder. The secure link stays active for 72 hours.</p></div>;
   return <form onSubmit={send} className="mt-2 space-y-5"><div className="space-y-2"><Label htmlFor="rc-email">Business Email *</Label><Input id="rc-email" type="email" required autoComplete="email" placeholder="you@company.com" maxLength={255} value={email} onChange={event => setEmail(event.target.value)} aria-describedby={error ? "rc-error" : undefined}/></div><div className="space-y-2"><Label htmlFor="rc-phone">Phone Number (Optional)</Label><Input id="rc-phone" type="tel" autoComplete="tel" maxLength={40} value={phone} onChange={event => setPhone(event.target.value)}/></div><div className="sr-only" aria-hidden="true"><label htmlFor="rc-website">Website</label><input id="rc-website" tabIndex={-1} autoComplete="off" value={website} onChange={event => setWebsite(event.target.value)}/></div>{error && <p id="rc-error" role="alert" className="text-sm leading-6 text-destructive">{error}</p>}<Button type="submit" className="w-full" size="lg" disabled={busy}>{busy ? <><LoaderCircle className="size-4 motion-safe:animate-spin"/>Submitting…</> : <>Send Me the Rate Card<ArrowRight className="size-4"/></>}</Button><p className="text-xs leading-5 text-muted-foreground">We'll email the PDF to your business inbox. No unrelated marketing emails without your consent.</p></form>;
 }
 
