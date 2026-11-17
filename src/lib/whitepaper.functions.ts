@@ -38,6 +38,28 @@ export const requestWhitepaper = createServerFn({ method: "POST" })
       return { ok: false, error: "Please use your business email address." };
     }
 
+    // Team notification (Resend). Sent first and independently of the database, so no white-paper lead is lost.
+    // Best-effort: never blocks or fails the visitor's request.
+    try {
+      const { sendTeamNotification, detailsTable, wrapHtml } = await import("./team-notify.server");
+      await sendTeamNotification({
+        subject: `New white paper request: ${paper.title}`,
+        replyTo: email,
+        html: wrapHtml(
+          "New white paper request",
+          detailsTable("Request", {
+            "White paper": paper.title,
+            Name: data.fullName,
+            "Business email": email,
+            Phone: data.phone,
+            "Marketing consent": data.marketingConsent === true ? "Yes" : "No",
+          }) + detailsTable("Attribution", data.attribution),
+        ),
+      });
+    } catch (error) {
+      console.error("whitepaper team notification error", error instanceof Error ? error.message : error);
+    }
+
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     // Rate limit: max 3 requests for the same email+asset per hour, 8 per email per day.
@@ -84,15 +106,7 @@ export const requestWhitepaper = createServerFn({ method: "POST" })
       return { ok: false, error: "We couldn't send your report right now. Please try again." };
     }
 
-    // Internal lead notification: after a successful insert, never blocks the visitor's request.
-    try {
-      const lead = await import("./email-templates/whitepaper-lead-notification.server");
-      const results = await lead.notifyWhitepaperLead(supabaseAdmin, lead.toDetails(row, paper.title));
-      for (const r of results) if (!r.sent) console.warn("whitepaper lead notification not sent", r.recipient, r.reason);
-      await lead.retryFailedLeadNotifications(supabaseAdmin, (id) => getPaperByAssetId(id)?.title ?? id, row.id);
-    } catch (error) {
-      console.error("whitepaper lead notification error", error instanceof Error ? error.message : error);
-    }
+    // Internal lead notification now goes through Resend above (the Lovable email provider is not available on this host).
 
     const requestUrl = new URL(getRequest().url);
     const origin = requestUrl.origin;
