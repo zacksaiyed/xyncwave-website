@@ -1,5 +1,7 @@
 {
   // Keep variables and secrets set in the Cloudflare dashboard (e.g. RESEND_API_KEY)
   // when a deploy runs, instead of replacing them with this file's (empty) set.
-  "keep_vars": true
+  "keep_vars": true,
+  // Every 3 days: keep the free Supabase project from pausing (see src/nitro-keepalive.ts).
+  "triggers": { "crons": ["0 3 */3 * *"] }
 }

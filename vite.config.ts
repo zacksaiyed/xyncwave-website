@@ -12,4 +12,6 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Scheduled keep-alive ping for the free Supabase plan (cron is set in wrangler.jsonc).
+  nitro: { plugins: ["./src/nitro-keepalive.ts"] },
 });
