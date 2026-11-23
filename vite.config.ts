@@ -13,5 +13,6 @@ export default defineConfig({
     server: { entry: "server" },
   },
   // Scheduled keep-alive ping for the free Supabase plan (cron is set in wrangler.jsonc).
-  nitro: { plugins: ["./src/nitro-keepalive.ts"] },
+  // (Cast: the wrapper's `nitro` type omits `plugins`, but nitro itself supports it.)
+  nitro: { plugins: ["./src/nitro-keepalive.ts"] } as never,
 });

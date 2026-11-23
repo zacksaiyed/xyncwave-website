@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -11,7 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { initAnalytics } from "../lib/analytics";
+import { initAnalytics, trackPageView } from "../lib/analytics";
 import { SiteFooter, SiteHeader, StickyMobileCTA } from "../components/site-shell";
 import { Button } from "../components/ui/button";
 import { RateCardCaptureProvider } from "../components/rate-card-capture";
@@ -125,7 +126,10 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const locationKey = useRouterState({ select: (state) => `${state.location.pathname}${state.location.searchStr}` });
   useEffect(() => { initAnalytics(); }, []);
+  // One GA4 page_view on first load and on every client-side navigation.
+  useEffect(() => { trackPageView(); }, [locationKey]);
 
   return (
     <QueryClientProvider client={queryClient}>

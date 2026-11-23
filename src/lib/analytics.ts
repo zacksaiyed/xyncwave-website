@@ -2,26 +2,58 @@ export type AnalyticsEvent = "page_view" | "industry_page_view" | "cta_click" | 
 
 export type RateCardAnalyticsEvent = "rate_card_cta_view" | "rate_card_cta_click" | "rate_card_popup_view" | "rate_card_popup_dismiss" | "rate_card_submit" | "rate_card_request_success" | "rate_card_email_sent" | "rate_card_download";
 
-export function track(event: AnalyticsEvent | RateCardAnalyticsEvent, properties: Record<string, string | number | boolean | undefined> = {}) {
+import { isProductionHost } from "./indexing";
+
+type AnalyticsProperties = Record<string, string | number | boolean | undefined>;
+type AnalyticsWindow = typeof window & { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void; __xwcGa?: boolean };
+
+/**
+ * GA4 measurement ID for xyncwave.com. Hardcoded on purpose (it is a public ID) so a code re-import
+ * or a missing build variable can never silently switch tracking off. VITE_GA_MEASUREMENT_ID overrides it.
+ */
+export const GA4_MEASUREMENT_ID = (import.meta.env?.["VITE_GA_MEASUREMENT_ID"] as string | undefined) || "G-HPVJCS6BYR";
+
+/** Events that count as a lead, also reported to GA4 as its standard `generate_lead` event. */
+const LEAD_EVENTS = new Set<string>(["lead_form_submit", "whitepaper_request_success", "rate_card_request_success"]);
+
+export function track(event: AnalyticsEvent | RateCardAnalyticsEvent, properties: AnalyticsProperties = {}) {
   if (typeof window === "undefined") return;
   window.dispatchEvent(new CustomEvent("xyncwave:analytics", { detail: { event, ...properties } }));
-  const analyticsWindow = window as typeof window & { dataLayer?: Record<string, unknown>[] };
-  analyticsWindow.dataLayer?.push({ event, ...properties });
+  const gtag = (window as AnalyticsWindow).gtag;
+  if (!gtag) return;
+  // "page_view" is reserved for real page loads (see trackPageView); page-level detail events use another name.
+  gtag("event", event === "page_view" ? "content_page_view" : event, properties);
+  if (LEAD_EVENTS.has(event)) gtag("event", "generate_lead", properties);
 }
-/** Loads GA4 once, only when a measurement ID is configured. Existing track() calls then reach GA4 via dataLayer. */
+
+/** Sends one GA4 page_view. Called on first load and on every client-side navigation. */
+export function trackPageView() {
+  if (typeof window === "undefined") return;
+  const gtag = (window as AnalyticsWindow).gtag;
+  if (!gtag) return;
+  // Wait a tick so document.title already reflects the new route.
+  window.setTimeout(() => {
+    gtag("event", "page_view", { page_location: window.location.href, page_path: window.location.pathname + window.location.search, page_title: document.title });
+  }, 100);
+}
+
+/** Loads GA4 once, on the production hosts only (previews and local builds are not tracked). */
 export function initAnalytics() {
   if (typeof window === "undefined") return;
-  const id = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_ANALYTICS_API_KEY"] as string | undefined;
-  const w = window as typeof window & { dataLayer?: unknown[]; __xwcGa?: boolean };
-  if (!id || w.__xwcGa) return;
+  const w = window as AnalyticsWindow;
+  if (w.__xwcGa || !isProductionHost(window.location.hostname)) return;
   w.__xwcGa = true;
+  w.dataLayer = w.dataLayer || [];
+  w.gtag = function gtag() {
+    // gtag.js only understands the `arguments` object, not plain arrays.
+    // eslint-disable-next-line prefer-rest-params
+    w.dataLayer!.push(arguments);
+  };
   const script = document.createElement("script");
   script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`;
   document.head.appendChild(script);
-  w.dataLayer = w.dataLayer || [];
-  // eslint-disable-next-line prefer-rest-params
-  function gtag(..._args: unknown[]) { w.dataLayer!.push(arguments); }
-  gtag("js", new Date());
-  gtag("config", id, { send_page_view: true });
+  w.gtag("js", new Date());
+  // Page views are sent explicitly by trackPageView so client-side navigation is counted exactly once.
+  w.gtag("config", GA4_MEASUREMENT_ID, { send_page_view: false });
 }
