@@ -27,14 +27,30 @@ export function track(event: AnalyticsEvent | RateCardAnalyticsEvent, properties
 }
 
 /** Sends one GA4 page_view. Called on first load and on every client-side navigation. */
+let lastPageTitle: string | undefined;
 export function trackPageView() {
   if (typeof window === "undefined") return;
   const gtag = (window as AnalyticsWindow).gtag;
   if (!gtag) return;
-  // Wait a tick so document.title already reflects the new route.
-  window.setTimeout(() => {
+  const previousTitle = lastPageTitle;
+  let sent = false;
+  const send = () => {
+    if (sent) return;
+    sent = true;
+    observer?.disconnect();
+    lastPageTitle = document.title;
     gtag("event", "page_view", { page_location: window.location.href, page_path: window.location.pathname + window.location.search, page_title: document.title });
-  }, 100);
+  };
+  // After a client-side navigation the router updates <title> a moment later: send as soon as it changes,
+  // or after a short fallback when the new page legitimately keeps the same title.
+  let observer: MutationObserver | undefined;
+  if (previousTitle !== undefined && typeof MutationObserver !== "undefined") {
+    observer = new MutationObserver(() => { if (document.title !== previousTitle) send(); });
+    observer.observe(document.head, { subtree: true, childList: true, characterData: true });
+    window.setTimeout(send, 700);
+  } else {
+    window.setTimeout(send, 100);
+  }
 }
 
 /** Loads GA4 once, on the production hosts only (previews and local builds are not tracked). */
