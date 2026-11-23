@@ -42,12 +42,12 @@ export function trackPageView() {
     gtag("event", "page_view", { page_location: window.location.href, page_path: window.location.pathname + window.location.search, page_title: document.title });
   };
   // After a client-side navigation the router updates <title> a moment later: send as soon as it changes,
-  // or after a short fallback when the new page legitimately keeps the same title.
+  // or after a fallback (3s) when the new page legitimately keeps the same title.
   let observer: MutationObserver | undefined;
   if (previousTitle !== undefined && typeof MutationObserver !== "undefined") {
     observer = new MutationObserver(() => { if (document.title !== previousTitle) send(); });
     observer.observe(document.head, { subtree: true, childList: true, characterData: true });
-    window.setTimeout(send, 700);
+    window.setTimeout(send, 3000);
   } else {
     window.setTimeout(send, 100);
   }
