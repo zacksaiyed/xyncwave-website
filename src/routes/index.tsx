@@ -15,10 +15,10 @@ import { CTASection, Eyebrow, SectionIntro } from "../components/page-sections";
 import { DigitalVisual } from "../components/digital-visuals";
 import { articles } from "../lib/content";
 import { pageHead } from "../lib/seo";
-import { SITE_ORIGIN } from "../lib/site-origin";
+import { siteIdentityGraph } from "../lib/structured-data";
 
 export const Route = createFileRoute("/")({
-  head: () => ({ ...pageHead("Digital transformation for complex operations", "Xyncwave turns fragmented operations, delivery constraints, AI uncertainty, and legacy technology into practical connected systems.", "/"), scripts: [{ type: "application/ld+json", children: JSON.stringify({ "@context":"https://schema.org", "@type":"Organization", name:"Xyncwave Corporation LLP", url:SITE_ORIGIN }) }] }),
+  head: () => ({ ...pageHead("Digital transformation for complex operations", "Xyncwave turns fragmented operations, delivery constraints, AI uncertainty, and legacy technology into practical connected systems.", "/"), scripts: [{ type: "application/ld+json", children: JSON.stringify(siteIdentityGraph()) }] }),
   component: HomePage,
 });
 

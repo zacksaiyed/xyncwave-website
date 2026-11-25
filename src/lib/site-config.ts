@@ -1,7 +1,7 @@
 export const SITE_ORIGIN = "https://xyncwave.com";
 export const SITE_HOSTNAME = "xyncwave.com";
-export const SITE_NAME = "XWC";
-export const SITE_ALTERNATE_NAME = "Xyncwave";
+export const SITE_NAME = "Xyncwave";
+export const SITE_ALTERNATE_NAME = "XWC";
 
 export const ORGANIZATION_ID = `${SITE_ORIGIN}/#organization`;
 export const WEBSITE_ID = `${SITE_ORIGIN}/#website`;
