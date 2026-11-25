@@ -61,12 +61,28 @@ export function downloadFilename(kind: DownloadKind, id: string): string | null 
 
 export const downloadAssetUrl = (origin: string, filename: string) => `${origin}${DOWNLOADS_DIR}/${encodeURIComponent(filename)}`;
 
+type AssetsBinding = { fetch: (request: Request) => Promise<Response> };
+
+/**
+ * Reads a deployed PDF. On Cloudflare the static-assets binding (env.ASSETS, exposed by nitro on globalThis.__env__)
+ * is used, because a Worker fetching its own public hostname over HTTP is not reliable. Elsewhere (local dev) it
+ * falls back to a normal fetch.
+ */
+export async function fetchDownloadAsset(origin: string, filename: string, method: "GET" | "HEAD" = "GET"): Promise<Response> {
+  const url = downloadAssetUrl(origin, filename);
+  const assets = (globalThis as { __env__?: { ASSETS?: AssetsBinding } }).__env__?.ASSETS;
+  return assets ? assets.fetch(new Request(url, { method })) : fetch(url, { method });
+}
+
 /** True when the PDF has actually been deployed. Lets flows fail honestly until the file exists. */
 export async function pdfIsAvailable(origin: string, filename: string): Promise<boolean> {
   try {
-    const res = await fetch(downloadAssetUrl(origin, filename), { method: "HEAD" });
-    return res.ok && (res.headers.get("content-type") ?? "").includes("pdf");
-  } catch {
+    const res = await fetchDownloadAsset(origin, filename, "HEAD");
+    const ok = res.ok && (res.headers.get("content-type") ?? "").includes("pdf");
+    if (!ok) console.error("pdf availability check negative:", res.status, res.headers.get("content-type"));
+    return ok;
+  } catch (error) {
+    console.error("pdf availability check failed", error instanceof Error ? error.message : error);
     return false;
   }
 }

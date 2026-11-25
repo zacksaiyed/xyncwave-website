@@ -23,7 +23,7 @@ export const Route = createFileRoute("/research-download")({
 
         // Signed, expiring links (white papers and the rate card). No database involved.
         if (token.includes(".")) {
-          const { verifyDownloadToken, downloadFilename, downloadAssetUrl } = await import("../lib/download-token.server");
+          const { verifyDownloadToken, downloadFilename, fetchDownloadAsset } = await import("../lib/download-token.server");
           const verified = await verifyDownloadToken(token);
           if (!verified.ok) {
             return verified.reason === "expired"
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/research-download")({
           }
           const filename = downloadFilename(verified.kind, verified.id);
           if (!filename) return text("Unknown document.", 404);
-          const file = await fetch(downloadAssetUrl(url.origin, filename));
+          const file = await fetchDownloadAsset(url.origin, filename);
           if (!file.ok || !(file.headers.get("content-type") ?? "").includes("pdf") || !file.body) {
             console.error("download PDF missing at /downloads/", filename);
             return text("The document is temporarily unavailable. Please try again later.", 503);
