@@ -9,6 +9,8 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -18,6 +20,21 @@ import { Button } from "../components/ui/button";
 import { RateCardCaptureProvider } from "../components/rate-card-capture";
 import { currentHostIndexable } from "../lib/indexing.server";
 import { STAGING_ROBOTS } from "../lib/indexing";
+import { AppearanceProvider } from "../components/appearance";
+import type { AppearancePreference } from "../components/appearance";
+
+// Dark mode: the visitor's choice (Light / Dark / Auto) is kept in the "xwc-appearance" cookie and read on the
+// server so the first paint already has the right theme. Light is the default until a visitor chooses. Protected by scripts/protect.mjs.
+const appearanceValues: AppearancePreference[] = ["light", "dark", "auto"];
+const getInitialAppearance = createServerFn({ method: "GET" }).handler(() => {
+  const cookie = getRequest().headers.get("cookie") ?? "";
+  const raw = cookie
+    .split(";")
+    .map((part) => part.trim().split("="))
+    .find(([key]) => key === "xwc-appearance")?.[1];
+  const saved = appearanceValues.includes(raw as AppearancePreference);
+  return { preference: saved ? (raw as AppearancePreference) : ("light" as AppearancePreference), hasSavedCookie: saved };
+});
 
 function NotFoundComponent() {
   return (
@@ -79,6 +96,7 @@ function ErrorComponent({ error, reset }: { error: unknown; reset: () => void })
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: () => getInitialAppearance(),
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -119,8 +137,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const loaderData = Route.useLoaderData();
+  const preference = loaderData?.preference ?? "light";
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={preference === "dark" ? "dark" : undefined}
+      data-appearance={preference}
+      data-theme={preference === "auto" ? undefined : preference}
+      style={preference === "auto" ? undefined : { colorScheme: preference }}
+    >
       <head>
         <HeadContent />
       </head>
@@ -134,6 +160,9 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const loaderData = Route.useLoaderData();
+  const preference = loaderData?.preference ?? "light";
+  const hasSavedCookie = loaderData?.hasSavedCookie ?? false;
   const locationKey = useRouterState({ select: (state) => `${state.location.pathname}${state.location.searchStr}` });
   useEffect(() => { initAnalytics(); }, []);
   // One GA4 page_view on first load and on every client-side navigation.
@@ -141,12 +170,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <RateCardCaptureProvider><div>
-        <SiteHeader />
-        <main id="main-content"><Outlet /></main>
-        <SiteFooter />
-        <StickyMobileCTA />
-      </div></RateCardCaptureProvider>
+      <AppearanceProvider initialPreference={preference} hasSavedCookie={hasSavedCookie}>
+        <RateCardCaptureProvider><div>
+          <SiteHeader />
+          <main id="main-content"><Outlet /></main>
+          <SiteFooter />
+          <StickyMobileCTA />
+        </div></RateCardCaptureProvider>
+      </AppearanceProvider>
     </QueryClientProvider>
   );
 }

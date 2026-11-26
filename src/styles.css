@@ -1,6 +1,7 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@custom-variant dark (&:where(.dark, .dark *));
 
 /*
  * Design system definition.
@@ -428,3 +429,106 @@
 @media (prefers-reduced-motion: reduce) { .home-motion video { display: none; } }
 .home-challenges { background: radial-gradient(60% 45% at 50% 72%, color-mix(in oklab, var(--primary) 9%, transparent), transparent 70%); }
 .home-live .home-problem-card { background: color-mix(in oklab, var(--background) 92%, transparent); box-shadow: 0 18px 50px -24px color-mix(in oklab, var(--primary) 35%, transparent), 0 1px 2px color-mix(in oklab, var(--foreground) 6%, transparent); backdrop-filter: blur(6px); }
+
+/* Dark mode colours (Light / Dark / Auto). Protected by scripts/protect.mjs. */
+.dark {
+  --background: oklch(0.1593 0.0111 267.98);
+  --foreground: oklch(0.945 0.008 260);
+  --card: oklch(0.19 0.012 266);
+  --card-foreground: oklch(0.945 0.008 260);
+  --popover: oklch(0.205 0.013 266);
+  --popover-foreground: oklch(0.945 0.008 260);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.225 0.014 264);
+  --secondary-foreground: oklch(0.93 0.008 260);
+  --muted: oklch(0.255 0.014 264);
+  --muted-foreground: oklch(0.75 0.015 260);
+  --accent: oklch(0.27 0.016 264);
+  --accent-foreground: oklch(0.96 0.006 260);
+  --destructive: oklch(0.67 0.2 25);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.34 0.016 263);
+  --input: oklch(0.52 0.02 263);
+  --ring: oklch(0.65 0.2 260);
+  --surface-inverse: oklch(0.105 0.012 268);
+  --surface-raised: oklch(0.19 0.012 266);
+  --surface-hero: oklch(0.205 0.014 265);
+  --surface-strong: oklch(0.245 0.015 264);
+  --ink-secondary: oklch(0.75 0.015 260);
+  --line-strong: oklch(0.52 0.02 263);
+  --hover-line-light: oklch(0.63 0.025 260);
+  --inverse-accent: oklch(0.78 0.12 258);
+  --architecture-face-high: oklch(0.34 0.016 263);
+  --architecture-face: oklch(0.27 0.015 264);
+  --architecture-side-high: oklch(0.235 0.014 265);
+  --architecture-side: oklch(0.19 0.013 266);
+  --architecture-frame: oklch(0.68 0.016 260);
+  --architecture-edge: oklch(0.46 0.02 262);
+  --architecture-shadow: oklch(0.02 0.006 267);
+  --sidebar: oklch(0.18 0.012 266);
+  --sidebar-foreground: oklch(0.945 0.008 260);
+  --sidebar-primary: oklch(0.62 0.22 260);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.25 0.015 264);
+  --sidebar-accent-foreground: oklch(0.945 0.008 260);
+  --sidebar-border: oklch(0.34 0.016 263);
+  --sidebar-ring: oklch(0.62 0.12 260);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-appearance="auto"] {
+    --background: oklch(0.1593 0.0111 267.98);
+    --foreground: oklch(0.945 0.008 260);
+    --card: oklch(0.19 0.012 266);
+    --card-foreground: oklch(0.945 0.008 260);
+    --popover: oklch(0.205 0.013 266);
+    --popover-foreground: oklch(0.945 0.008 260);
+    --primary-foreground: oklch(1 0 0);
+    --secondary: oklch(0.225 0.014 264);
+    --secondary-foreground: oklch(0.93 0.008 260);
+    --muted: oklch(0.255 0.014 264);
+    --muted-foreground: oklch(0.75 0.015 260);
+    --accent: oklch(0.27 0.016 264);
+    --accent-foreground: oklch(0.96 0.006 260);
+    --destructive: oklch(0.67 0.2 25);
+    --destructive-foreground: oklch(0.985 0 0);
+    --border: oklch(0.34 0.016 263);
+    --input: oklch(0.52 0.02 263);
+    --ring: oklch(0.65 0.2 260);
+    --surface-inverse: oklch(0.105 0.012 268);
+    --surface-raised: oklch(0.19 0.012 266);
+    --surface-hero: oklch(0.205 0.014 265);
+    --surface-strong: oklch(0.245 0.015 264);
+    --ink-secondary: oklch(0.75 0.015 260);
+    --line-strong: oklch(0.52 0.02 263);
+    --hover-line-light: oklch(0.63 0.025 260);
+    --inverse-accent: oklch(0.78 0.12 258);
+    --architecture-face-high: oklch(0.34 0.016 263);
+    --architecture-face: oklch(0.27 0.015 264);
+    --architecture-side-high: oklch(0.235 0.014 265);
+    --architecture-side: oklch(0.19 0.013 266);
+    --architecture-frame: oklch(0.68 0.016 260);
+    --architecture-edge: oklch(0.46 0.02 262);
+    --architecture-shadow: oklch(0.02 0.006 267);
+    --sidebar: oklch(0.18 0.012 266);
+    --sidebar-foreground: oklch(0.945 0.008 260);
+    --sidebar-primary: oklch(0.62 0.22 260);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.25 0.015 264);
+    --sidebar-accent-foreground: oklch(0.945 0.008 260);
+    --sidebar-border: oklch(0.34 0.016 263);
+    --sidebar-ring: oklch(0.62 0.12 260);
+  }
+}
+
+.approved-logo__dark { display: none; }
+.dark .approved-logo__light { display: none; }
+.dark .approved-logo__dark { display: block; }
+
+/* Light-background hero video: invert it in dark mode but keep the blue hue. */
+.dark .home-motion video { filter: invert(1) hue-rotate(180deg) brightness(.92) contrast(1.05); }
+@media (prefers-color-scheme: dark) { :root[data-appearance="auto"] .home-motion video { filter: invert(1) hue-rotate(180deg) brightness(.92) contrast(1.05); } }
+
+/* Header mega menus are opened by JS state (hover/focus); keep their underline and slide-in while open. */
+.group[data-open="true"] > .nav-link::after { transform: scaleX(1); }
+.group[data-open="true"] > .mega-panel { transform: translateY(0); }

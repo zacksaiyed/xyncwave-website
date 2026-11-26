@@ -5,11 +5,13 @@ import { useRouterState } from "@tanstack/react-router";
 import { ArrowRight, ChevronDown, Menu, Search, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
+import { AppearanceControl } from "./appearance";
 import { caseStudyMedia, insightMedia, type MediaEntry } from "@/lib/media-registry";
 import { products } from "@/lib/products";
 
 // Logo paths from public directory
 const headerLogoUrl = "/Xyncwave_Brand_Kit_Exact_Approved_v4.0/02_WEB_APP/Logos/logo-header-light-background.png";
+const headerLogoDarkUrl = "/Xyncwave_Brand_Kit_Exact_Approved_v4.0/02_WEB_APP/Logos/logo-header-dark-background.png";
 const footerLogoUrl = "/Xyncwave_Brand_Kit_Exact_Approved_v4.0/02_WEB_APP/Logos/logo-footer-dark-background-with-tagline.png";
 
 type NavItem = { to: AppPath; label: string; note: string; children?: NavItem[] };
@@ -55,6 +57,19 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [section, setSection] = useState<string | null>(null);
   const menuRef = useRef<HTMLElement>(null);
+  // Desktop mega menus: which one is open (hover/focus), closed by any click, Escape or navigation.
+  const [menu, setMenu] = useState<string | null>(null);
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  useEffect(() => { setMenu(null); }, [pathname]);
+  useEffect(() => {
+    if (!menu) return;
+    const close = () => setMenu(null);
+    const onKey = (event: KeyboardEvent) => { if (event.key === "Escape") close(); };
+    document.addEventListener("click", close, true);
+    document.addEventListener("keydown", onKey);
+    return () => { document.removeEventListener("click", close, true); document.removeEventListener("keydown", onKey); };
+  }, [menu]);
+  const menuProps = (key: string) => ({ isOpen: menu === key, onOpenChange: (next: boolean) => setMenu((current) => (next ? key : current === key ? null : current)) });
   const mobileLinks = [
     { label: "Case Studies", to: "/case-studies" },
     { label: "About", to: "/about" },
@@ -80,30 +95,32 @@ export function SiteHeader() {
     <a href="#main-content" className="fixed left-3 top-3 z-100 -translate-y-20 bg-primary px-4 py-2 text-primary-foreground focus:translate-y-0">Skip to content</a>
     <header className="sticky top-0 z-50 border-b border-border bg-background lg:backdrop-blur-md lg:supports-[backdrop-filter]:bg-background/85">
       <span aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-px blue-line opacity-40" />
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-8 px-5 lg:px-8">
-        <SmartLink to="/" aria-label="Xyncwave home" className="shrink-0 py-3"><img src={headerLogoUrl} alt="Xyncwave Corporation LLP" className="h-9 w-auto max-w-[58vw] object-contain sm:h-10" /></SmartLink>
-        <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary navigation">
-          <NavMenu label="Solutions" href="/solutions" groups={solutionGroups} spotlightTitle="Not sure which capability you need?" spotlightBody="Run a short directional assessment and get a view of where to start." spotlightTo="/digitalization-assessment" spotlightCta="Start the assessment" spotlightMedia={insightMedia["digital-transformation-fragmented-systems"]} />
-          <NavMenu label="Industries" href="/industries" groups={[{ heading: "Sectors we work in", items: industryItems }]} spotlightTitle="Explore our delivery work" spotlightBody="See how Xyncwave approaches operational systems, engineering, data, modernization and platform delivery." spotlightTo="/case-studies" spotlightCta="View Case Studies" spotlightMedia={caseStudyMedia["snowflake-data-warehouse-modernization"] ?? caseStudyMedia["track-trace"]} />
-          <NavMenu label="Products" href="/products" groups={[{ heading: "Xyncwave products", items: productItems }]} spotlightTitle="TripOps for trip operations" spotlightBody="Trip records, trip expenses, budget visibility and reconciliation in one workflow." spotlightTo="/products/tripops" spotlightCta="Explore TripOps" />
-          <SmartLink className="nav-link flex min-h-12 items-center text-sm font-medium transition-colors duration-300 hover:text-primary" to="/case-studies">Case Studies</SmartLink>
-          <NavMenu label="Resources" href="/insights" groups={[{ heading: "Learn & explore", items: resourceItems }]} spotlightTitle="Southern Africa Logistics Technology & Operational Integration Outlook 2027" spotlightBody="Our latest white paper on how logistics operators can assess technology and integration readiness." spotlightTo="/research/southern-africa-logistics-2027" spotlightCta="Read the white paper" />
-          <SmartLink className="nav-link flex min-h-12 items-center text-sm font-medium transition-colors duration-300 hover:text-primary" to="/about">About</SmartLink>
+      <div className="mx-auto flex h-20 max-w-[90rem] items-center justify-between gap-10 px-5 lg:px-8">
+        <SmartLink to="/" aria-label="Xyncwave home" className="shrink-0 py-3"><img src={headerLogoUrl} alt="Xyncwave Corporation LLP" className="approved-logo__light h-9 w-auto max-w-[58vw] object-contain sm:h-10" /><img src={headerLogoDarkUrl} alt="" aria-hidden="true" className="approved-logo__dark h-9 w-auto max-w-[58vw] object-contain sm:h-10" /></SmartLink>
+        <nav className="hidden items-center gap-6 min-[1380px]:flex 2xl:gap-9" aria-label="Primary navigation">
+          <NavMenu {...menuProps("solutions")} label="Solutions" href="/solutions" groups={solutionGroups} spotlightTitle="Not sure which capability you need?" spotlightBody="Run a short directional assessment and get a view of where to start." spotlightTo="/digitalization-assessment" spotlightCta="Start the assessment" spotlightMedia={insightMedia["digital-transformation-fragmented-systems"]} />
+          <NavMenu {...menuProps("industries")} label="Industries" href="/industries" groups={[{ heading: "Sectors we work in", items: industryItems }]} spotlightTitle="Explore our delivery work" spotlightBody="See how Xyncwave approaches operational systems, engineering, data, modernization and platform delivery." spotlightTo="/case-studies" spotlightCta="View Case Studies" spotlightMedia={caseStudyMedia["snowflake-data-warehouse-modernization"] ?? caseStudyMedia["track-trace"]} />
+          <NavMenu {...menuProps("products")} label="Products" href="/products" groups={[{ heading: "Xyncwave products", items: productItems }]} spotlightTitle="TripOps for trip operations" spotlightBody="Trip records, trip expenses, budget visibility and reconciliation in one workflow." spotlightTo="/products/tripops" spotlightCta="Explore TripOps" />
+          <SmartLink className="nav-link flex min-h-12 items-center whitespace-nowrap text-sm font-medium transition-colors duration-300 hover:text-primary" to="/case-studies">Case Studies</SmartLink>
+          <NavMenu {...menuProps("resources")} label="Resources" href="/insights" groups={[{ heading: "Learn & explore", items: resourceItems }]} spotlightTitle="Southern Africa Logistics Technology & Operational Integration Outlook 2027" spotlightBody="Our latest white paper on how logistics operators can assess technology and integration readiness." spotlightTo="/research/southern-africa-logistics-2027" spotlightCta="Read the white paper" />
+          <SmartLink className="nav-link flex min-h-12 items-center whitespace-nowrap text-sm font-medium transition-colors duration-300 hover:text-primary" to="/about">About</SmartLink>
           {/* Site search (protected by scripts/protect.mjs) */}
-          <Button variant="ghost" size="sm" asChild><SmartLink to="/search"><Search aria-hidden="true" /><span className="hidden xl:inline">Search</span><span className="sr-only xl:hidden">Search</span></SmartLink></Button>
-          <Button asChild><SmartLink to="/start-a-conversation">Bring Us Your Challenge <ArrowRight /></SmartLink></Button>
+          <Button variant="ghost" size="sm" asChild><SmartLink to="/search"><Search aria-hidden="true" /><span className="hidden 2xl:inline">Search</span><span className="sr-only 2xl:hidden">Search</span></SmartLink></Button>
+          <AppearanceControl />
+          <Button asChild className="whitespace-nowrap"><SmartLink to="/start-a-conversation">Bring Us Your Challenge <ArrowRight /></SmartLink></Button>
         </nav>
-        <div className="flex items-center gap-1 lg:hidden">
+        <div className="flex items-center gap-1 min-[1380px]:hidden">
           <Button variant="ghost" size="icon" asChild><SmartLink to="/search" aria-label="Search the site"><Search aria-hidden="true" /></SmartLink></Button>
           <Button variant="ghost" size="icon" aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen(v => !v)}>{open ? <X /> : <Menu />}</Button>
         </div>
       </div>
-      {open && <nav ref={menuRef} role="dialog" aria-modal="true" aria-label="Mobile navigation" className="fixed inset-x-0 bottom-0 top-20 z-50 overflow-y-auto border-t border-border bg-background px-5 py-5 lg:hidden">
+      {open && <nav ref={menuRef} role="dialog" aria-modal="true" aria-label="Mobile navigation" className="fixed inset-x-0 bottom-0 top-20 z-50 overflow-y-auto border-t border-border bg-background px-5 py-5 min-[1380px]:hidden">
         <MobileSection id="solutions" label="Solutions" to="/solutions" open={section === "solutions"} onToggle={() => setSection(s => s === "solutions" ? null : "solutions")} items={solutionGroups.flatMap(g => g.items.flatMap(item => [item, ...(item.children ?? [])]))} onNavigate={() => setOpen(false)} />
         <MobileSection id="industries" label="Industries" to="/industries" open={section === "industries"} onToggle={() => setSection(s => s === "industries" ? null : "industries")} items={industryItems} onNavigate={() => setOpen(false)} />
         <MobileSection id="products" label="Products" to="/products" open={section === "products"} onToggle={() => setSection(s => s === "products" ? null : "products")} items={productItems} onNavigate={() => setOpen(false)} />
         <MobileSection id="resources" label="Resources" to="/insights" open={section === "resources"} onToggle={() => setSection(s => s === "resources" ? null : "resources")} items={resourceItems} onNavigate={() => setOpen(false)} />
         <div className="grid">{mobileLinks.map((item) => <SmartLink key={item.to} to={item.to} onClick={() => setOpen(false)} className="flex min-h-16 items-center border-b border-border text-xl font-medium transition-[color,padding] duration-300 hover:pl-2 hover:text-primary">{item.label}</SmartLink>)}</div>
+        <AppearanceControl mobile />
         <p className="mt-7 text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">Quick tools</p>
         <div className="mt-3 grid gap-2">
           {([["Digitalization Assessment", "/digitalization-assessment"], ["AI Opportunity Assessment", "/ai-opportunity-assessment"], ["Engineering Capacity Assessment", "/engineering-capacity-assessment"]] as const).map(([label, to]) =>
@@ -132,13 +149,20 @@ function MobileSection({ id, label, to, open, onToggle, items, onNavigate }: { i
   </div>;
 }
 
-function NavMenu({ label, href, groups, spotlightTitle, spotlightBody, spotlightTo, spotlightCta, spotlightMedia }: { label: string; href: AppPath; groups: NavGroup[]; spotlightTitle: string; spotlightBody: string; spotlightTo: AppPath; spotlightCta: string; spotlightMedia?: MediaEntry | undefined }) {
+function NavMenu({ label, href, groups, spotlightTitle, spotlightBody, spotlightTo, spotlightCta, spotlightMedia, isOpen, onOpenChange }: { label: string; href: AppPath; groups: NavGroup[]; spotlightTitle: string; spotlightBody: string; spotlightTo: AppPath; spotlightCta: string; spotlightMedia?: MediaEntry | undefined; isOpen: boolean; onOpenChange: (open: boolean) => void }) {
   const columns = groups.length > 1 ? "sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1";
-  return <div className="group static py-6" onMouseLeave={(e) => { const el = document.activeElement; if (el instanceof HTMLElement && e.currentTarget.contains(el)) el.blur(); }}>
-    <SmartLink to={href} className="nav-link flex min-h-12 items-center gap-1.5 text-sm font-medium transition-colors duration-300 hover:text-primary">
-      {label}<ChevronDown className="size-4 text-muted-foreground transition-transform duration-300 group-hover:rotate-180 group-hover:text-primary group-focus-within:rotate-180" />
+  // Opens on hover (and keyboard focus). Closes when the pointer leaves, on any click (link, empty area or outside),
+  // on Escape, on navigation and when focus leaves. The header owns the open/close state so only one menu is open.
+  const timer = useRef<number | undefined>(undefined);
+  const clear = () => { if (timer.current !== undefined) window.clearTimeout(timer.current); };
+  const openSoon = () => { clear(); timer.current = window.setTimeout(() => onOpenChange(true), 60); };
+  const closeSoon = () => { clear(); timer.current = window.setTimeout(() => onOpenChange(false), 150); };
+  useEffect(() => clear, []);
+  return <div className="group static py-6" data-open={isOpen} onMouseEnter={openSoon} onMouseLeave={closeSoon} onFocus={() => { clear(); onOpenChange(true); }} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) { clear(); onOpenChange(false); } }}>
+    <SmartLink to={href} aria-haspopup="true" aria-expanded={isOpen} className="nav-link flex min-h-12 items-center gap-1.5 whitespace-nowrap text-sm font-medium transition-colors duration-300 hover:text-primary">
+      {label}<ChevronDown className={`size-4 transition-transform duration-300 ${isOpen ? "rotate-180 text-primary" : "text-muted-foreground"}`} />
     </SmartLink>
-    <div className="mega-panel invisible absolute inset-x-0 top-full z-40 opacity-0 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+    <div className={`mega-panel absolute inset-x-0 top-full z-40 ${isOpen ? "visible opacity-100" : "invisible opacity-0"}`}>
       <div className="border-b border-border bg-background shadow-[0_28px_60px_-40px_rgba(11,13,18,0.55)]">
         <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px blue-line opacity-70" />
         <div className="mx-auto grid max-w-7xl gap-10 px-5 py-9 lg:grid-cols-[2.6fr_1fr] lg:px-8">
