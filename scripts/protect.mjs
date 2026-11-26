@@ -28,6 +28,8 @@ const checks = [
   ["src/routes/__root.tsx", "trackPageView", "GA4 page_view tracking wired into the root route"],
   ["src/routes/__root.tsx", "favicon-48x48.png", "XWC favicon links in the page head"],
   ["src/routes/__root.tsx", "apple-touch-icon", "XWC app icon link in the page head"],
+  ["src/components/site-shell.tsx", 'to="/search"', "Search button in the site header"],
+  ["src/routes/insights.index.tsx", "insight-keyword", "Insights search and topic filter"],
   ["src/routes/index.tsx", "siteIdentityGraph", "site name (WebSite) structured data on the homepage"],
   [".env", "ndxpmohzafhcwhzcrfsq", "site must use its own Supabase project, not the old Lovable Cloud one"],
   ["wrangler.jsonc", "keep_vars", "keeps Cloudflare variables (RESEND_API_KEY) across deploys"],

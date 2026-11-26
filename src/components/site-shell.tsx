@@ -2,7 +2,7 @@ import { SmartLink, type AppPath } from "./app-link";
 import { erpnextDocPaths } from "../lib/erpnext-docs";
 import { useRouterState } from "@tanstack/react-router";
 
-import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, Search, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { caseStudyMedia, insightMedia, type MediaEntry } from "@/lib/media-registry";
@@ -89,9 +89,14 @@ export function SiteHeader() {
           <SmartLink className="nav-link flex min-h-12 items-center text-sm font-medium transition-colors duration-300 hover:text-primary" to="/case-studies">Case Studies</SmartLink>
           <NavMenu label="Resources" href="/insights" groups={[{ heading: "Learn & explore", items: resourceItems }]} spotlightTitle="Southern Africa Logistics Technology & Operational Integration Outlook 2027" spotlightBody="Our latest white paper on how logistics operators can assess technology and integration readiness." spotlightTo="/research/southern-africa-logistics-2027" spotlightCta="Read the white paper" />
           <SmartLink className="nav-link flex min-h-12 items-center text-sm font-medium transition-colors duration-300 hover:text-primary" to="/about">About</SmartLink>
+          {/* Site search (protected by scripts/protect.mjs) */}
+          <Button variant="ghost" size="sm" asChild><SmartLink to="/search"><Search aria-hidden="true" /><span className="hidden xl:inline">Search</span><span className="sr-only xl:hidden">Search</span></SmartLink></Button>
           <Button asChild><SmartLink to="/start-a-conversation">Bring Us Your Challenge <ArrowRight /></SmartLink></Button>
         </nav>
-        <Button variant="ghost" size="icon" className="lg:hidden" aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen(v => !v)}>{open ? <X /> : <Menu />}</Button>
+        <div className="flex items-center gap-1 lg:hidden">
+          <Button variant="ghost" size="icon" asChild><SmartLink to="/search" aria-label="Search the site"><Search aria-hidden="true" /></SmartLink></Button>
+          <Button variant="ghost" size="icon" aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen(v => !v)}>{open ? <X /> : <Menu />}</Button>
+        </div>
       </div>
       {open && <nav ref={menuRef} role="dialog" aria-modal="true" aria-label="Mobile navigation" className="fixed inset-x-0 bottom-0 top-20 z-50 overflow-y-auto border-t border-border bg-background px-5 py-5 lg:hidden">
         <MobileSection id="solutions" label="Solutions" to="/solutions" open={section === "solutions"} onToggle={() => setSection(s => s === "solutions" ? null : "solutions")} items={solutionGroups.flatMap(g => g.items.flatMap(item => [item, ...(item.children ?? [])]))} onNavigate={() => setOpen(false)} />
